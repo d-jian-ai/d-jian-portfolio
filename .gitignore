@@ -1,0 +1,13 @@
+.next/
+node_modules/
+out/
+dist/
+build/
+.env
+.env*.local
+*.log
+.vercel/
+coverage/
+tsconfig.tsbuildinfo
+.DS_Store
+Thumbs.db
