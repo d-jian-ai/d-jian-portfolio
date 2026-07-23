@@ -1910,6 +1910,7 @@ canvas {
   }
 
   .site-nav {
+    backdrop-filter: none;
     grid-template-columns: 1fr auto;
     height: var(--nav-height);
     padding-inline: 24px;
