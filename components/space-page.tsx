@@ -1,6 +1,13 @@
 "use client";
 
-import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { Eraser, MousePointer2 } from "lucide-react";
+import {
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+} from "react";
+import { ImmersiveScene } from "@/components/immersive-scene";
 import { useLanguage } from "@/components/language-provider";
 
 type Mode = "mist" | "light" | "rain";
@@ -10,6 +17,7 @@ type Trace = {
   x: number;
   y: number;
   mode: Mode;
+  scale: number;
 };
 
 export function SpacePage() {
@@ -18,9 +26,10 @@ export function SpacePage() {
   const [traces, setTraces] = useState<Trace[]>([]);
   const lastTrace = useRef(0);
 
-  function addTrace(event: PointerEvent<HTMLDivElement>) {
+  function addTrace(event: PointerEvent<HTMLElement>) {
+    if ((event.target as HTMLElement).closest("button")) return;
     const now = performance.now();
-    if (now - lastTrace.current < 70) return;
+    if (now - lastTrace.current < 52) return;
     lastTrace.current = now;
 
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -29,75 +38,91 @@ export function SpacePage() {
       x: ((event.clientX - bounds.left) / bounds.width) * 100,
       y: ((event.clientY - bounds.top) / bounds.height) * 100,
       mode,
+      scale: 0.72 + ((Math.floor(now) % 9) / 9) * 0.68,
     };
 
-    setTraces((current) => [...current.slice(-54), nextTrace]);
+    setTraces((current) => [...current.slice(-84), nextTrace]);
   }
 
   return (
-    <section className="section-band space-page">
-      <div className="page-grid space-header">
-        <div>
-          <p className="section-kicker">Playground</p>
-          <h1>{dictionary.space.title}</h1>
-        </div>
-        <p>{dictionary.space.lead}</p>
+    <section
+      className={`space-experience mode-${mode}`}
+      onPointerDown={addTrace}
+      onPointerMove={addTrace}
+    >
+      <div className="space-canvas" aria-hidden="true">
+        <ImmersiveScene variant={mode} />
+      </div>
+      <div className="space-shade" aria-hidden="true" />
+
+      {traces.map((trace) => (
+        <span
+          className={`trace trace-${trace.mode}`}
+          key={trace.id}
+          style={
+            {
+              "--trace-x": `${trace.x}%`,
+              "--trace-y": `${trace.y}%`,
+              "--trace-scale": trace.scale,
+            } as CSSProperties
+          }
+        />
+      ))}
+
+      <header className="space-heading">
+        <p className="section-kicker" data-reveal>
+          INTERACTIVE / REAL-TIME
+        </p>
+        <h1 data-reveal>{dictionary.space.title}</h1>
+        <p data-reveal>{dictionary.space.lead}</p>
+      </header>
+
+      <div className="space-status">
+        <MousePointer2 aria-hidden="true" size={16} />
+        <span>{dictionary.space.gesture}</span>
+        <span className="status-line" />
+        <span>
+          {dictionary.space.traces} / {traces.length.toString().padStart(2, "0")}
+        </span>
       </div>
 
-      <div className="space-layout">
-        <div
-          className={`interaction-field field-${mode}`}
-          onPointerMove={addTrace}
-          onPointerDown={addTrace}
-        >
-          <div className="field-horizon" />
-          <div className="field-canopy" />
-          {traces.map((trace) => (
-            <span
-              className={`trace trace-${trace.mode}`}
-              key={trace.id}
-              style={
+      <div className="space-control-bar">
+        <div className="segmented-control" aria-label="Interaction mode">
+          {(["mist", "light", "rain"] as Mode[]).map((item) => (
+            <button
+              aria-pressed={mode === item}
+              className={mode === item ? "active" : ""}
+              key={item}
+              onClick={() => setMode(item)}
+              type="button"
+            >
+              {
                 {
-                  "--trace-x": `${trace.x}%`,
-                  "--trace-y": `${trace.y}%`,
-                } as CSSProperties
+                  mist: dictionary.space.modeMist,
+                  light: dictionary.space.modeLight,
+                  rain: dictionary.space.modeRain,
+                }[item]
               }
-            />
+            </button>
           ))}
         </div>
-
-        <aside className="space-controls">
-          <div className="segmented-control" aria-label="Interaction mode">
-            <button
-              className={mode === "mist" ? "active" : ""}
-              onClick={() => setMode("mist")}
-              type="button"
-            >
-              {dictionary.space.modeMist}
-            </button>
-            <button
-              className={mode === "light" ? "active" : ""}
-              onClick={() => setMode("light")}
-              type="button"
-            >
-              {dictionary.space.modeLight}
-            </button>
-            <button
-              className={mode === "rain" ? "active" : ""}
-              onClick={() => setMode("rain")}
-              type="button"
-            >
-              {dictionary.space.modeRain}
-            </button>
-          </div>
-          <div className="space-notes">
-            <h2>{dictionary.space.notesTitle}</h2>
-            {dictionary.space.notes.map((note) => (
-              <p key={note}>{note}</p>
-            ))}
-          </div>
-        </aside>
+        <button
+          aria-label={dictionary.space.clear}
+          className="clear-button"
+          onClick={() => setTraces([])}
+          title={dictionary.space.clear}
+          type="button"
+        >
+          <Eraser aria-hidden="true" size={17} />
+        </button>
       </div>
+
+      <aside className="space-notes">
+        <p className="section-kicker">{dictionary.space.notesTitle}</p>
+        {dictionary.space.notes.map((note) => (
+          <p key={note}>{note}</p>
+        ))}
+      </aside>
     </section>
   );
 }

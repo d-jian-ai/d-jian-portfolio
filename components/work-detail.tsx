@@ -1,8 +1,10 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useLanguage } from "@/components/language-provider";
+import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works, type Work } from "@/data/work";
 
 export function WorkDetail({ work }: { work: Work }) {
@@ -17,27 +19,33 @@ export function WorkDetail({ work }: { work: Work }) {
   }, [work.slug]);
 
   return (
-    <article className="section-band detail-page">
-      <div className="page-grid detail-hero">
-        <div>
-          <Link className="text-link back-link" href="/work">
-            {dictionary.work.back}
-          </Link>
-          <p className="section-kicker">
+    <article className="detail-page">
+      <header className="detail-hero section-frame">
+        <Link className="back-action" href="/work" data-reveal>
+          <ArrowLeft aria-hidden="true" size={16} />
+          {dictionary.work.back}
+        </Link>
+        <div className="detail-title-row">
+          <p className="detail-index" data-reveal>
+            PROJECT / {work.index}
+          </p>
+          <h1 data-reveal>{work.title[locale]}</h1>
+        </div>
+        <div className="detail-intro" data-reveal>
+          <p>
             {typeLabels[work.type][locale]} / {work.year}
           </p>
-          <h1>{work.title[locale]}</h1>
+          <p>{work.summary[locale]}</p>
         </div>
-        <p>{work.summary[locale]}</p>
+      </header>
+
+      <div className="detail-art section-frame" data-reveal>
+        <ProjectVisual label={work.title[locale]} slug={work.slug} />
       </div>
 
-      <div className={`detail-visual accent-${work.accent}`}>
-        <span className="detail-mark" />
-        <span className="detail-gridline" />
-      </div>
-
-      <div className="page-grid detail-body">
-        <aside>
+      <section className="detail-story section-frame">
+        <aside data-reveal>
+          <p className="section-kicker">{dictionary.work.role}</p>
           <p>{work.role[locale]}</p>
           <div className="tag-list">
             {work.tags.map((tag) => (
@@ -45,14 +53,35 @@ export function WorkDetail({ work }: { work: Work }) {
             ))}
           </div>
         </aside>
-        <div>
+        <div className="detail-narrative" data-reveal>
+          <p className="section-kicker">{dictionary.work.process}</p>
           <p>{work.body[locale]}</p>
+          <ol className="process-list">
+            {dictionary.work.processSteps.map((step, index) => (
+              <li key={step}>
+                <span>0{index + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
         </div>
-      </div>
+      </section>
 
-      <nav className="detail-nav" aria-label="Project navigation">
-        <Link href={`/work/${previous.slug}`}>{dictionary.work.previous}</Link>
-        <Link href={`/work/${next.slug}`}>{dictionary.work.next}</Link>
+      <nav className="detail-nav section-frame" aria-label="Project navigation">
+        <Link href={`/work/${previous.slug}`}>
+          <ArrowLeft aria-hidden="true" size={18} />
+          <span>
+            <small>{dictionary.work.previous}</small>
+            {previous.title[locale]}
+          </span>
+        </Link>
+        <Link href={`/work/${next.slug}`}>
+          <span>
+            <small>{dictionary.work.next}</small>
+            {next.title[locale]}
+          </span>
+          <ArrowRight aria-hidden="true" size={18} />
+        </Link>
       </nav>
     </article>
   );

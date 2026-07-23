@@ -1,10 +1,31 @@
 "use client";
 
+import {
+  ArrowDown,
+  ArrowUpRight,
+  GitBranch,
+  MoveDown,
+  Sparkles,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { ImmersiveScene } from "@/components/immersive-scene";
 import { useLanguage } from "@/components/language-provider";
+import { ProjectVisual } from "@/components/project-visual";
 import { useWeather } from "@/components/weather-provider";
 import { typeLabels, works } from "@/data/work";
+
+const moodLabels = {
+  zh: { sun: "晴光", rain: "雨", snow: "雪", night: "夜", mist: "雾" },
+  en: { sun: "Sun", rain: "Rain", snow: "Snow", night: "Night", mist: "Mist" },
+  fr: {
+    sun: "Soleil",
+    rain: "Pluie",
+    snow: "Neige",
+    night: "Nuit",
+    mist: "Brume",
+  },
+} as const;
 
 export function HomePage() {
   const { locale, dictionary } = useLanguage();
@@ -13,8 +34,8 @@ export function HomePage() {
 
   return (
     <>
-      <section className="home-hero section-band">
-        <div className="hero-media" aria-hidden="true">
+      <section className="home-hero">
+        <div className="hero-image-layer" aria-hidden="true">
           <Image
             alt=""
             className="hero-image"
@@ -23,60 +44,157 @@ export function HomePage() {
             sizes="100vw"
             src="/images/forest-entry.png"
           />
-          <div className="hero-weather-wash" />
         </div>
-        <div className="hero-content page-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">{dictionary.home.kicker}</p>
-            <h1>{dictionary.home.title}</h1>
-            <p className="hero-lead">{dictionary.home.lead}</p>
+        <div className="hero-3d" aria-hidden="true">
+          <ImmersiveScene />
+        </div>
+        <div className="hero-vignette" aria-hidden="true" />
+
+        <div className="hero-interface">
+          <div className="hero-signal" data-reveal>
+            <span className="signal-dot" />
+            <span>
+              LIVE ATMOSPHERE / {moodLabels[locale][mood].toUpperCase()}
+            </span>
           </div>
-          <div className="hero-panel">
-            <p>{dictionary.home.manifesto}</p>
-            <div className="mood-readout" aria-label={`Current mood ${mood}`}>
-              <span />
-              {mood.toUpperCase()}
+
+          <div className="hero-copy" data-reveal>
+            <p className="eyebrow">{dictionary.home.kicker}</p>
+            <h1>
+              {dictionary.home.title}
+              <sup>©26</sup>
+            </h1>
+            <p className="hero-lead">{dictionary.home.lead}</p>
+            <div className="hero-actions">
+              <Link className="primary-action magnetic-action" href="/work">
+                {dictionary.home.explore}
+                <ArrowDown aria-hidden="true" size={17} />
+              </Link>
+              <Link className="ghost-action magnetic-action" href="/space">
+                <Sparkles aria-hidden="true" size={16} />
+                {dictionary.home.playground}
+              </Link>
             </div>
           </div>
+
+          <div className="hero-meta" data-reveal>
+            <p>43.2965° N</p>
+            <p>05.3698° E</p>
+            <span>LOCAL / DIGITAL</span>
+          </div>
+
+          <a className="scroll-cue" href="#practice" aria-label={dictionary.home.scroll}>
+            <span>{dictionary.home.scroll}</span>
+            <MoveDown aria-hidden="true" size={18} />
+          </a>
         </div>
       </section>
 
-      <section className="section-band intro-band">
-        <div className="page-grid intro-grid">
+      <section className="practice-section section-frame" id="practice">
+        <div className="practice-index" data-reveal>
+          <span>00</span>
+          <span>POSITION</span>
+        </div>
+        <div className="practice-copy">
+          <p className="section-kicker" data-reveal>
+            {dictionary.home.recent}
+          </p>
+          <h2 data-reveal>{dictionary.home.practice}</h2>
+          <p className="practice-lead" data-reveal>
+            {dictionary.home.practiceLead}
+          </p>
+        </div>
+        <div className="practice-orbit" aria-hidden="true" data-reveal>
+          <span className="orbit-copy">DESIGN · CODE · MOTION · SPACE · </span>
+          <span className="orbit-core">+</span>
+        </div>
+      </section>
+
+      <section className="manifesto-section section-frame">
+        <p className="manifesto-number" data-reveal>
+          01
+        </p>
+        <blockquote data-reveal>{dictionary.home.quote}</blockquote>
+        <p className="manifesto-copy" data-reveal>
+          {dictionary.home.manifesto}
+        </p>
+      </section>
+
+      <section className="selected-section">
+        <header className="selected-header section-frame" data-reveal>
           <div>
             <p className="section-kicker">{dictionary.home.selected}</p>
             <h2>{dictionary.home.featured}</h2>
           </div>
-          <Link className="text-link" href="/work">
+          <Link className="text-action" href="/work">
             {dictionary.home.archive}
+            <ArrowUpRight aria-hidden="true" size={17} />
           </Link>
-        </div>
-        <div className="work-strip">
-          {featuredWorks.map((work) => (
-            <Link
-              className={`feature-tile accent-${work.accent}`}
-              href={`/work/${work.slug}`}
-              key={work.slug}
-            >
-              <span className="tile-visual" />
-              <span className="tile-meta">
-                {typeLabels[work.type][locale]} / {work.year}
-              </span>
-              <strong>{work.title[locale]}</strong>
-              <span>{work.summary[locale]}</span>
-            </Link>
+        </header>
+
+        <div className="featured-list">
+          {featuredWorks.map((work, index) => (
+            <article className="featured-project section-frame" key={work.slug}>
+              <Link
+                aria-label={`${dictionary.work.open}: ${work.title[locale]}`}
+                className="featured-visual-link"
+                href={`/work/${work.slug}`}
+                data-reveal
+              >
+                <ProjectVisual
+                  label={work.title[locale]}
+                  slug={work.slug}
+                />
+              </Link>
+              <div className="featured-copy" data-reveal>
+                <div className="featured-meta">
+                  <span>{work.index}</span>
+                  <span>
+                    {typeLabels[work.type][locale]} / {work.year}
+                  </span>
+                </div>
+                <h3>{work.title[locale]}</h3>
+                <p>{work.summary[locale]}</p>
+                <Link className="project-open" href={`/work/${work.slug}`}>
+                  {dictionary.work.open}
+                  <ArrowUpRight aria-hidden="true" size={18} />
+                </Link>
+                <span className="featured-sequence">0{index + 1} / 03</span>
+              </div>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="section-band notes-band">
-        <div className="page-grid notes-grid">
-          <p className="section-kicker">{dictionary.home.recent}</p>
-          <blockquote>
-            {locale === "zh"
-              ? "先让观看变得轻，然后让作品自己靠近。"
-              : "Make viewing feel light first, then let the work move closer on its own."}
-          </blockquote>
+      <section className="capability-section" aria-label={dictionary.home.practice}>
+        <div className="capability-track">
+          {[...dictionary.home.capabilities, ...dictionary.home.capabilities].map(
+            (capability, index) => (
+              <span key={`${capability}-${index}`}>
+                {capability}
+                <i aria-hidden="true">✦</i>
+              </span>
+            ),
+          )}
+        </div>
+      </section>
+
+      <section className="contact-section section-frame">
+        <p className="section-kicker" data-reveal>
+          {dictionary.home.contactKicker}
+        </p>
+        <h2 data-reveal>{dictionary.home.contactTitle}</h2>
+        <div className="contact-bottom" data-reveal>
+          <p>{dictionary.home.contactLead}</p>
+          <a
+            className="primary-action"
+            href="https://github.com/d-jian-ai"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <GitBranch aria-hidden="true" size={17} />
+            {dictionary.home.github}
+          </a>
         </div>
       </section>
     </>

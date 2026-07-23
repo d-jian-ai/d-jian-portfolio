@@ -21,10 +21,21 @@ type Dictionary = {
     title: string;
     lead: string;
     manifesto: string;
+    explore: string;
+    playground: string;
+    scroll: string;
     featured: string;
     archive: string;
     selected: string;
     recent: string;
+    quote: string;
+    practice: string;
+    practiceLead: string;
+    capabilities: string[];
+    contactKicker: string;
+    contactTitle: string;
+    contactLead: string;
+    github: string;
   };
   work: {
     title: string;
@@ -34,6 +45,9 @@ type Dictionary = {
     next: string;
     previous: string;
     back: string;
+    role: string;
+    process: string;
+    processSteps: string[];
   };
   space: {
     title: string;
@@ -43,6 +57,9 @@ type Dictionary = {
     modeRain: string;
     notesTitle: string;
     notes: string[];
+    gesture: string;
+    clear: string;
+    traces: string;
   };
 };
 
@@ -51,80 +68,188 @@ const dictionaries: Record<Locale, Dictionary> = {
     nav: {
       home: "首页",
       work: "作品",
-      space: "空间",
+      space: "实验场",
     },
     home: {
-      kicker: "Design / Web / Moving Image",
+      kicker: "数字设计师 / 创意开发者",
       title: "CREER",
-      lead: "一个把作品、天气和个人叙事放在同一片森林里的作品集。",
+      lead: "在设计、代码与影像之间，构建会呼吸的数字体验。",
       manifesto:
-        "界面应该先让人愿意停留，再把内容清楚地交给他。这个版本把视觉气氛做轻，把作品入口做明确，后续真实素材可以逐步替换。",
+        "我把界面看作一种空间：它有天气、距离、阻力和回声。每个项目都从清晰的内容出发，再用技术把感受推得更远。",
+      explore: "探索作品",
+      playground: "进入实验场",
+      scroll: "向下探索",
       featured: "精选作品",
-      archive: "进入作品库",
-      selected: "已选",
-      recent: "最近的思考",
+      archive: "查看完整作品库",
+      selected: "Selected / 01—03",
+      recent: "设计立场",
+      quote: "不是把效果放进页面，而是让每一次移动都有原因。",
+      practice: "跨越媒介的创作实践",
+      practiceLead:
+        "从品牌视觉到实时 3D，从产品界面到动态影像。方法会改变，但对节奏、细节和人的注意力始终保持敏感。",
+      capabilities: ["视觉系统", "交互设计", "创意开发", "实时 3D", "动态影像"],
+      contactKicker: "Next signal",
+      contactTitle: "让下一件作品开始生长。",
+      contactLead: "这里会持续记录新的实验、过程与完整项目。",
+      github: "在 GitHub 查看过程",
     },
     work: {
-      title: "作品库",
-      lead: "按类型筛选设计、网页和影像项目。现在使用占位内容，结构已经为真实作品准备好。",
+      title: "作品档案",
+      lead: "一些完成的项目，以及仍在生长中的数字实验。",
       all: "全部",
-      open: "查看项目",
-      next: "下一个",
-      previous: "上一个",
-      back: "返回作品",
+      open: "打开项目",
+      next: "下一个项目",
+      previous: "上一个项目",
+      back: "返回作品档案",
+      role: "角色",
+      process: "方法与过程",
+      processSteps: ["观察与提炼", "系统与原型", "动效与交付"],
     },
     space: {
-      title: "空间",
-      lead: "一个轻量的互动练习区，用触摸和指针留下生长、雾气与雨痕。",
+      title: "生成实验场",
+      lead: "移动指针，改变空气。这里没有固定画面，只有你留下的轨迹。",
       modeMist: "雾",
       modeLight: "光",
       modeRain: "雨",
-      notesTitle: "记录",
+      notesTitle: "场域记录",
       notes: [
-        "作品集不是一次性完成的页面，而是一种可以持续更新的容器。",
-        "动效最好像呼吸，存在但不抢话。",
-        "真实素材到位后，首页会从占位气氛转向更个人的影像记忆。",
+        "速度决定痕迹的密度，停留会让光线聚集。",
+        "场景会根据当前天气改变底层色温。",
+        "每一条轨迹都会消失，但空间会短暂记住它。",
       ],
+      gesture: "移动 / 拖动",
+      clear: "清空轨迹",
+      traces: "轨迹",
     },
   },
   en: {
     nav: {
       home: "Home",
       work: "Work",
-      space: "Space",
+      space: "Field",
     },
     home: {
-      kicker: "Design / Web / Moving Image",
+      kicker: "Digital designer / Creative developer",
       title: "CREER",
-      lead: "A portfolio that lets work, weather, and personal narrative live in the same forest.",
+      lead: "Breathing digital experiences between design, code, and moving image.",
       manifesto:
-        "An interface should first make people want to stay, then hand the work to them clearly. This version keeps the atmosphere soft and the project paths direct, ready for real material to replace the placeholders.",
-      featured: "Featured Work",
-      archive: "Open archive",
-      selected: "Selected",
-      recent: "Recent Notes",
+        "I see an interface as a space with weather, distance, resistance, and echo. Every project begins with clear content, then uses technology to carry the feeling further.",
+      explore: "Explore work",
+      playground: "Enter the field",
+      scroll: "Scroll to explore",
+      featured: "Selected work",
+      archive: "View complete archive",
+      selected: "Selected / 01—03",
+      recent: "Design position",
+      quote: "Do not add effects to a page. Give every movement a reason.",
+      practice: "A practice across mediums",
+      practiceLead:
+        "From visual identities to real-time 3D, product interfaces to moving image. The method changes, while rhythm, detail, and human attention remain central.",
+      capabilities: [
+        "Visual systems",
+        "Interaction design",
+        "Creative development",
+        "Real-time 3D",
+        "Moving image",
+      ],
+      contactKicker: "Next signal",
+      contactTitle: "Let the next piece begin to grow.",
+      contactLead:
+        "New experiments, processes, and complete projects will keep appearing here.",
+      github: "Follow the process on GitHub",
     },
     work: {
-      title: "Work Archive",
-      lead: "Filter design, web, and moving image projects. Placeholder content is in place while the structure is ready for real work.",
+      title: "Work archive",
+      lead: "A selection of finished projects and digital experiments still in motion.",
       all: "All",
-      open: "View project",
-      next: "Next",
-      previous: "Previous",
-      back: "Back to work",
+      open: "Open project",
+      next: "Next project",
+      previous: "Previous project",
+      back: "Back to archive",
+      role: "Role",
+      process: "Method & process",
+      processSteps: ["Observe & distill", "System & prototype", "Motion & delivery"],
     },
     space: {
-      title: "Space",
-      lead: "A light interaction field where touch and pointer movement leave growth, mist, and rain traces.",
+      title: "Generative field",
+      lead: "Move the pointer and change the air. There is no fixed image, only the trace you leave.",
       modeMist: "Mist",
       modeLight: "Light",
       modeRain: "Rain",
-      notesTitle: "Notes",
+      notesTitle: "Field notes",
       notes: [
-        "A portfolio is not a finished page, but a container that keeps evolving.",
-        "Motion works best when it breathes without interrupting.",
-        "Once real assets arrive, the home page can shift from placeholder atmosphere to personal visual memory.",
+        "Speed shapes the density of a trace; staying still lets light gather.",
+        "The scene changes its base temperature with the current weather.",
+        "Every trace disappears, but the field remembers it for a moment.",
       ],
+      gesture: "Move / drag",
+      clear: "Clear traces",
+      traces: "Traces",
+    },
+  },
+  fr: {
+    nav: {
+      home: "Accueil",
+      work: "Projets",
+      space: "Champ",
+    },
+    home: {
+      kicker: "Designer numérique / Développeur créatif",
+      title: "CREER",
+      lead: "Des expériences numériques vivantes, entre design, code et image en mouvement.",
+      manifesto:
+        "Je considère l'interface comme un espace avec sa météo, sa distance, sa résistance et son écho. Chaque projet part d'un contenu clair, puis la technologie prolonge la sensation.",
+      explore: "Explorer les projets",
+      playground: "Entrer dans le champ",
+      scroll: "Faire défiler",
+      featured: "Projets choisis",
+      archive: "Voir toutes les archives",
+      selected: "Sélection / 01—03",
+      recent: "Position de design",
+      quote: "Ne pas ajouter des effets à une page. Donner une raison à chaque mouvement.",
+      practice: "Une pratique entre les médiums",
+      practiceLead:
+        "De l'identité visuelle à la 3D temps réel, de l'interface produit à l'image en mouvement. La méthode change, mais le rythme, le détail et l'attention restent au centre.",
+      capabilities: [
+        "Systèmes visuels",
+        "Design d'interaction",
+        "Développement créatif",
+        "3D temps réel",
+        "Image en mouvement",
+      ],
+      contactKicker: "Prochain signal",
+      contactTitle: "Laisser la prochaine création prendre racine.",
+      contactLead:
+        "De nouvelles expériences, processus et projets complets apparaîtront ici.",
+      github: "Suivre le processus sur GitHub",
+    },
+    work: {
+      title: "Archives des projets",
+      lead: "Une sélection de projets terminés et d'expériences numériques encore en mouvement.",
+      all: "Tous",
+      open: "Ouvrir le projet",
+      next: "Projet suivant",
+      previous: "Projet précédent",
+      back: "Retour aux archives",
+      role: "Rôle",
+      process: "Méthode & processus",
+      processSteps: ["Observer & extraire", "Système & prototype", "Mouvement & livraison"],
+    },
+    space: {
+      title: "Champ génératif",
+      lead: "Déplacez le pointeur et transformez l'air. Aucune image fixe, seulement votre trace.",
+      modeMist: "Brume",
+      modeLight: "Lumière",
+      modeRain: "Pluie",
+      notesTitle: "Notes du champ",
+      notes: [
+        "La vitesse façonne la densité; l'immobilité laisse la lumière s'accumuler.",
+        "La scène adapte sa température à la météo actuelle.",
+        "Chaque trace disparaît, mais le champ s'en souvient un instant.",
+      ],
+      gesture: "Déplacer / glisser",
+      clear: "Effacer les traces",
+      traces: "Traces",
     },
   },
 };
@@ -132,31 +257,33 @@ const dictionaries: Record<Locale, Dictionary> = {
 type LanguageContextValue = {
   locale: Locale;
   dictionary: Dictionary;
-  toggleLocale: () => void;
+  setLocale: (locale: Locale) => void;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>("zh");
+  const [locale, updateLocale] = useState<Locale>("zh");
 
   useEffect(() => {
     const saved = window.localStorage.getItem("creer-locale");
-    if (saved === "zh" || saved === "en") {
-      setLocale(saved);
+    if (saved === "zh" || saved === "en" || saved === "fr") {
+      updateLocale(saved);
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang =
+      locale === "zh" ? "zh-CN" : locale === "fr" ? "fr" : "en";
+  }, [locale]);
 
   const value = useMemo<LanguageContextValue>(
     () => ({
       locale,
       dictionary: dictionaries[locale],
-      toggleLocale: () => {
-        setLocale((current) => {
-          const next = current === "zh" ? "en" : "zh";
-          window.localStorage.setItem("creer-locale", next);
-          return next;
-        });
+      setLocale: (nextLocale) => {
+        window.localStorage.setItem("creer-locale", nextLocale);
+        updateLocale(nextLocale);
       },
     }),
     [locale],

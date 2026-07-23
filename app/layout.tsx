@@ -8,19 +8,36 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "CREER Portfolio",
-  description: "Immersive portfolio for design, web, and moving image work.",
+  title: "CREER — Digital Design & Creative Development",
+  description:
+    "An immersive portfolio across digital design, creative development, real-time 3D, and moving image.",
   openGraph: {
-    title: "CREER Portfolio",
-    description: "Immersive portfolio for design, web, and moving image work.",
-    images: ["/images/forest-entry.png"],
+    title: "CREER — Digital Design & Creative Development",
+    description:
+      "An immersive portfolio across design, code, real-time 3D, and moving image.",
+    type: "website",
+    images: [
+      {
+        url: "/og.png",
+        width: 1744,
+        height: 912,
+        alt: "CREER — Digital Design and Creative Development",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CREER — Digital Design & Creative Development",
+    description:
+      "An immersive portfolio across design, code, real-time 3D, and moving image.",
+    images: ["/og.png"],
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#10221d",
+  themeColor: "#06100c",
 };
 
 export default function RootLayout({
