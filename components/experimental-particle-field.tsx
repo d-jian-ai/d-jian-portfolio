@@ -17,12 +17,12 @@ const vertexShader = /* glsl */ `
   uniform float uTime;
   uniform float uPointSize;
   uniform float uDisturbance;
-  uniform float uAmbientSpeed;
-  uniform float uAmbientStrength;
   uniform float uColorCycleSpeed;
   uniform float uColorSpatialFrequency;
-  uniform float uDepthSpeed;
-  uniform float uDepthStrength;
+  uniform float uFlowDetailStrength;
+  uniform float uFlowScale;
+  uniform float uFlowSpeed;
+  uniform float uFlowStrength;
   uniform float uPointerDepth;
   uniform float uPointerFalloff;
   uniform float uPointerForce;
@@ -53,24 +53,25 @@ const vertexShader = /* glsl */ `
 
     transformed.xy += direction * influence * uPointerForce;
     transformed.z += influence * uPointerDepth;
-    float primaryRate = mix(0.55, 1.35, aMotion.w);
-    float secondaryRate = mix(
-      0.31,
-      0.72,
-      fract(aMotion.x * 0.159 + aMotion.y * 0.113)
+    float flowTime = uTime * uFlowSpeed;
+    vec3 flowPosition = transformed * uFlowScale;
+    vec3 flow = vec3(
+      sin(flowPosition.y * 1.35 + flowTime) +
+        cos(flowPosition.z * 1.17 - flowTime * 0.73),
+      sin(flowPosition.z * 1.41 + flowTime * 0.82) +
+        cos(flowPosition.x * 1.13 + flowTime * 0.57),
+      sin(flowPosition.x * 1.29 - flowTime * 0.68) +
+        cos(flowPosition.y * 1.51 + flowTime * 0.76)
     );
-    float driftAmount = mix(0.55, 1.15, aMotion.w);
-    vec3 ambientOffset = vec3(
-      sin(uTime * uAmbientSpeed * primaryRate + aMotion.x) +
-        sin(uTime * uAmbientSpeed * secondaryRate + aMotion.z) * 0.35,
-      cos(uTime * uAmbientSpeed * (0.72 + aMotion.w * 0.48) + aMotion.y) +
-        cos(uTime * uAmbientSpeed * secondaryRate + aMotion.x) * 0.28,
-      sin(uTime * uDepthSpeed * (0.64 + aMotion.w * 0.62) + aMotion.z) +
-        cos(uTime * uDepthSpeed * secondaryRate + aMotion.y) * 0.3
+    vec3 detailFlow = vec3(
+      sin(flowTime * 1.31 + aMotion.x),
+      cos(flowTime * 1.17 + aMotion.y),
+      sin(flowTime * 0.93 + aMotion.z)
     );
+    float particleAmplitude = mix(0.72, 1.18, aMotion.w);
 
-    transformed.xy += ambientOffset.xy * uAmbientStrength * driftAmount;
-    transformed.z += ambientOffset.z * uDepthStrength * driftAmount;
+    transformed += flow * 0.5 * uFlowStrength * particleAmplitude;
+    transformed += detailFlow * uFlowDetailStrength;
 
     vec4 modelPosition = modelMatrix * vec4(transformed, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;
@@ -78,7 +79,7 @@ const vertexShader = /* glsl */ `
 
     float perspective = 16.0 / max(1.0, -viewPosition.z);
     gl_PointSize = clamp(uPointSize * perspective, 1.0, 5.2);
-    vGlow = 0.42 + influence * 0.58;
+    vGlow = 0.34 + min(0.28, length(flow) * 0.08) + influence * 0.48;
     vDepth = smoothstep(13.0, 2.0, -viewPosition.z);
     vColorPhase = fract(
       uTime * uColorCycleSpeed +
@@ -207,10 +208,6 @@ function ParticleMorph({
     : GENERATIVE_FIELD_CONFIG.layout.desktop;
   const uniforms = useMemo(
     () => ({
-      uAmbientSpeed: { value: GENERATIVE_FIELD_CONFIG.shader.ambientSpeed },
-      uAmbientStrength: {
-        value: GENERATIVE_FIELD_CONFIG.shader.ambientStrength,
-      },
       uColorA: { value: new THREE.Color(appearance.colors[0]) },
       uColorB: { value: new THREE.Color(appearance.colors[1]) },
       uColorC: { value: new THREE.Color(appearance.colors[2]) },
@@ -220,9 +217,13 @@ function ParticleMorph({
       uColorSpatialFrequency: {
         value: GENERATIVE_FIELD_CONFIG.shader.colorSpatialFrequency,
       },
-      uDepthSpeed: { value: GENERATIVE_FIELD_CONFIG.shader.depthSpeed },
-      uDepthStrength: { value: GENERATIVE_FIELD_CONFIG.shader.depthStrength },
       uDisturbance: { value: reducedMotion ? 0 : 1 },
+      uFlowDetailStrength: {
+        value: GENERATIVE_FIELD_CONFIG.shader.flowDetailStrength,
+      },
+      uFlowScale: { value: GENERATIVE_FIELD_CONFIG.shader.flowScale },
+      uFlowSpeed: { value: GENERATIVE_FIELD_CONFIG.shader.flowSpeed },
+      uFlowStrength: { value: GENERATIVE_FIELD_CONFIG.shader.flowStrength },
       uOpacity: { value: appearance.opacity },
       uPointSize: { value: appearance.pointSize[isMobile ? "mobile" : "desktop"] },
       uPointer: { value: new THREE.Vector2() },

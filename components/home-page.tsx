@@ -6,9 +6,8 @@ import {
   MoveDown,
   Sparkles,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import { ImmersiveScene } from "@/components/immersive-scene";
+import { HeroMaterialScene } from "@/components/hero-material-scene";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works } from "@/data/work";
 import { useLanguage } from "@/providers/language-provider";
@@ -20,20 +19,9 @@ export function HomePage() {
   return (
     <>
       <section className="home-hero">
-        <div className="hero-image-layer" aria-hidden="true">
-          <Image
-            alt=""
-            className="hero-image"
-            fill
-            priority
-            sizes="100vw"
-            src="/images/forest-entry.png"
-          />
+        <div className="hero-scene" aria-hidden="true">
+          <HeroMaterialScene />
         </div>
-        <div className="hero-3d" aria-hidden="true">
-          <ImmersiveScene />
-        </div>
-        <div className="hero-vignette" aria-hidden="true" />
 
         <div className="hero-interface">
           <div className="hero-copy" data-reveal>
