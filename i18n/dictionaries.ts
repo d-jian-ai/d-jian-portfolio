@@ -25,7 +25,6 @@ export type Dictionary = {
     contactKicker: string;
     contactTitle: string;
     contactLead: string;
-    github: string;
   };
   work: {
     title: string;
@@ -84,7 +83,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contactKicker: "Next signal",
       contactTitle: "让下一件作品开始生长。",
       contactLead: "这里会持续记录新的实验、过程与完整项目。",
-      github: "在 GitHub 查看过程",
     },
     work: {
       title: "作品档案",
@@ -172,7 +170,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contactTitle: "Let the next piece begin to grow.",
       contactLead:
         "New experiments, processes, and complete projects will keep appearing here.",
-      github: "Follow the process on GitHub",
     },
     work: {
       title: "Work archive",
@@ -260,7 +257,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contactTitle: "Laisser la prochaine création prendre racine.",
       contactLead:
         "De nouvelles expériences, processus et projets complets apparaîtront ici.",
-      github: "Suivre le processus sur GitHub",
     },
     work: {
       title: "Archives des projets",

@@ -3,7 +3,6 @@
 import {
   ArrowDown,
   ArrowUpRight,
-  GitBranch,
   MoveDown,
   Sparkles,
 } from "lucide-react";
@@ -165,15 +164,6 @@ export function HomePage() {
         <h2 data-reveal>{dictionary.home.contactTitle}</h2>
         <div className="contact-bottom" data-reveal>
           <p>{dictionary.home.contactLead}</p>
-          <a
-            className="primary-action"
-            href="https://github.com/d-jian-ai"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <GitBranch aria-hidden="true" size={17} />
-            {dictionary.home.github}
-          </a>
         </div>
       </section>
     </>

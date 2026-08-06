@@ -11,6 +11,7 @@ const vertexShader = /* glsl */ `
   attribute vec3 aWave;
   attribute vec3 aPortal;
   attribute vec3 aBloom;
+  attribute vec4 aMotion;
 
   uniform float uProgress;
   uniform float uTime;
@@ -49,12 +50,24 @@ const vertexShader = /* glsl */ `
 
     transformed.xy += direction * influence * uPointerForce;
     transformed.z += influence * uPointerDepth;
-    transformed.xy += vec2(
-      sin(uTime * uAmbientSpeed + transformed.z * 0.72),
-      cos(uTime * uAmbientSpeed * 0.84 + transformed.x * 0.64)
-    ) * uAmbientStrength;
-    transformed.z +=
-      sin(uTime * uDepthSpeed + length(transformed) * 1.7) * uDepthStrength;
+    float primaryRate = mix(0.55, 1.35, aMotion.w);
+    float secondaryRate = mix(
+      0.31,
+      0.72,
+      fract(aMotion.x * 0.159 + aMotion.y * 0.113)
+    );
+    float driftAmount = mix(0.55, 1.15, aMotion.w);
+    vec3 ambientOffset = vec3(
+      sin(uTime * uAmbientSpeed * primaryRate + aMotion.x) +
+        sin(uTime * uAmbientSpeed * secondaryRate + aMotion.z) * 0.35,
+      cos(uTime * uAmbientSpeed * (0.72 + aMotion.w * 0.48) + aMotion.y) +
+        cos(uTime * uAmbientSpeed * secondaryRate + aMotion.x) * 0.28,
+      sin(uTime * uDepthSpeed * (0.64 + aMotion.w * 0.62) + aMotion.z) +
+        cos(uTime * uDepthSpeed * secondaryRate + aMotion.y) * 0.3
+    );
+
+    transformed.xy += ambientOffset.xy * uAmbientStrength * driftAmount;
+    transformed.z += ambientOffset.z * uDepthStrength * driftAmount;
 
     vec4 modelPosition = modelMatrix * vec4(transformed, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;
@@ -159,7 +172,6 @@ function ParticleMorph({
   reducedMotion: boolean;
   theme: "dark" | "light";
 }) {
-  const points = useRef<THREE.Points>(null);
   const material = useRef<THREE.ShaderMaterial>(null);
   const isMobile = useThree(
     (state) => state.size.width <= SITE_CONFIG.breakpoints.mobile,
@@ -190,7 +202,7 @@ function ParticleMorph({
   );
 
   useFrame((state, delta) => {
-    if (!material.current || !points.current) return;
+    if (!material.current) return;
 
     const easing = reducedMotion
       ? 1
@@ -208,30 +220,6 @@ function ParticleMorph({
       reducedMotion ? 1 : SPACE_CONFIG.motion.pointerLerp,
     );
 
-    if (!reducedMotion) {
-      const driftEasing =
-        1 - Math.exp(-delta * SPACE_CONFIG.motion.rotationEase);
-      points.current.rotation.y = THREE.MathUtils.lerp(
-        points.current.rotation.y,
-        elapsed * SPACE_CONFIG.motion.rotationSpeed +
-          state.pointer.x * 0.045 +
-          chapter * 0.025,
-        driftEasing,
-      );
-      points.current.rotation.x = THREE.MathUtils.lerp(
-        points.current.rotation.x,
-        Math.sin(elapsed * 0.16) * 0.035 + state.pointer.y * -0.022,
-        driftEasing,
-      );
-      points.current.position.y =
-        Math.sin(elapsed * SPACE_CONFIG.motion.driftSpeed) *
-        SPACE_CONFIG.motion.driftAmount;
-      const breathingScale =
-        1 +
-        Math.sin(elapsed * SPACE_CONFIG.motion.breathingSpeed) *
-          SPACE_CONFIG.motion.breathingAmount;
-      points.current.scale.setScalar(breathingScale);
-    }
   });
 
   return (
@@ -239,7 +227,7 @@ function ParticleMorph({
       position={layout.position}
       scale={layout.scale}
     >
-      <points ref={points} frustumCulled={false}>
+      <points frustumCulled={false}>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
@@ -253,6 +241,10 @@ function ParticleMorph({
           <bufferAttribute
             attach="attributes-aBloom"
             args={[shapes.bloom, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aMotion"
+            args={[shapes.motion, 4]}
           />
         </bufferGeometry>
         <shaderMaterial
@@ -279,14 +271,23 @@ function createParticleShapes(count: number) {
   const wave = new Float32Array(count * 3);
   const portal = new Float32Array(count * 3);
   const bloom = new Float32Array(count * 3);
+  const motion = new Float32Array(count * 4);
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  const fullTurn = Math.PI * 2;
 
   for (let index = 0; index < count; index += 1) {
     const offset = index * 3;
+    const motionOffset = index * 4;
     const unit = (index + 0.5) / count;
     const randomA = hash(index * 1.37 + 2.1);
     const randomB = hash(index * 2.17 + 8.7);
     const randomC = hash(index * 3.11 + 4.3);
+    const randomD = hash(index * 4.91 + 6.2);
+
+    motion[motionOffset] = randomA * fullTurn;
+    motion[motionOffset + 1] = randomB * fullTurn;
+    motion[motionOffset + 2] = randomC * fullTurn;
+    motion[motionOffset + 3] = randomD;
 
     const phi = Math.acos(1 - 2 * unit);
     const theta = goldenAngle * index;
@@ -322,7 +323,7 @@ function createParticleShapes(count: number) {
       (randomC - 0.5) * 0.48;
   }
 
-  return { bloom, portal, sphere, wave };
+  return { bloom, motion, portal, sphere, wave };
 }
 
 function hash(value: number) {
