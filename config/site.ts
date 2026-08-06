@@ -11,7 +11,6 @@ export const SITE_CONFIG = {
     scrollLock: "creer:scroll-lock",
   },
   storage: {
-    entry: "creer-entered",
     locale: "creer-locale",
     theme: "creer-theme",
   },

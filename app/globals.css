@@ -34,8 +34,7 @@
     linear-gradient(rgba(8, 16, 11, 0.04) 1px, transparent 1px);
 }
 
-.home-hero,
-.loading-gate {
+.home-hero {
   --ink: #f2f4ed;
   --ink-muted: rgba(242, 244, 237, 0.68);
   --ink-soft: rgba(242, 244, 237, 0.42);
@@ -1291,80 +1290,6 @@ canvas {
   text-transform: uppercase;
 }
 
-/* Entry gate */
-.loading-gate {
-  align-items: center;
-  background: #06100c;
-  display: grid;
-  inset: 0;
-  justify-items: center;
-  overflow: hidden;
-  position: fixed;
-  z-index: 100;
-}
-
-.gate-image {
-  animation: gateImage 9s ease-in-out infinite alternate;
-  filter: saturate(0.72) contrast(1.08) brightness(0.56);
-  object-fit: cover;
-}
-
-.gate-shade {
-  background:
-    radial-gradient(circle at 50% 48%, transparent 0 15%, rgba(6, 16, 12, 0.38) 42%, rgba(6, 16, 12, 0.84)),
-    linear-gradient(to bottom, rgba(6, 16, 12, 0.18), rgba(6, 16, 12, 0.78));
-  inset: 0;
-  position: absolute;
-}
-
-.gate-focus {
-  animation: gateFocus 2.4s ease-in-out infinite alternate;
-  border: 1px solid rgba(242, 244, 237, 0.2);
-  border-radius: 50%;
-  height: 300px;
-  position: absolute;
-  width: 300px;
-}
-
-.gate-loader {
-  display: grid;
-  height: 112px;
-  place-items: center;
-  position: relative;
-  width: 112px;
-}
-
-.loader-ring {
-  animation: spin 1.2s linear infinite;
-  border: 1px solid rgba(242, 244, 237, 0.16);
-  border-left-color: var(--acid);
-  border-radius: 50%;
-  inset: 0;
-  position: absolute;
-}
-
-.entry-trigger {
-  background: var(--acid);
-  border: 0;
-  border-radius: 50%;
-  box-shadow: 0 0 42px rgba(216, 237, 140, 0.62);
-  cursor: pointer;
-  height: 16px;
-  opacity: 0;
-  padding: 0;
-  transition: opacity 260ms ease;
-  width: 16px;
-}
-
-.gate-loader.ready .entry-trigger {
-  animation: breathe 1.8s ease-in-out infinite;
-  opacity: 1;
-}
-
-.entry-trigger:disabled {
-  cursor: default;
-}
-
 /* Motion */
 
 @keyframes heroBreath {
@@ -1447,44 +1372,6 @@ canvas {
 @keyframes marquee {
   to {
     transform: translateX(-50%);
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes gateFocus {
-  from {
-    opacity: 0.28;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 0.64;
-    transform: scale(1.1);
-  }
-}
-
-@keyframes gateImage {
-  from {
-    transform: scale(1.02);
-  }
-  to {
-    transform: scale(1.08);
-  }
-}
-
-@keyframes breathe {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(216, 237, 140, 0.28), 0 0 34px rgba(216, 237, 140, 0.45);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 0 28px rgba(216, 237, 140, 0), 0 0 54px rgba(216, 237, 140, 0.78);
-    transform: scale(1.18);
   }
 }
 
