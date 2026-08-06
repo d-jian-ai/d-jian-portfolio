@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useWeather } from "@/components/weather-provider";
 
 export function LoadingGate() {
-  const { mood } = useWeather();
   const [entered, setEntered] = useState(true);
   const [ready, setReady] = useState(false);
 
@@ -30,7 +28,7 @@ export function LoadingGate() {
   if (entered) return null;
 
   return (
-    <section className={`loading-gate gate-${mood}`} aria-label="Loading">
+    <section className="loading-gate" aria-label="Loading">
       <Image
         alt=""
         className="gate-image"

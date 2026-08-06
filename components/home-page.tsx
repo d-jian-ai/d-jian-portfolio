@@ -12,24 +12,10 @@ import Link from "next/link";
 import { ImmersiveScene } from "@/components/immersive-scene";
 import { useLanguage } from "@/components/language-provider";
 import { ProjectVisual } from "@/components/project-visual";
-import { useWeather } from "@/components/weather-provider";
 import { typeLabels, works } from "@/data/work";
-
-const moodLabels = {
-  zh: { sun: "晴光", rain: "雨", snow: "雪", night: "夜", mist: "雾" },
-  en: { sun: "Sun", rain: "Rain", snow: "Snow", night: "Night", mist: "Mist" },
-  fr: {
-    sun: "Soleil",
-    rain: "Pluie",
-    snow: "Neige",
-    night: "Nuit",
-    mist: "Brume",
-  },
-} as const;
 
 export function HomePage() {
   const { locale, dictionary } = useLanguage();
-  const { mood } = useWeather();
   const featuredWorks = works.filter((work) => work.featured);
 
   return (
@@ -51,13 +37,6 @@ export function HomePage() {
         <div className="hero-vignette" aria-hidden="true" />
 
         <div className="hero-interface">
-          <div className="hero-signal" data-reveal>
-            <span className="signal-dot" />
-            <span>
-              LIVE ATMOSPHERE / {moodLabels[locale][mood].toUpperCase()}
-            </span>
-          </div>
-
           <div className="hero-copy" data-reveal>
             <p className="eyebrow">{dictionary.home.kicker}</p>
             <h1>
