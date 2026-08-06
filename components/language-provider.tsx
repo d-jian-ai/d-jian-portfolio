@@ -52,6 +52,13 @@ type Dictionary = {
   space: {
     title: string;
     lead: string;
+    chapterNav: string;
+    chapters: Array<{
+      kicker: string;
+      title: string;
+      body: string;
+      metric: string;
+    }>;
     modeMist: string;
     modeLight: string;
     modeRain: string;
@@ -59,6 +66,7 @@ type Dictionary = {
     notes: string[];
     gesture: string;
     clear: string;
+    particles: string;
     traces: string;
   };
 };
@@ -108,6 +116,33 @@ const dictionaries: Record<Locale, Dictionary> = {
     space: {
       title: "生成实验场",
       lead: "移动指针，改变空气。这里没有固定画面，只有你留下的轨迹。",
+      chapterNav: "实验章节",
+      chapters: [
+        {
+          kicker: "00 / MATTER FIELD",
+          title: "生成实验场",
+          body: "移动指针，改变空气。这里没有固定画面，只有同一批粒子不断重组。",
+          metric: "实时生成 / 持续演化",
+        },
+        {
+          kicker: "01 / DISTURBANCE",
+          title: "扰动空气",
+          body: "指针不只负责选择，它会推开场域、改变深度，并在运动经过的位置留下短暂回声。",
+          metric: "指针力场 / 空间位移",
+        },
+        {
+          kicker: "02 / MORPHOLOGY",
+          title: "形态之间",
+          body: "滚动让球体、地形、入口和花形在同一组坐标间连续迁移，章节因此成为空间状态。",
+          metric: "四种形态 / 一组粒子",
+        },
+        {
+          kicker: "03 / RESIDUAL MEMORY",
+          title: "短暂记忆",
+          body: "每次动作都会消失，但它曾经造成的密度、光线与方向，会在下一次变化前停留片刻。",
+          metric: "痕迹衰减 / 场域记忆",
+        },
+      ],
       modeMist: "雾",
       modeLight: "光",
       modeRain: "雨",
@@ -117,8 +152,9 @@ const dictionaries: Record<Locale, Dictionary> = {
         "场景会根据当前天气改变底层色温。",
         "每一条轨迹都会消失，但空间会短暂记住它。",
       ],
-      gesture: "移动 / 拖动",
+      gesture: "滚动切换 / 移动扰动",
       clear: "清空轨迹",
+      particles: "粒子",
       traces: "轨迹",
     },
   },
@@ -173,6 +209,33 @@ const dictionaries: Record<Locale, Dictionary> = {
     space: {
       title: "Generative field",
       lead: "Move the pointer and change the air. There is no fixed image, only the trace you leave.",
+      chapterNav: "Field chapters",
+      chapters: [
+        {
+          kicker: "00 / MATTER FIELD",
+          title: "Generative field",
+          body: "Move the pointer and change the air. There is no fixed image, only one body of particles continually reorganizing.",
+          metric: "Real-time / Always evolving",
+        },
+        {
+          kicker: "01 / DISTURBANCE",
+          title: "Disturb the air",
+          body: "The pointer does more than select. It pushes the field, bends its depth, and leaves a brief echo along its path.",
+          metric: "Pointer force / Spatial shift",
+        },
+        {
+          kicker: "02 / MORPHOLOGY",
+          title: "Between forms",
+          body: "Scroll moves a sphere, terrain, portal, and bloom through the same coordinates, turning each chapter into a spatial state.",
+          metric: "Four forms / One particle body",
+        },
+        {
+          kicker: "03 / RESIDUAL MEMORY",
+          title: "Brief memory",
+          body: "Every gesture fades, but the density, light, and direction it changed remain for a moment before the field moves on.",
+          metric: "Trace decay / Field memory",
+        },
+      ],
       modeMist: "Mist",
       modeLight: "Light",
       modeRain: "Rain",
@@ -182,8 +245,9 @@ const dictionaries: Record<Locale, Dictionary> = {
         "The scene changes its base temperature with the current weather.",
         "Every trace disappears, but the field remembers it for a moment.",
       ],
-      gesture: "Move / drag",
+      gesture: "Scroll to morph / Move to disturb",
       clear: "Clear traces",
+      particles: "particles",
       traces: "Traces",
     },
   },
@@ -238,6 +302,33 @@ const dictionaries: Record<Locale, Dictionary> = {
     space: {
       title: "Champ génératif",
       lead: "Déplacez le pointeur et transformez l'air. Aucune image fixe, seulement votre trace.",
+      chapterNav: "Chapitres du champ",
+      chapters: [
+        {
+          kicker: "00 / MATTER FIELD",
+          title: "Champ génératif",
+          body: "Déplacez le pointeur et transformez l'air. Aucune image fixe, seulement un même corps de particules en recomposition continue.",
+          metric: "Temps réel / Toujours en évolution",
+        },
+        {
+          kicker: "01 / DISTURBANCE",
+          title: "Troubler l'air",
+          body: "Le pointeur ne fait pas que sélectionner. Il repousse le champ, infléchit sa profondeur et laisse un bref écho sur son passage.",
+          metric: "Force du pointeur / Déplacement spatial",
+        },
+        {
+          kicker: "02 / MORPHOLOGY",
+          title: "Entre les formes",
+          body: "Le défilement transforme sphère, relief, portail et floraison dans les mêmes coordonnées; chaque chapitre devient un état spatial.",
+          metric: "Quatre formes / Un corps de particules",
+        },
+        {
+          kicker: "03 / RESIDUAL MEMORY",
+          title: "Mémoire brève",
+          body: "Chaque geste s'efface, mais la densité, la lumière et la direction qu'il a modifiées persistent encore un instant.",
+          metric: "Déclin des traces / Mémoire du champ",
+        },
+      ],
       modeMist: "Brume",
       modeLight: "Lumière",
       modeRain: "Pluie",
@@ -247,8 +338,9 @@ const dictionaries: Record<Locale, Dictionary> = {
         "La scène adapte sa température à la météo actuelle.",
         "Chaque trace disparaît, mais le champ s'en souvient un instant.",
       ],
-      gesture: "Déplacer / glisser",
+      gesture: "Défiler pour transformer / Bouger pour troubler",
       clear: "Effacer les traces",
+      particles: "particules",
       traces: "Traces",
     },
   },

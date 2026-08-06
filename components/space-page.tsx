@@ -1,35 +1,51 @@
 "use client";
 
-import { Eraser, MousePointer2 } from "lucide-react";
+import { Eraser, MousePointer2, MoveVertical } from "lucide-react";
 import {
+  useCallback,
   useRef,
   useState,
   type CSSProperties,
+  type KeyboardEvent,
   type PointerEvent,
+  type WheelEvent,
 } from "react";
-import { ImmersiveScene } from "@/components/immersive-scene";
+import {
+  ExperimentalParticleField,
+  type FieldMode,
+} from "@/components/experimental-particle-field";
 import { useLanguage } from "@/components/language-provider";
-
-type Mode = "mist" | "light" | "rain";
 
 type Trace = {
   id: number;
   x: number;
   y: number;
-  mode: Mode;
+  mode: FieldMode;
   scale: number;
 };
 
+const CHAPTER_COUNT = 4;
+
 export function SpacePage() {
   const { dictionary } = useLanguage();
-  const [mode, setMode] = useState<Mode>("mist");
+  const [activeChapter, setActiveChapter] = useState(0);
+  const [mode, setMode] = useState<FieldMode>("mist");
+  const [particleCount, setParticleCount] = useState(16000);
   const [traces, setTraces] = useState<Trace[]>([]);
   const lastTrace = useRef(0);
+  const lastStep = useRef(0);
+  const touchStartY = useRef<number | null>(null);
+
+  const changeChapter = useCallback((direction: number) => {
+    setActiveChapter((current) =>
+      Math.min(CHAPTER_COUNT - 1, Math.max(0, current + direction)),
+    );
+  }, []);
 
   function addTrace(event: PointerEvent<HTMLElement>) {
     if ((event.target as HTMLElement).closest("button")) return;
     const now = performance.now();
-    if (now - lastTrace.current < 52) return;
+    if (now - lastTrace.current < 56) return;
     lastTrace.current = now;
 
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -41,19 +57,64 @@ export function SpacePage() {
       scale: 0.72 + ((Math.floor(now) % 9) / 9) * 0.68,
     };
 
-    setTraces((current) => [...current.slice(-84), nextTrace]);
+    setTraces((current) => [...current.slice(-64), nextTrace]);
+  }
+
+  function handleWheel(event: WheelEvent<HTMLElement>) {
+    if (Math.abs(event.deltaY) < 18) return;
+    event.preventDefault();
+
+    const now = performance.now();
+    if (now - lastStep.current < 680) return;
+    lastStep.current = now;
+    changeChapter(event.deltaY > 0 ? 1 : -1);
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+      event.preventDefault();
+      changeChapter(1);
+    }
+    if (["ArrowUp", "PageUp"].includes(event.key)) {
+      event.preventDefault();
+      changeChapter(-1);
+    }
+    if (event.key === "Home") setActiveChapter(0);
+    if (event.key === "End") setActiveChapter(CHAPTER_COUNT - 1);
+  }
+
+  function handlePointerDown(event: PointerEvent<HTMLElement>) {
+    if (event.pointerType === "touch") touchStartY.current = event.clientY;
+    addTrace(event);
+  }
+
+  function handlePointerUp(event: PointerEvent<HTMLElement>) {
+    if (event.pointerType !== "touch" || touchStartY.current === null) return;
+    const distance = touchStartY.current - event.clientY;
+    touchStartY.current = null;
+    if (Math.abs(distance) > 46) changeChapter(distance > 0 ? 1 : -1);
   }
 
   return (
     <section
+      aria-label={dictionary.space.title}
       className={`space-experience mode-${mode}`}
-      onPointerDown={addTrace}
+      onKeyDown={handleKeyDown}
+      onPointerDown={handlePointerDown}
       onPointerMove={addTrace}
+      onPointerUp={handlePointerUp}
+      onWheel={handleWheel}
+      tabIndex={0}
     >
       <div className="space-canvas" aria-hidden="true">
-        <ImmersiveScene variant={mode} />
+        <ExperimentalParticleField
+          chapter={activeChapter}
+          mode={mode}
+          onParticleCount={setParticleCount}
+        />
       </div>
       <div className="space-shade" aria-hidden="true" />
+      <div className="space-noise" aria-hidden="true" />
 
       {traces.map((trace) => (
         <span
@@ -69,26 +130,65 @@ export function SpacePage() {
         />
       ))}
 
-      <header className="space-heading">
-        <p className="section-kicker" data-reveal>
-          INTERACTIVE / REAL-TIME
-        </p>
-        <h1 data-reveal>{dictionary.space.title}</h1>
-        <p data-reveal>{dictionary.space.lead}</p>
-      </header>
+      <div className="space-chapter-stage" aria-live="polite">
+        {dictionary.space.chapters.map((chapter, index) => (
+          <article
+            aria-hidden={activeChapter !== index}
+            className={
+              activeChapter === index
+                ? "space-chapter is-active"
+                : "space-chapter"
+            }
+            key={chapter.title}
+          >
+            <p className="section-kicker">{chapter.kicker}</p>
+            <h1>{chapter.title}</h1>
+            <p className="space-chapter-lead">{chapter.body}</p>
+            <div className="space-chapter-metric">
+              <span>{chapter.metric}</span>
+              <span className="metric-pulse" />
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <nav
+        aria-label={dictionary.space.chapterNav}
+        className="space-chapter-nav"
+      >
+        {dictionary.space.chapters.map((chapter, index) => (
+          <button
+            aria-label={`${(index + 1).toString().padStart(2, "0")} / ${chapter.title}`}
+            aria-pressed={activeChapter === index}
+            className={activeChapter === index ? "is-active" : ""}
+            key={chapter.title}
+            onClick={() => setActiveChapter(index)}
+            title={chapter.title}
+            type="button"
+          >
+            <span className="chapter-rail" aria-hidden="true" />
+            <span>{(index + 1).toString().padStart(2, "0")}</span>
+          </button>
+        ))}
+      </nav>
 
       <div className="space-status">
         <MousePointer2 aria-hidden="true" size={16} />
-        <span>{dictionary.space.gesture}</span>
+        <span className="status-gesture">{dictionary.space.gesture}</span>
         <span className="status-line" />
-        <span>
-          {dictionary.space.traces} / {traces.length.toString().padStart(2, "0")}
+        <span className="status-chapter">
+          {(activeChapter + 1).toString().padStart(2, "0")} / 0{CHAPTER_COUNT}
+        </span>
+        <span className="status-line short" />
+        <span className="status-particles">
+          {particleCount.toLocaleString()} {dictionary.space.particles}
         </span>
       </div>
 
       <div className="space-control-bar">
+        <MoveVertical className="field-scroll-icon" aria-hidden="true" size={16} />
         <div className="segmented-control" aria-label="Interaction mode">
-          {(["mist", "light", "rain"] as Mode[]).map((item) => (
+          {(["mist", "light", "rain"] as FieldMode[]).map((item) => (
             <button
               aria-pressed={mode === item}
               className={mode === item ? "active" : ""}
@@ -117,11 +217,9 @@ export function SpacePage() {
         </button>
       </div>
 
-      <aside className="space-notes">
-        <p className="section-kicker">{dictionary.space.notesTitle}</p>
-        {dictionary.space.notes.map((note) => (
-          <p key={note}>{note}</p>
-        ))}
+      <aside className="space-system-note">
+        <p>{dictionary.space.notesTitle}</p>
+        <span>{dictionary.space.notes[activeChapter % dictionary.space.notes.length]}</span>
       </aside>
     </section>
   );

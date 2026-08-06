@@ -1,6 +1,6 @@
 "use client";
 
-import { Globe2 } from "lucide-react";
+import { Check, Globe2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -44,18 +44,25 @@ function SiteNav() {
   const pathname = usePathname();
   const { locale, dictionary, setLocale } = useLanguage();
   const [hidden, setHidden] = useState(false);
+  const [localeOpen, setLocaleOpen] = useState(false);
   const lastScrollY = useRef(0);
   const animationFrame = useRef<number | null>(null);
+  const localeControl = useRef<HTMLDivElement>(null);
   const links = [
     { href: "/", label: dictionary.nav.home, code: "01" },
     { href: "/work", label: dictionary.nav.work, code: "02" },
     { href: "/space", label: dictionary.nav.space, code: "03" },
   ];
-  const locales: Array<{ value: Locale; label: string }> = [
-    { value: "zh", label: "中" },
-    { value: "en", label: "EN" },
-    { value: "fr", label: "FR" },
+  const locales: Array<{ value: Locale; label: string; shortLabel: string }> = [
+    { value: "zh", label: "中文", shortLabel: "中" },
+    { value: "en", label: "English", shortLabel: "EN" },
+    { value: "fr", label: "Français", shortLabel: "FR" },
   ];
+  const languageLabel = {
+    zh: "切换语言",
+    en: "Change language",
+    fr: "Changer de langue",
+  }[locale];
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -90,6 +97,31 @@ function SiteNav() {
     };
   }, [pathname]);
 
+  useEffect(() => {
+    setLocaleOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!localeOpen) return;
+
+    function handlePointerDown(event: globalThis.PointerEvent) {
+      if (!localeControl.current?.contains(event.target as Node)) {
+        setLocaleOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === "Escape") setLocaleOpen(false);
+    }
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [localeOpen]);
+
   return (
     <header
       className={hidden ? "site-nav is-hidden" : "site-nav"}
@@ -117,19 +149,44 @@ function SiteNav() {
           );
         })}
       </nav>
-      <div className="locale-switcher" aria-label="Language">
-        <Globe2 aria-hidden="true" size={14} strokeWidth={1.5} />
-        {locales.map((item) => (
-          <button
-            aria-pressed={locale === item.value}
-            className={locale === item.value ? "active" : ""}
-            key={item.value}
-            onClick={() => setLocale(item.value)}
-            type="button"
-          >
-            {item.label}
-          </button>
-        ))}
+      <div className="locale-control" ref={localeControl}>
+        <button
+          aria-expanded={localeOpen}
+          aria-haspopup="menu"
+          aria-label={languageLabel}
+          className="locale-trigger"
+          onClick={() => setLocaleOpen((current) => !current)}
+          title={languageLabel}
+          type="button"
+        >
+          <Globe2 aria-hidden="true" size={20} strokeWidth={1.6} />
+          <span aria-hidden="true" className="locale-badge">
+            {locale === "zh" ? "中" : locale.toUpperCase()}
+          </span>
+        </button>
+        <div
+          aria-label={languageLabel}
+          className={localeOpen ? "locale-menu is-open" : "locale-menu"}
+          role="menu"
+        >
+          {locales.map((item) => (
+            <button
+              aria-checked={locale === item.value}
+              className={locale === item.value ? "locale-option active" : "locale-option"}
+              key={item.value}
+              onClick={() => {
+                setLocale(item.value);
+                setLocaleOpen(false);
+              }}
+              role="menuitemradio"
+              type="button"
+            >
+              <span className="locale-option-code">{item.shortLabel}</span>
+              <span>{item.label}</span>
+              <Check aria-hidden="true" size={15} strokeWidth={1.8} />
+            </button>
+          ))}
+        </div>
       </div>
     </header>
   );
