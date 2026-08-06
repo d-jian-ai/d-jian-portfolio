@@ -3,7 +3,13 @@
 import { Globe2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type CSSProperties, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { ExperienceEffects } from "@/components/experience-effects";
 import { LanguageProvider, useLanguage } from "@/components/language-provider";
 import { LoadingGate } from "@/components/loading-gate";
@@ -37,6 +43,9 @@ function ChromeInner({ children }: { children: ReactNode }) {
 function SiteNav() {
   const pathname = usePathname();
   const { locale, dictionary, setLocale } = useLanguage();
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+  const animationFrame = useRef<number | null>(null);
   const links = [
     { href: "/", label: dictionary.nav.home, code: "01" },
     { href: "/work", label: dictionary.nav.work, code: "02" },
@@ -48,8 +57,44 @@ function SiteNav() {
     { value: "fr", label: "FR" },
   ];
 
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    setHidden(false);
+
+    function handleScroll() {
+      if (animationFrame.current !== null) return;
+
+      animationFrame.current = window.requestAnimationFrame(() => {
+        const nextScrollY = Math.max(0, window.scrollY);
+        const delta = nextScrollY - lastScrollY.current;
+
+        if (nextScrollY <= 40) {
+          setHidden(false);
+        } else if (delta > 8 && nextScrollY > 120) {
+          setHidden(true);
+        } else if (delta < -6) {
+          setHidden(false);
+        }
+
+        lastScrollY.current = nextScrollY;
+        animationFrame.current = null;
+      });
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (animationFrame.current !== null) {
+        window.cancelAnimationFrame(animationFrame.current);
+      }
+    };
+  }, [pathname]);
+
   return (
-    <header className="site-nav">
+    <header
+      className={hidden ? "site-nav is-hidden" : "site-nav"}
+      onFocusCapture={() => setHidden(false)}
+    >
       <Link className="brand-mark" href="/" aria-label="CREER home">
         <span className="brand-symbol" aria-hidden="true" />
         <span>CREER</span>
