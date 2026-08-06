@@ -3,6 +3,7 @@
 import { MousePointer2 } from "lucide-react";
 import {
   useCallback,
+  useEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -10,29 +11,36 @@ import {
   type WheelEvent,
 } from "react";
 import { ExperimentalParticleField } from "@/components/experimental-particle-field";
-import { useLanguage } from "@/components/language-provider";
-
-const CHAPTER_COUNT = 4;
+import { SPACE_CONFIG } from "@/config/space";
+import { useLanguage } from "@/providers/language-provider";
 
 export function SpacePage() {
   const { dictionary } = useLanguage();
   const [activeChapter, setActiveChapter] = useState(0);
-  const [particleCount, setParticleCount] = useState(16000);
+  const [particleCount, setParticleCount] = useState<number>(
+    SPACE_CONFIG.performance.initialParticles,
+  );
   const lastStep = useRef(0);
   const touchStartY = useRef<number | null>(null);
+  const chapters = dictionary.space.chapters;
+  const chapterCount = chapters.length;
 
   const changeChapter = useCallback((direction: number) => {
     setActiveChapter((current) =>
-      Math.min(CHAPTER_COUNT - 1, Math.max(0, current + direction)),
+      Math.min(chapterCount - 1, Math.max(0, current + direction)),
     );
-  }, []);
+  }, [chapterCount]);
+
+  useEffect(() => {
+    setActiveChapter((current) => Math.min(current, chapterCount - 1));
+  }, [chapterCount]);
 
   function handleWheel(event: WheelEvent<HTMLElement>) {
-    if (Math.abs(event.deltaY) < 18) return;
+    if (Math.abs(event.deltaY) < SPACE_CONFIG.interaction.wheelThreshold) return;
     event.preventDefault();
 
     const now = performance.now();
-    if (now - lastStep.current < 680) return;
+    if (now - lastStep.current < SPACE_CONFIG.interaction.chapterCooldownMs) return;
     lastStep.current = now;
     changeChapter(event.deltaY > 0 ? 1 : -1);
   }
@@ -47,7 +55,7 @@ export function SpacePage() {
       changeChapter(-1);
     }
     if (event.key === "Home") setActiveChapter(0);
-    if (event.key === "End") setActiveChapter(CHAPTER_COUNT - 1);
+    if (event.key === "End") setActiveChapter(chapterCount - 1);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLElement>) {
@@ -58,7 +66,9 @@ export function SpacePage() {
     if (event.pointerType !== "touch" || touchStartY.current === null) return;
     const distance = touchStartY.current - event.clientY;
     touchStartY.current = null;
-    if (Math.abs(distance) > 46) changeChapter(distance > 0 ? 1 : -1);
+    if (Math.abs(distance) > SPACE_CONFIG.interaction.touchThreshold) {
+      changeChapter(distance > 0 ? 1 : -1);
+    }
   }
 
   return (
@@ -81,7 +91,7 @@ export function SpacePage() {
       <div className="space-noise" aria-hidden="true" />
 
       <div className="space-chapter-stage" aria-live="polite">
-        {dictionary.space.chapters.map((chapter, index) => (
+        {chapters.map((chapter, index) => (
           <article
             aria-hidden={activeChapter !== index}
             className={
@@ -106,7 +116,7 @@ export function SpacePage() {
         aria-label={dictionary.space.chapterNav}
         className="space-chapter-nav"
       >
-        {dictionary.space.chapters.map((chapter, index) => (
+        {chapters.map((chapter, index) => (
           <button
             aria-label={`${(index + 1).toString().padStart(2, "0")} / ${chapter.title}`}
             aria-pressed={activeChapter === index}
@@ -127,7 +137,9 @@ export function SpacePage() {
         <span className="status-gesture">{dictionary.space.gesture}</span>
         <span className="status-line" />
         <span className="status-chapter">
-          {(activeChapter + 1).toString().padStart(2, "0")} / 0{CHAPTER_COUNT}
+          {(activeChapter + 1).toString().padStart(2, "0")} / {chapterCount
+            .toString()
+            .padStart(2, "0")}
         </span>
         <span className="status-line short" />
         <span className="status-particles">

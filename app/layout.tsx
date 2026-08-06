@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { AppChrome } from "@/components/app-chrome";
 import "./globals.css";
+import "@/styles/navigation.css";
+import "@/styles/space.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??

@@ -3,11 +3,9 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-
-const DARK_FIELD_COLOR = "#dce9e1";
-const LIGHT_FIELD_COLOR = "#19382d";
-
-type VisualTheme = "dark" | "light";
+import { SITE_CONFIG } from "@/config/site";
+import { SPACE_CONFIG } from "@/config/space";
+import { useTheme } from "@/providers/theme-provider";
 
 const vertexShader = /* glsl */ `
   attribute vec3 aWave;
@@ -18,6 +16,14 @@ const vertexShader = /* glsl */ `
   uniform float uTime;
   uniform float uPointSize;
   uniform float uDisturbance;
+  uniform float uAmbientSpeed;
+  uniform float uAmbientStrength;
+  uniform float uDepthSpeed;
+  uniform float uDepthStrength;
+  uniform float uPointerDepth;
+  uniform float uPointerFalloff;
+  uniform float uPointerForce;
+  uniform vec2 uPointerScale;
   uniform vec2 uPointer;
 
   varying float vGlow;
@@ -35,19 +41,20 @@ const vertexShader = /* glsl */ `
 
   void main() {
     vec3 transformed = getShape(uProgress);
-    vec2 pointerPosition = uPointer * vec2(4.6, 2.8);
+    vec2 pointerPosition = uPointer * uPointerScale;
     vec2 pointerDelta = transformed.xy - pointerPosition;
     float pointerDistance = dot(pointerDelta, pointerDelta);
-    float influence = exp(-pointerDistance * 0.72) * uDisturbance;
+    float influence = exp(-pointerDistance * uPointerFalloff) * uDisturbance;
     vec2 direction = normalize(pointerDelta + vec2(0.0001));
 
-    transformed.xy += direction * influence * 0.72;
-    transformed.z += influence * 1.55;
+    transformed.xy += direction * influence * uPointerForce;
+    transformed.z += influence * uPointerDepth;
     transformed.xy += vec2(
-      sin(uTime * 0.12 + transformed.z * 0.72),
-      cos(uTime * 0.1 + transformed.x * 0.64)
-    ) * 0.022;
-    transformed.z += sin(uTime * 0.22 + length(transformed) * 1.7) * 0.045;
+      sin(uTime * uAmbientSpeed + transformed.z * 0.72),
+      cos(uTime * uAmbientSpeed * 0.84 + transformed.x * 0.64)
+    ) * uAmbientStrength;
+    transformed.z +=
+      sin(uTime * uDepthSpeed + length(transformed) * 1.7) * uDepthStrength;
 
     vec4 modelPosition = modelMatrix * vec4(transformed, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;
@@ -86,17 +93,25 @@ export function ExperimentalParticleField({
   chapter: number;
   onParticleCount?: (count: number) => void;
 }) {
+  const { theme } = useTheme();
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [particleCount, setParticleCount] = useState(16000);
-  const [theme, setTheme] = useState<VisualTheme>("dark");
+  const [particleCount, setParticleCount] = useState<number>(
+    SPACE_CONFIG.performance.initialParticles,
+  );
 
   useEffect(() => {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const mobileQuery = window.matchMedia("(max-width: 820px)");
+    const mobileQuery = window.matchMedia(
+      `(max-width: ${SITE_CONFIG.breakpoints.mobile}px)`,
+    );
 
     const update = () => {
       setReducedMotion(motionQuery.matches);
-      setParticleCount(mobileQuery.matches ? 9000 : 28000);
+      setParticleCount(
+        mobileQuery.matches
+          ? SPACE_CONFIG.performance.mobileParticles
+          : SPACE_CONFIG.performance.desktopParticles,
+      );
     };
 
     update();
@@ -109,28 +124,13 @@ export function ExperimentalParticleField({
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const updateTheme = () => {
-      setTheme(root.dataset.theme === "light" ? "light" : "dark");
-    };
-    const observer = new MutationObserver(updateTheme);
-
-    updateTheme();
-    observer.observe(root, {
-      attributeFilter: ["data-theme"],
-      attributes: true,
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     onParticleCount?.(particleCount);
   }, [onParticleCount, particleCount]);
 
   return (
     <Canvas
-      camera={{ fov: 48, near: 0.1, far: 40, position: [0, 0, 8.2] }}
-      dpr={[1, 1.5]}
+      camera={SPACE_CONFIG.camera}
+      dpr={[1, SPACE_CONFIG.performance.maxDpr]}
       frameloop={reducedMotion ? "demand" : "always"}
       gl={{
         alpha: true,
@@ -157,35 +157,44 @@ function ParticleMorph({
   chapter: number;
   count: number;
   reducedMotion: boolean;
-  theme: VisualTheme;
+  theme: "dark" | "light";
 }) {
   const points = useRef<THREE.Points>(null);
   const material = useRef<THREE.ShaderMaterial>(null);
-  const isMobile = useThree((state) => state.size.width <= 820);
+  const isMobile = useThree(
+    (state) => state.size.width <= SITE_CONFIG.breakpoints.mobile,
+  );
   const shapes = useMemo(() => createParticleShapes(count), [count]);
   const neutralPointer = useMemo(() => new THREE.Vector2(), []);
-  const isLight = theme === "light";
+  const appearance = SPACE_CONFIG.appearance[theme];
+  const layout = isMobile ? SPACE_CONFIG.layout.mobile : SPACE_CONFIG.layout.desktop;
   const uniforms = useMemo(
     () => ({
-      uColor: {
-        value: new THREE.Color(isLight ? LIGHT_FIELD_COLOR : DARK_FIELD_COLOR),
-      },
+      uAmbientSpeed: { value: SPACE_CONFIG.shader.ambientSpeed },
+      uAmbientStrength: { value: SPACE_CONFIG.shader.ambientStrength },
+      uColor: { value: new THREE.Color(appearance.color) },
+      uDepthSpeed: { value: SPACE_CONFIG.shader.depthSpeed },
+      uDepthStrength: { value: SPACE_CONFIG.shader.depthStrength },
       uDisturbance: { value: reducedMotion ? 0 : 1 },
-      uOpacity: { value: isLight ? 0.72 : 0.86 },
-      uPointSize: {
-        value: count > 10000 ? (isLight ? 1.5 : 1.35) : isLight ? 1.55 : 1.7,
-      },
+      uOpacity: { value: appearance.opacity },
+      uPointSize: { value: appearance.pointSize[isMobile ? "mobile" : "desktop"] },
       uPointer: { value: new THREE.Vector2() },
-      uProgress: { value: chapter },
+      uPointerDepth: { value: SPACE_CONFIG.shader.pointerDepth },
+      uPointerFalloff: { value: SPACE_CONFIG.shader.pointerFalloff },
+      uPointerForce: { value: SPACE_CONFIG.shader.pointerForce },
+      uPointerScale: { value: new THREE.Vector2(...SPACE_CONFIG.shader.pointerScale) },
+      uProgress: { value: 0 },
       uTime: { value: 0 },
     }),
-    [count, isLight, reducedMotion],
+    [appearance, isMobile, reducedMotion],
   );
 
   useFrame((state, delta) => {
     if (!material.current || !points.current) return;
 
-    const easing = reducedMotion ? 1 : 1 - Math.exp(-delta * 2.35);
+    const easing = reducedMotion
+      ? 1
+      : 1 - Math.exp(-delta * SPACE_CONFIG.motion.morphRate);
     material.current.uniforms.uProgress.value = THREE.MathUtils.lerp(
       material.current.uniforms.uProgress.value,
       chapter,
@@ -196,14 +205,17 @@ function ParticleMorph({
     material.current.uniforms.uDisturbance.value = reducedMotion ? 0 : 1;
     material.current.uniforms.uPointer.value.lerp(
       reducedMotion ? neutralPointer : state.pointer,
-      reducedMotion ? 1 : 0.08,
+      reducedMotion ? 1 : SPACE_CONFIG.motion.pointerLerp,
     );
 
     if (!reducedMotion) {
-      const driftEasing = 1 - Math.exp(-delta * 1.25);
+      const driftEasing =
+        1 - Math.exp(-delta * SPACE_CONFIG.motion.rotationEase);
       points.current.rotation.y = THREE.MathUtils.lerp(
         points.current.rotation.y,
-        elapsed * 0.018 + state.pointer.x * 0.045 + chapter * 0.025,
+        elapsed * SPACE_CONFIG.motion.rotationSpeed +
+          state.pointer.x * 0.045 +
+          chapter * 0.025,
         driftEasing,
       );
       points.current.rotation.x = THREE.MathUtils.lerp(
@@ -211,16 +223,21 @@ function ParticleMorph({
         Math.sin(elapsed * 0.16) * 0.035 + state.pointer.y * -0.022,
         driftEasing,
       );
-      points.current.position.y = Math.sin(elapsed * 0.18) * 0.045;
-      const breathingScale = 1 + Math.sin(elapsed * 0.14) * 0.012;
+      points.current.position.y =
+        Math.sin(elapsed * SPACE_CONFIG.motion.driftSpeed) *
+        SPACE_CONFIG.motion.driftAmount;
+      const breathingScale =
+        1 +
+        Math.sin(elapsed * SPACE_CONFIG.motion.breathingSpeed) *
+          SPACE_CONFIG.motion.breathingAmount;
       points.current.scale.setScalar(breathingScale);
     }
   });
 
   return (
     <group
-      position={isMobile ? [0.1, 0.7, 0] : [0.55, 0.08, 0]}
-      scale={isMobile ? 0.68 : 1}
+      position={layout.position}
+      scale={layout.scale}
     >
       <points ref={points} frustumCulled={false}>
         <bufferGeometry>
@@ -240,7 +257,11 @@ function ParticleMorph({
         </bufferGeometry>
         <shaderMaterial
           ref={material}
-          blending={isLight ? THREE.NormalBlending : THREE.AdditiveBlending}
+          blending={
+            appearance.blending === "normal"
+              ? THREE.NormalBlending
+              : THREE.AdditiveBlending
+          }
           depthTest
           depthWrite={false}
           fragmentShader={fragmentShader}

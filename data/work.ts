@@ -1,4 +1,4 @@
-export type Locale = "zh" | "en" | "fr";
+import type { Locale } from "@/i18n/types";
 
 export type WorkType = "visual" | "web" | "video";
 

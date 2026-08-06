@@ -1,16 +1,6 @@
-"use client";
+import type { Locale } from "@/i18n/types";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
-import type { Locale } from "@/data/work";
-
-type Dictionary = {
+export type Dictionary = {
   nav: {
     home: string;
     work: string;
@@ -66,7 +56,7 @@ type Dictionary = {
   };
 };
 
-const dictionaries: Record<Locale, Dictionary> = {
+export const dictionaries: Record<Locale, Dictionary> = {
   zh: {
     nav: {
       home: "首页",
@@ -325,54 +315,3 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
   },
 };
-
-type LanguageContextValue = {
-  locale: Locale;
-  dictionary: Dictionary;
-  setLocale: (locale: Locale) => void;
-};
-
-const LanguageContext = createContext<LanguageContextValue | null>(null);
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, updateLocale] = useState<Locale>("zh");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("creer-locale");
-    if (saved === "zh" || saved === "en" || saved === "fr") {
-      updateLocale(saved);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang =
-      locale === "zh" ? "zh-CN" : locale === "fr" ? "fr" : "en";
-  }, [locale]);
-
-  const value = useMemo<LanguageContextValue>(
-    () => ({
-      locale,
-      dictionary: dictionaries[locale],
-      setLocale: (nextLocale) => {
-        window.localStorage.setItem("creer-locale", nextLocale);
-        updateLocale(nextLocale);
-      },
-    }),
-    [locale],
-  );
-
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
-}
-
-export function useLanguage() {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error("useLanguage must be used inside LanguageProvider");
-  }
-
-  return context;
-}

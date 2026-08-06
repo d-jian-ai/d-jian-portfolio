@@ -3,9 +3,9 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
-import { useLanguage } from "@/components/language-provider";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works, type Work } from "@/data/work";
+import { useLanguage } from "@/providers/language-provider";
 
 export function WorkDetail({ work }: { work: Work }) {
   const { locale, dictionary } = useLanguage();

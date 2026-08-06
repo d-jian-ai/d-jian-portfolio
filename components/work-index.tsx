@@ -3,9 +3,9 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useLanguage } from "@/components/language-provider";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works, type WorkType } from "@/data/work";
+import { useLanguage } from "@/providers/language-provider";
 
 type Filter = "all" | WorkType;
 

@@ -10,9 +10,9 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { ImmersiveScene } from "@/components/immersive-scene";
-import { useLanguage } from "@/components/language-provider";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works } from "@/data/work";
+import { useLanguage } from "@/providers/language-provider";
 
 export function HomePage() {
   const { locale, dictionary } = useLanguage();

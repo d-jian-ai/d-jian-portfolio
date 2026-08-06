@@ -3,6 +3,7 @@
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { SITE_CONFIG } from "@/config/site";
 
 type ScrollLockEvent = CustomEvent<{ locked: boolean }>;
 
@@ -10,7 +11,9 @@ export function SmoothScroll() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const desktopPointer = window.matchMedia("(min-width: 821px) and (pointer: fine)");
+    const desktopPointer = window.matchMedia(
+      `(min-width: ${SITE_CONFIG.breakpoints.mobile + 1}px) and (pointer: fine)`,
+    );
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     if (pathname.startsWith("/space")) return;
@@ -49,12 +52,12 @@ export function SmoothScroll() {
     syncEngine();
     desktopPointer.addEventListener("change", syncEngine);
     reducedMotion.addEventListener("change", syncEngine);
-    window.addEventListener("creer:scroll-lock", handleScrollLock);
+    window.addEventListener(SITE_CONFIG.events.scrollLock, handleScrollLock);
 
     return () => {
       desktopPointer.removeEventListener("change", syncEngine);
       reducedMotion.removeEventListener("change", syncEngine);
-      window.removeEventListener("creer:scroll-lock", handleScrollLock);
+      window.removeEventListener(SITE_CONFIG.events.scrollLock, handleScrollLock);
       lenis?.destroy();
     };
   }, [pathname]);

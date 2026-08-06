@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { SITE_CONFIG } from "@/config/site";
 
 export function LoadingGate() {
   const [entered, setEntered] = useState(true);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const alreadyEntered = window.sessionStorage.getItem("creer-entered");
+    const alreadyEntered = window.sessionStorage.getItem(SITE_CONFIG.storage.entry);
     if (alreadyEntered === "true") {
       setEntered(true);
       return;
@@ -21,7 +22,7 @@ export function LoadingGate() {
   }, []);
 
   function enterSite() {
-    window.sessionStorage.setItem("creer-entered", "true");
+    window.sessionStorage.setItem(SITE_CONFIG.storage.entry, "true");
     setEntered(true);
   }
 
