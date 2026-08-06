@@ -239,7 +239,7 @@ canvas {
     0 2px 8px rgba(0, 0, 0, 0.12);
   color: #09100c;
   display: block;
-  height: 64px;
+  height: 68px;
   left: 50%;
   padding: 6px;
   position: fixed;
@@ -249,7 +249,7 @@ canvas {
     opacity 260ms ease,
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 260ms ease;
-  width: min(calc(100% - 48px), 900px);
+  width: min(calc(100% - 40px), 1120px);
   will-change: transform;
   z-index: 50;
 }
@@ -283,9 +283,9 @@ canvas {
   color: rgba(9, 16, 12, 0.56);
   display: inline-flex;
   flex: 1;
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   gap: 7px;
-  min-height: 42px;
+  min-height: 54px;
   padding-inline: 15px;
   position: relative;
   justify-content: center;
@@ -297,7 +297,7 @@ canvas {
 .nav-link::after {
   background: #09100c;
   border-radius: 50%;
-  bottom: 5px;
+  bottom: 6px;
   content: "";
   height: 3px;
   left: 50%;
@@ -342,14 +342,14 @@ canvas {
   color: #f4f4f0;
   cursor: pointer;
   display: inline-flex;
-  height: 50px;
+  height: 54px;
   justify-content: center;
   padding: 0;
   position: relative;
   transition:
     background 180ms ease,
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-  width: 50px;
+  width: 54px;
 }
 
 .nav-icon-button:hover,
@@ -1522,6 +1522,7 @@ canvas {
 .space-experience {
   --field-accent: #dce9e1;
   background: #06100c;
+  color: var(--ink);
   cursor: crosshair;
   height: 100svh;
   min-height: 700px;
@@ -1529,6 +1530,9 @@ canvas {
   overflow: hidden;
   position: relative;
   touch-action: none;
+  transition:
+    background 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 420ms ease;
 }
 
 .space-canvas,
@@ -1544,6 +1548,9 @@ canvas {
     linear-gradient(90deg, rgba(4, 10, 8, 0.82) 0%, rgba(4, 10, 8, 0.2) 46%, rgba(4, 10, 8, 0.42) 100%),
     linear-gradient(180deg, rgba(4, 10, 8, 0.48), transparent 32%, rgba(4, 10, 8, 0.82));
   pointer-events: none;
+  transition:
+    background 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms ease;
   z-index: 1;
 }
 
@@ -1555,7 +1562,42 @@ canvas {
   mask-image: linear-gradient(to bottom, transparent 2%, black 22%, black 82%, transparent 100%);
   opacity: 0.42;
   pointer-events: none;
+  transition:
+    background-image 620ms ease,
+    opacity 420ms ease;
   z-index: 2;
+}
+
+:root[data-theme="light"] .space-experience {
+  --field-accent: #1c3b30;
+  --ink: #0d1712;
+  --ink-muted: rgba(13, 23, 18, 0.7);
+  --ink-soft: rgba(13, 23, 18, 0.44);
+  --line: rgba(13, 23, 18, 0.14);
+  --line-strong: rgba(13, 23, 18, 0.28);
+  background: #f7f8f5;
+}
+
+:root[data-theme="light"] .space-shade {
+  background: rgba(247, 248, 245, 0.08);
+  opacity: 0.3;
+}
+
+:root[data-theme="light"] .space-noise {
+  background-image:
+    linear-gradient(rgba(13, 23, 18, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 23, 18, 0.055) 1px, transparent 1px);
+  opacity: 0.58;
+}
+
+:root[data-theme="light"] .space-chapter-nav button.is-active .chapter-rail,
+:root[data-theme="light"] .metric-pulse {
+  box-shadow: none;
+}
+
+:root[data-theme="light"] .cursor-halo {
+  border-color: rgba(28, 59, 48, 0.36);
+  mix-blend-mode: multiply;
 }
 
 .space-chapter-stage {
@@ -1623,7 +1665,7 @@ canvas {
 }
 
 .metric-pulse {
-  animation: signalPulse 2.2s ease-in-out infinite;
+  animation: fieldPulse 3.6s ease-in-out infinite;
   background: var(--field-accent);
   border-radius: 50%;
   box-shadow: 0 0 14px var(--field-accent);
@@ -1800,6 +1842,18 @@ canvas {
 }
 
 /* Motion */
+@keyframes fieldPulse {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: scale(0.78);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
 @keyframes heroBreath {
   from {
     transform: scale(1.02);
