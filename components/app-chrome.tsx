@@ -105,7 +105,9 @@ function SiteNav() {
             link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
           return (
             <Link
-              className={active ? "nav-link active" : "nav-link"}
+              className={`${active ? "nav-link active" : "nav-link"}${
+                link.href === "/" ? " nav-home-link" : ""
+              }`}
               href={link.href}
               key={link.href}
             >

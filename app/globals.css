@@ -2182,6 +2182,10 @@ canvas {
     display: none;
   }
 
+  .nav-home-link {
+    display: none;
+  }
+
   .locale-switcher button {
     min-width: 29px;
     padding-inline: 5px;
