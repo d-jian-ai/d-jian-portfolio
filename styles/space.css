@@ -1,3 +1,182 @@
+/* Space catalog */
+.space-index-page {
+  background: var(--void);
+  color: var(--ink);
+  min-height: 100svh;
+  padding-top: calc(var(--nav-height) + 68px);
+}
+
+.space-index-hero {
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.55fr);
+  min-height: 38svh;
+  padding: 0 48px 58px;
+}
+
+.space-index-heading .section-kicker {
+  color: var(--acid);
+  margin-bottom: 26px;
+}
+
+.space-index-heading h1 {
+  font-family: "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  font-size: 8.5rem;
+  font-weight: 250;
+  line-height: 0.82;
+  margin: 0;
+}
+
+.space-index-intro {
+  align-content: end;
+  display: grid;
+  gap: 34px;
+  justify-self: end;
+  max-width: 420px;
+}
+
+.space-index-intro p {
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.space-index-intro span {
+  color: var(--ink-soft);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.space-experiment-item {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(0, 1.52fr) minmax(340px, 0.48fr);
+  min-height: 66svh;
+}
+
+.space-experiment-preview {
+  background: #06100c;
+  border-right: 1px solid var(--line);
+  min-height: 620px;
+  overflow: hidden;
+  pointer-events: none;
+  position: relative;
+}
+
+.space-experiment-preview canvas {
+  inset: 0;
+  position: absolute;
+}
+
+.space-preview-grid {
+  background-image:
+    linear-gradient(rgba(242, 244, 237, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 244, 237, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  inset: 0;
+  mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+  position: absolute;
+}
+
+.space-preview-code {
+  bottom: 28px;
+  color: rgba(242, 244, 237, 0.54);
+  font-size: 0.58rem;
+  left: 32px;
+  position: absolute;
+}
+
+.space-experiment-copy {
+  align-content: center;
+  display: grid;
+  padding: 54px 48px;
+}
+
+.space-experiment-meta {
+  color: var(--ink-soft);
+  display: grid;
+  font-size: 0.58rem;
+  gap: 10px;
+  grid-template-columns: 34px 1fr auto;
+  text-transform: uppercase;
+}
+
+.space-experiment-copy h2 {
+  font-family: Georgia, serif;
+  font-size: 3.4rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 72px 0 24px;
+}
+
+.space-experiment-copy > p {
+  color: var(--ink-muted);
+  font-size: 0.86rem;
+  line-height: 1.75;
+  margin: 0;
+  max-width: 410px;
+}
+
+.space-experiment-footer {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 76px;
+  padding-top: 22px;
+}
+
+.space-experiment-status {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: 0.58rem;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.space-experiment-status i {
+  animation: fieldPulse 3.6s ease-in-out infinite;
+  background: var(--acid);
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+}
+
+.space-experiment-link {
+  align-items: center;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 0.68rem;
+  gap: 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.space-experiment-link svg {
+  transition: transform 220ms ease;
+}
+
+.space-experiment-link:hover svg {
+  transform: translate(3px, -3px);
+}
+
+:root[data-theme="light"] .space-experiment-preview {
+  background: #eef1eb;
+}
+
+:root[data-theme="light"] .space-preview-grid {
+  background-image:
+    linear-gradient(rgba(13, 23, 18, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 23, 18, 0.055) 1px, transparent 1px);
+}
+
+:root[data-theme="light"] .space-preview-code {
+  color: rgba(13, 23, 18, 0.48);
+}
+
 /* Generative field */
 .space-experience {
   --field-accent: #dce9e1;
@@ -13,6 +192,25 @@
   transition:
     background 620ms cubic-bezier(0.22, 1, 0.36, 1),
     color 420ms ease;
+}
+
+.field-back-link {
+  align-items: center;
+  color: var(--ink-muted);
+  display: inline-flex;
+  font-size: 0.62rem;
+  gap: 9px;
+  left: 48px;
+  position: absolute;
+  text-decoration: none;
+  text-transform: uppercase;
+  top: 112px;
+  transition: color 180ms ease;
+  z-index: 6;
+}
+
+.field-back-link:hover {
+  color: var(--ink);
 }
 
 .space-canvas,
@@ -260,12 +458,63 @@
 }
 
 @media (max-width: 1120px) {
+  .space-index-heading h1 {
+    font-size: 6.8rem;
+  }
+
+  .space-experiment-item {
+    grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+  }
+
   .space-system-note {
     display: none;
   }
 }
 
 @media (max-width: 820px) {
+  .space-index-page {
+    padding-top: calc(var(--nav-height) + 42px);
+  }
+
+  .space-index-hero {
+    gap: 36px;
+    grid-template-columns: 1fr;
+    min-height: 43svh;
+    padding: 36px 24px 44px;
+  }
+
+  .space-index-heading h1 {
+    font-size: 5.5rem;
+  }
+
+  .space-index-intro {
+    gap: 22px;
+    justify-self: start;
+  }
+
+  .space-experiment-item {
+    grid-template-columns: 1fr;
+  }
+
+  .space-experiment-preview {
+    border-bottom: 1px solid var(--line);
+    border-right: 0;
+    min-height: 52svh;
+  }
+
+  .space-experiment-copy {
+    min-height: 460px;
+    padding: 48px 24px;
+  }
+
+  .space-experiment-copy h2 {
+    margin-top: 56px;
+  }
+
+  .field-back-link {
+    left: 24px;
+  }
+
   .space-chapter-stage {
     left: 24px;
     max-width: 520px;
@@ -287,6 +536,53 @@
 }
 
 @media (max-width: 560px) {
+  .space-index-page {
+    padding-top: calc(var(--nav-height) + 24px);
+  }
+
+  .space-index-hero {
+    min-height: 44svh;
+    padding: 28px 16px 38px;
+  }
+
+  .space-index-heading .section-kicker {
+    margin-bottom: 18px;
+  }
+
+  .space-index-heading h1 {
+    font-size: 4.2rem;
+  }
+
+  .space-index-intro p {
+    font-size: 0.82rem;
+  }
+
+  .space-experiment-preview {
+    min-height: 47svh;
+  }
+
+  .space-experiment-copy {
+    min-height: 430px;
+    padding: 40px 16px;
+  }
+
+  .space-experiment-copy h2 {
+    font-size: 2.75rem;
+    margin: 50px 0 20px;
+  }
+
+  .space-experiment-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 58px;
+  }
+
+  .field-back-link {
+    left: 16px;
+    top: 94px;
+  }
+
   .space-experience {
     min-height: 720px;
   }

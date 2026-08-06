@@ -1,5 +1,5 @@
-import { SpacePage } from "@/components/space-page";
+import { SpaceIndexPage } from "@/components/space-index-page";
 
 export default function Page() {
-  return <SpacePage />;
+  return <SpaceIndexPage />;
 }

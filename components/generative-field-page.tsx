@@ -1,6 +1,7 @@
 "use client";
 
-import { MousePointer2 } from "lucide-react";
+import { ArrowLeft, MousePointer2 } from "lucide-react";
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -11,18 +12,19 @@ import {
   type WheelEvent,
 } from "react";
 import { ExperimentalParticleField } from "@/components/experimental-particle-field";
-import { SPACE_CONFIG } from "@/config/space";
+import { GENERATIVE_FIELD_CONFIG } from "@/config/space";
 import { useLanguage } from "@/providers/language-provider";
 
-export function SpacePage() {
+export function GenerativeFieldPage() {
   const { dictionary } = useLanguage();
   const [activeChapter, setActiveChapter] = useState(0);
   const [particleCount, setParticleCount] = useState<number>(
-    SPACE_CONFIG.performance.initialParticles,
+    GENERATIVE_FIELD_CONFIG.performance.initialParticles,
   );
   const lastStep = useRef(0);
   const touchStartY = useRef<number | null>(null);
-  const chapters = dictionary.space.chapters;
+  const copy = dictionary.generativeField;
+  const chapters = copy.chapters;
   const chapterCount = chapters.length;
 
   const changeChapter = useCallback((direction: number) => {
@@ -36,11 +38,19 @@ export function SpacePage() {
   }, [chapterCount]);
 
   function handleWheel(event: WheelEvent<HTMLElement>) {
-    if (Math.abs(event.deltaY) < SPACE_CONFIG.interaction.wheelThreshold) return;
+    if (
+      Math.abs(event.deltaY) <
+      GENERATIVE_FIELD_CONFIG.interaction.wheelThreshold
+    )
+      return;
     event.preventDefault();
 
     const now = performance.now();
-    if (now - lastStep.current < SPACE_CONFIG.interaction.chapterCooldownMs) return;
+    if (
+      now - lastStep.current <
+      GENERATIVE_FIELD_CONFIG.interaction.chapterCooldownMs
+    )
+      return;
     lastStep.current = now;
     changeChapter(event.deltaY > 0 ? 1 : -1);
   }
@@ -66,14 +76,16 @@ export function SpacePage() {
     if (event.pointerType !== "touch" || touchStartY.current === null) return;
     const distance = touchStartY.current - event.clientY;
     touchStartY.current = null;
-    if (Math.abs(distance) > SPACE_CONFIG.interaction.touchThreshold) {
+    if (
+      Math.abs(distance) > GENERATIVE_FIELD_CONFIG.interaction.touchThreshold
+    ) {
       changeChapter(distance > 0 ? 1 : -1);
     }
   }
 
   return (
     <section
-      aria-label={dictionary.space.title}
+      aria-label={copy.title}
       className="space-experience"
       onKeyDown={handleKeyDown}
       onPointerDown={handlePointerDown}
@@ -89,6 +101,11 @@ export function SpacePage() {
       </div>
       <div className="space-shade" aria-hidden="true" />
       <div className="space-noise" aria-hidden="true" />
+
+      <Link className="field-back-link" href="/space">
+        <ArrowLeft aria-hidden="true" size={15} />
+        {copy.back}
+      </Link>
 
       <div className="space-chapter-stage" aria-live="polite">
         {chapters.map((chapter, index) => (
@@ -112,10 +129,7 @@ export function SpacePage() {
         ))}
       </div>
 
-      <nav
-        aria-label={dictionary.space.chapterNav}
-        className="space-chapter-nav"
-      >
+      <nav aria-label={copy.chapterNav} className="space-chapter-nav">
         {chapters.map((chapter, index) => (
           <button
             aria-label={`${(index + 1).toString().padStart(2, "0")} / ${chapter.title}`}
@@ -134,7 +148,7 @@ export function SpacePage() {
 
       <div className="space-status">
         <MousePointer2 aria-hidden="true" size={16} />
-        <span className="status-gesture">{dictionary.space.gesture}</span>
+        <span className="status-gesture">{copy.gesture}</span>
         <span className="status-line" />
         <span className="status-chapter">
           {(activeChapter + 1).toString().padStart(2, "0")} / {chapterCount
@@ -143,13 +157,13 @@ export function SpacePage() {
         </span>
         <span className="status-line short" />
         <span className="status-particles">
-          {particleCount.toLocaleString()} {dictionary.space.particles}
+          {particleCount.toLocaleString()} {copy.particles}
         </span>
       </div>
 
       <aside className="space-system-note">
-        <p>{dictionary.space.notesTitle}</p>
-        <span>{dictionary.space.notes[activeChapter % dictionary.space.notes.length]}</span>
+        <p>{copy.notesTitle}</p>
+        <span>{copy.notes[activeChapter % copy.notes.length]}</span>
       </aside>
     </section>
   );

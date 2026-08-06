@@ -39,6 +39,22 @@ export type Dictionary = {
     processSteps: string[];
   };
   space: {
+    kicker: string;
+    title: string;
+    lead: string;
+    collectionLabel: string;
+    open: string;
+    experiments: {
+      generativeField: {
+        title: string;
+        summary: string;
+        category: string;
+        status: string;
+      };
+    };
+  };
+  generativeField: {
+    back: string;
     title: string;
     lead: string;
     chapterNav: string;
@@ -60,7 +76,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     nav: {
       home: "首页",
       work: "作品",
-      space: "实验场",
+      space: "空间",
     },
     home: {
       kicker: "数字设计师 / 创意开发者",
@@ -69,7 +85,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manifesto:
         "我把界面看作一种空间：它有天气、距离、阻力和回声。每个项目都从清晰的内容出发，再用技术把感受推得更远。",
       explore: "探索作品",
-      playground: "进入实验场",
+      playground: "进入空间",
       scroll: "向下探索",
       featured: "精选作品",
       archive: "查看完整作品库",
@@ -97,13 +113,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
       processSteps: ["观察与提炼", "系统与原型", "动效与交付"],
     },
     space: {
-      title: "生成实验场",
+      kicker: "00 / DIGITAL SPACE",
+      title: "空间",
+      lead: "收录实时图形、交互系统与持续生长的数字实验。每个入口，都是一种独立的空间状态。",
+      collectionLabel: "空间效果",
+      open: "进入效果",
+      experiments: {
+        generativeField: {
+          title: "生成力场",
+          summary: "一组会感知指针、改变形态并缓慢流动的实时粒子系统。",
+          category: "实时粒子系统",
+          status: "持续演化",
+        },
+      },
+    },
+    generativeField: {
+      back: "返回空间",
+      title: "生成力场",
       lead: "移动指针，改变空气。这里没有固定画面，只有你留下的轨迹。",
       chapterNav: "实验章节",
       chapters: [
         {
           kicker: "00 / MATTER FIELD",
-          title: "生成实验场",
+          title: "生成力场",
           body: "移动指针，改变空气。这里没有固定画面，只有同一批粒子不断重组。",
           metric: "实时生成 / 持续演化",
         },
@@ -140,7 +172,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     nav: {
       home: "Home",
       work: "Work",
-      space: "Field",
+      space: "Space",
     },
     home: {
       kicker: "Digital designer / Creative developer",
@@ -149,7 +181,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manifesto:
         "I see an interface as a space with weather, distance, resistance, and echo. Every project begins with clear content, then uses technology to carry the feeling further.",
       explore: "Explore work",
-      playground: "Enter the field",
+      playground: "Enter space",
       scroll: "Scroll to explore",
       featured: "Selected work",
       archive: "View complete archive",
@@ -184,6 +216,22 @@ export const dictionaries: Record<Locale, Dictionary> = {
       processSteps: ["Observe & distill", "System & prototype", "Motion & delivery"],
     },
     space: {
+      kicker: "00 / DIGITAL SPACE",
+      title: "SPACE",
+      lead: "A collection of real-time graphics, interaction systems, and digital experiments that keep evolving. Each entry is its own spatial state.",
+      collectionLabel: "Spatial effects",
+      open: "Enter effect",
+      experiments: {
+        generativeField: {
+          title: "Generative field",
+          summary: "A real-time particle system that senses the pointer, changes form, and drifts at its own pace.",
+          category: "Real-time particles",
+          status: "Always evolving",
+        },
+      },
+    },
+    generativeField: {
+      back: "Back to space",
       title: "Generative field",
       lead: "Move the pointer and change the air. There is no fixed image, only the trace you leave.",
       chapterNav: "Field chapters",
@@ -227,7 +275,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     nav: {
       home: "Accueil",
       work: "Projets",
-      space: "Champ",
+      space: "Espace",
     },
     home: {
       kicker: "Designer numérique / Développeur créatif",
@@ -236,7 +284,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manifesto:
         "Je considère l'interface comme un espace avec sa météo, sa distance, sa résistance et son écho. Chaque projet part d'un contenu clair, puis la technologie prolonge la sensation.",
       explore: "Explorer les projets",
-      playground: "Entrer dans le champ",
+      playground: "Entrer dans l’espace",
       scroll: "Faire défiler",
       featured: "Projets choisis",
       archive: "Voir toutes les archives",
@@ -271,6 +319,22 @@ export const dictionaries: Record<Locale, Dictionary> = {
       processSteps: ["Observer & extraire", "Système & prototype", "Mouvement & livraison"],
     },
     space: {
+      kicker: "00 / DIGITAL SPACE",
+      title: "ESPACE",
+      lead: "Une collection de graphismes temps réel, de systèmes interactifs et d’expériences numériques en évolution. Chaque entrée forme son propre état spatial.",
+      collectionLabel: "Effets spatiaux",
+      open: "Entrer dans l’effet",
+      experiments: {
+        generativeField: {
+          title: "Champ génératif",
+          summary: "Un système de particules en temps réel qui perçoit le pointeur, change de forme et dérive à son propre rythme.",
+          category: "Particules temps réel",
+          status: "Toujours en évolution",
+        },
+      },
+    },
+    generativeField: {
+      back: "Retour à l’espace",
       title: "Champ génératif",
       lead: "Déplacez le pointeur et transformez l'air. Aucune image fixe, seulement votre trace.",
       chapterNav: "Chapitres du champ",

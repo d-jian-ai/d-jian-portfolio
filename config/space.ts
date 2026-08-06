@@ -1,8 +1,31 @@
 import type { ColorTheme } from "@/types/theme";
+import type { Dictionary } from "@/i18n/dictionaries";
+
+type ExperimentKey = keyof Dictionary["space"]["experiments"];
+
+export type SpacePreviewKind = "particle-field";
+
+export const SPACE_EXPERIMENTS: ReadonlyArray<{
+  code: string;
+  href: string;
+  key: ExperimentKey;
+  preview: SpacePreviewKind;
+  slug: string;
+  year: string;
+}> = [
+  {
+    code: "01",
+    href: "/space/generative-field",
+    key: "generativeField",
+    preview: "particle-field",
+    slug: "generative-field",
+    year: "2026",
+  },
+];
 
 type FieldAppearance = {
   blending: "additive" | "normal";
-  color: string;
+  colors: readonly [string, string, string];
   opacity: number;
   pointSize: {
     desktop: number;
@@ -10,19 +33,19 @@ type FieldAppearance = {
   };
 };
 
-export const SPACE_CONFIG = {
+export const GENERATIVE_FIELD_CONFIG = {
   appearance: {
     dark: {
       blending: "additive",
-      color: "#dce9e1",
+      colors: ["#f1f4ed", "#d8ed8c", "#68c6dc"],
       opacity: 0.86,
       pointSize: { desktop: 1.35, mobile: 1.7 },
     },
     light: {
       blending: "normal",
-      color: "#19382d",
-      opacity: 0.72,
-      pointSize: { desktop: 1.5, mobile: 1.55 },
+      colors: ["#0a865c", "#b92f5a", "#147a99"],
+      opacity: 0.82,
+      pointSize: { desktop: 1.65, mobile: 1.7 },
     },
   } satisfies Record<ColorTheme, FieldAppearance>,
   camera: {
@@ -59,6 +82,8 @@ export const SPACE_CONFIG = {
   shader: {
     ambientSpeed: 0.17,
     ambientStrength: 0.055,
+    colorCycleSpeed: 0.018,
+    colorSpatialFrequency: 0.085,
     depthSpeed: 0.13,
     depthStrength: 0.075,
     pointerDepth: 1.55,

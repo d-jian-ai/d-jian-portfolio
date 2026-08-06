@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { SITE_CONFIG } from "@/config/site";
-import { SPACE_CONFIG } from "@/config/space";
+import { GENERATIVE_FIELD_CONFIG } from "@/config/space";
 import { useTheme } from "@/providers/theme-provider";
 
 const vertexShader = /* glsl */ `
@@ -19,6 +19,8 @@ const vertexShader = /* glsl */ `
   uniform float uDisturbance;
   uniform float uAmbientSpeed;
   uniform float uAmbientStrength;
+  uniform float uColorCycleSpeed;
+  uniform float uColorSpatialFrequency;
   uniform float uDepthSpeed;
   uniform float uDepthStrength;
   uniform float uPointerDepth;
@@ -29,6 +31,7 @@ const vertexShader = /* glsl */ `
 
   varying float vGlow;
   varying float vDepth;
+  varying float vColorPhase;
 
   vec3 getShape(float progress) {
     if (progress < 1.0) {
@@ -77,15 +80,34 @@ const vertexShader = /* glsl */ `
     gl_PointSize = clamp(uPointSize * perspective, 1.0, 5.2);
     vGlow = 0.42 + influence * 0.58;
     vDepth = smoothstep(13.0, 2.0, -viewPosition.z);
+    vColorPhase = fract(
+      uTime * uColorCycleSpeed +
+      dot(transformed, vec3(1.0, 1.37, 0.73)) * uColorSpatialFrequency +
+      aMotion.w * 0.06
+    );
   }
 `;
 
 const fragmentShader = /* glsl */ `
-  uniform vec3 uColor;
+  uniform vec3 uColorA;
+  uniform vec3 uColorB;
+  uniform vec3 uColorC;
   uniform float uOpacity;
 
   varying float vGlow;
   varying float vDepth;
+  varying float vColorPhase;
+
+  vec3 getGradientColor(float phase) {
+    float segment = phase * 3.0;
+    if (segment < 1.0) {
+      return mix(uColorA, uColorB, smoothstep(0.0, 1.0, segment));
+    }
+    if (segment < 2.0) {
+      return mix(uColorB, uColorC, smoothstep(0.0, 1.0, segment - 1.0));
+    }
+    return mix(uColorC, uColorA, smoothstep(0.0, 1.0, segment - 2.0));
+  }
 
   void main() {
     vec2 center = gl_PointCoord - vec2(0.5);
@@ -93,9 +115,10 @@ const fragmentShader = /* glsl */ `
     float core = smoothstep(0.5, 0.05, distanceToCenter);
     float halo = smoothstep(0.5, 0.22, distanceToCenter);
     float alpha = (core * 0.72 + halo * 0.28) * uOpacity * vDepth;
+    vec3 color = getGradientColor(vColorPhase);
 
     if (alpha < 0.01) discard;
-    gl_FragColor = vec4(uColor * (0.78 + vGlow * 0.55), alpha);
+    gl_FragColor = vec4(color * (0.78 + vGlow * 0.55), alpha);
   }
 `;
 
@@ -109,7 +132,7 @@ export function ExperimentalParticleField({
   const { theme } = useTheme();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [particleCount, setParticleCount] = useState<number>(
-    SPACE_CONFIG.performance.initialParticles,
+    GENERATIVE_FIELD_CONFIG.performance.initialParticles,
   );
 
   useEffect(() => {
@@ -122,8 +145,8 @@ export function ExperimentalParticleField({
       setReducedMotion(motionQuery.matches);
       setParticleCount(
         mobileQuery.matches
-          ? SPACE_CONFIG.performance.mobileParticles
-          : SPACE_CONFIG.performance.desktopParticles,
+          ? GENERATIVE_FIELD_CONFIG.performance.mobileParticles
+          : GENERATIVE_FIELD_CONFIG.performance.desktopParticles,
       );
     };
 
@@ -142,8 +165,8 @@ export function ExperimentalParticleField({
 
   return (
     <Canvas
-      camera={SPACE_CONFIG.camera}
-      dpr={[1, SPACE_CONFIG.performance.maxDpr]}
+      camera={GENERATIVE_FIELD_CONFIG.camera}
+      dpr={[1, GENERATIVE_FIELD_CONFIG.performance.maxDpr]}
       frameloop={reducedMotion ? "demand" : "always"}
       gl={{
         alpha: true,
@@ -178,23 +201,39 @@ function ParticleMorph({
   );
   const shapes = useMemo(() => createParticleShapes(count), [count]);
   const neutralPointer = useMemo(() => new THREE.Vector2(), []);
-  const appearance = SPACE_CONFIG.appearance[theme];
-  const layout = isMobile ? SPACE_CONFIG.layout.mobile : SPACE_CONFIG.layout.desktop;
+  const appearance = GENERATIVE_FIELD_CONFIG.appearance[theme];
+  const layout = isMobile
+    ? GENERATIVE_FIELD_CONFIG.layout.mobile
+    : GENERATIVE_FIELD_CONFIG.layout.desktop;
   const uniforms = useMemo(
     () => ({
-      uAmbientSpeed: { value: SPACE_CONFIG.shader.ambientSpeed },
-      uAmbientStrength: { value: SPACE_CONFIG.shader.ambientStrength },
-      uColor: { value: new THREE.Color(appearance.color) },
-      uDepthSpeed: { value: SPACE_CONFIG.shader.depthSpeed },
-      uDepthStrength: { value: SPACE_CONFIG.shader.depthStrength },
+      uAmbientSpeed: { value: GENERATIVE_FIELD_CONFIG.shader.ambientSpeed },
+      uAmbientStrength: {
+        value: GENERATIVE_FIELD_CONFIG.shader.ambientStrength,
+      },
+      uColorA: { value: new THREE.Color(appearance.colors[0]) },
+      uColorB: { value: new THREE.Color(appearance.colors[1]) },
+      uColorC: { value: new THREE.Color(appearance.colors[2]) },
+      uColorCycleSpeed: {
+        value: GENERATIVE_FIELD_CONFIG.shader.colorCycleSpeed,
+      },
+      uColorSpatialFrequency: {
+        value: GENERATIVE_FIELD_CONFIG.shader.colorSpatialFrequency,
+      },
+      uDepthSpeed: { value: GENERATIVE_FIELD_CONFIG.shader.depthSpeed },
+      uDepthStrength: { value: GENERATIVE_FIELD_CONFIG.shader.depthStrength },
       uDisturbance: { value: reducedMotion ? 0 : 1 },
       uOpacity: { value: appearance.opacity },
       uPointSize: { value: appearance.pointSize[isMobile ? "mobile" : "desktop"] },
       uPointer: { value: new THREE.Vector2() },
-      uPointerDepth: { value: SPACE_CONFIG.shader.pointerDepth },
-      uPointerFalloff: { value: SPACE_CONFIG.shader.pointerFalloff },
-      uPointerForce: { value: SPACE_CONFIG.shader.pointerForce },
-      uPointerScale: { value: new THREE.Vector2(...SPACE_CONFIG.shader.pointerScale) },
+      uPointerDepth: { value: GENERATIVE_FIELD_CONFIG.shader.pointerDepth },
+      uPointerFalloff: { value: GENERATIVE_FIELD_CONFIG.shader.pointerFalloff },
+      uPointerForce: { value: GENERATIVE_FIELD_CONFIG.shader.pointerForce },
+      uPointerScale: {
+        value: new THREE.Vector2(
+          ...GENERATIVE_FIELD_CONFIG.shader.pointerScale,
+        ),
+      },
       uProgress: { value: 0 },
       uTime: { value: 0 },
     }),
@@ -206,7 +245,7 @@ function ParticleMorph({
 
     const easing = reducedMotion
       ? 1
-      : 1 - Math.exp(-delta * SPACE_CONFIG.motion.morphRate);
+      : 1 - Math.exp(-delta * GENERATIVE_FIELD_CONFIG.motion.morphRate);
     material.current.uniforms.uProgress.value = THREE.MathUtils.lerp(
       material.current.uniforms.uProgress.value,
       chapter,
@@ -217,9 +256,8 @@ function ParticleMorph({
     material.current.uniforms.uDisturbance.value = reducedMotion ? 0 : 1;
     material.current.uniforms.uPointer.value.lerp(
       reducedMotion ? neutralPointer : state.pointer,
-      reducedMotion ? 1 : SPACE_CONFIG.motion.pointerLerp,
+      reducedMotion ? 1 : GENERATIVE_FIELD_CONFIG.motion.pointerLerp,
     );
-
   });
 
   return (
