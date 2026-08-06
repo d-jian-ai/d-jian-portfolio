@@ -59,15 +59,10 @@ type Dictionary = {
       body: string;
       metric: string;
     }>;
-    modeMist: string;
-    modeLight: string;
-    modeRain: string;
     notesTitle: string;
     notes: string[];
     gesture: string;
-    clear: string;
     particles: string;
-    traces: string;
   };
 };
 
@@ -143,9 +138,6 @@ const dictionaries: Record<Locale, Dictionary> = {
           metric: "痕迹衰减 / 场域记忆",
         },
       ],
-      modeMist: "雾",
-      modeLight: "光",
-      modeRain: "雨",
       notesTitle: "场域记录",
       notes: [
         "速度决定痕迹的密度，停留会让光线聚集。",
@@ -153,9 +145,7 @@ const dictionaries: Record<Locale, Dictionary> = {
         "每一条轨迹都会消失，但空间会短暂记住它。",
       ],
       gesture: "滚动切换 / 移动扰动",
-      clear: "清空轨迹",
       particles: "粒子",
-      traces: "轨迹",
     },
   },
   en: {
@@ -236,9 +226,6 @@ const dictionaries: Record<Locale, Dictionary> = {
           metric: "Trace decay / Field memory",
         },
       ],
-      modeMist: "Mist",
-      modeLight: "Light",
-      modeRain: "Rain",
       notesTitle: "Field notes",
       notes: [
         "Speed shapes the density of a trace; staying still lets light gather.",
@@ -246,9 +233,7 @@ const dictionaries: Record<Locale, Dictionary> = {
         "Every trace disappears, but the field remembers it for a moment.",
       ],
       gesture: "Scroll to morph / Move to disturb",
-      clear: "Clear traces",
       particles: "particles",
-      traces: "Traces",
     },
   },
   fr: {
@@ -329,9 +314,6 @@ const dictionaries: Record<Locale, Dictionary> = {
           metric: "Déclin des traces / Mémoire du champ",
         },
       ],
-      modeMist: "Brume",
-      modeLight: "Lumière",
-      modeRain: "Pluie",
       notesTitle: "Notes du champ",
       notes: [
         "La vitesse façonne la densité; l'immobilité laisse la lumière s'accumuler.",
@@ -339,9 +321,7 @@ const dictionaries: Record<Locale, Dictionary> = {
         "Chaque trace disparaît, mais le champ s'en souvient un instant.",
       ],
       gesture: "Défiler pour transformer / Bouger pour troubler",
-      clear: "Effacer les traces",
       particles: "particules",
-      traces: "Traces",
     },
   },
 };

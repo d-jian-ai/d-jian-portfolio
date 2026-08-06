@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Globe2 } from "lucide-react";
+import { Check, Globe2, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,6 +15,8 @@ import { LanguageProvider, useLanguage } from "@/components/language-provider";
 import { LoadingGate } from "@/components/loading-gate";
 import { WeatherProvider, useWeather } from "@/components/weather-provider";
 import type { Locale } from "@/data/work";
+
+type ColorTheme = "dark" | "light";
 
 export function AppChrome({ children }: { children: ReactNode }) {
   return (
@@ -45,6 +47,7 @@ function SiteNav() {
   const { locale, dictionary, setLocale } = useLanguage();
   const [hidden, setHidden] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
+  const [theme, setTheme] = useState<ColorTheme>("dark");
   const lastScrollY = useRef(0);
   const animationFrame = useRef<number | null>(null);
   const localeControl = useRef<HTMLDivElement>(null);
@@ -63,6 +66,36 @@ function SiteNav() {
     en: "Change language",
     fr: "Changer de langue",
   }[locale];
+  const themeLabel =
+    theme === "dark"
+      ? { zh: "切换到浅色模式", en: "Switch to light mode", fr: "Passer au mode clair" }[
+          locale
+        ]
+      : { zh: "切换到深色模式", en: "Switch to dark mode", fr: "Passer au mode sombre" }[
+          locale
+        ];
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("creer-theme");
+    const nextTheme: ColorTheme =
+      savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : window.matchMedia("(prefers-color-scheme: light)").matches
+          ? "light"
+          : "dark";
+
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    window.localStorage.setItem("creer-theme", nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+  }
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -127,10 +160,6 @@ function SiteNav() {
       className={hidden ? "site-nav is-hidden" : "site-nav"}
       onFocusCapture={() => setHidden(false)}
     >
-      <Link className="brand-mark" href="/" aria-label="CREER home">
-        <span className="brand-symbol" aria-hidden="true" />
-        <span>CREER</span>
-      </Link>
       <nav aria-label="Primary navigation" className="nav-links">
         {links.map((link) => {
           const active =
@@ -149,43 +178,59 @@ function SiteNav() {
           );
         })}
       </nav>
-      <div className="locale-control" ref={localeControl}>
+      <div className="nav-utilities">
         <button
-          aria-expanded={localeOpen}
-          aria-haspopup="menu"
-          aria-label={languageLabel}
-          className="locale-trigger"
-          onClick={() => setLocaleOpen((current) => !current)}
-          title={languageLabel}
+          aria-label={themeLabel}
+          aria-pressed={theme === "light"}
+          className="nav-icon-button theme-trigger"
+          onClick={toggleTheme}
+          title={themeLabel}
           type="button"
         >
-          <Globe2 aria-hidden="true" size={20} strokeWidth={1.6} />
-          <span aria-hidden="true" className="locale-badge">
-            {locale === "zh" ? "中" : locale.toUpperCase()}
-          </span>
+          {theme === "dark" ? (
+            <Sun aria-hidden="true" size={20} strokeWidth={1.6} />
+          ) : (
+            <Moon aria-hidden="true" size={20} strokeWidth={1.6} />
+          )}
         </button>
-        <div
-          aria-label={languageLabel}
-          className={localeOpen ? "locale-menu is-open" : "locale-menu"}
-          role="menu"
-        >
-          {locales.map((item) => (
-            <button
-              aria-checked={locale === item.value}
-              className={locale === item.value ? "locale-option active" : "locale-option"}
-              key={item.value}
-              onClick={() => {
-                setLocale(item.value);
-                setLocaleOpen(false);
-              }}
-              role="menuitemradio"
-              type="button"
-            >
-              <span className="locale-option-code">{item.shortLabel}</span>
-              <span>{item.label}</span>
-              <Check aria-hidden="true" size={15} strokeWidth={1.8} />
-            </button>
-          ))}
+        <div className="locale-control" ref={localeControl}>
+          <button
+            aria-expanded={localeOpen}
+            aria-haspopup="menu"
+            aria-label={languageLabel}
+            className="nav-icon-button locale-trigger"
+            onClick={() => setLocaleOpen((current) => !current)}
+            title={languageLabel}
+            type="button"
+          >
+            <Globe2 aria-hidden="true" size={20} strokeWidth={1.6} />
+            <span aria-hidden="true" className="locale-badge">
+              {locale === "zh" ? "中" : locale.toUpperCase()}
+            </span>
+          </button>
+          <div
+            aria-label={languageLabel}
+            className={localeOpen ? "locale-menu is-open" : "locale-menu"}
+            role="menu"
+          >
+            {locales.map((item) => (
+              <button
+                aria-checked={locale === item.value}
+                className={locale === item.value ? "locale-option active" : "locale-option"}
+                key={item.value}
+                onClick={() => {
+                  setLocale(item.value);
+                  setLocaleOpen(false);
+                }}
+                role="menuitemradio"
+                type="button"
+              >
+                <span className="locale-option-code">{item.shortLabel}</span>
+                <span>{item.label}</span>
+                <Check aria-hidden="true" size={15} strokeWidth={1.8} />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </header>

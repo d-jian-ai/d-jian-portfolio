@@ -4,13 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-export type FieldMode = "mist" | "light" | "rain";
-
-const FIELD_COLORS: Record<FieldMode, string> = {
-  mist: "#dce9e1",
-  light: "#ffd68d",
-  rain: "#8dd9e6",
-};
+const FIELD_COLOR = "#dce9e1";
 
 const vertexShader = /* glsl */ `
   attribute vec3 aWave;
@@ -80,11 +74,9 @@ const fragmentShader = /* glsl */ `
 
 export function ExperimentalParticleField({
   chapter,
-  mode,
   onParticleCount,
 }: {
   chapter: number;
-  mode: FieldMode;
   onParticleCount?: (count: number) => void;
 }) {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -126,7 +118,6 @@ export function ExperimentalParticleField({
       <ParticleMorph
         chapter={chapter}
         count={particleCount}
-        mode={mode}
         reducedMotion={reducedMotion}
       />
     </Canvas>
@@ -136,21 +127,18 @@ export function ExperimentalParticleField({
 function ParticleMorph({
   chapter,
   count,
-  mode,
   reducedMotion,
 }: {
   chapter: number;
   count: number;
-  mode: FieldMode;
   reducedMotion: boolean;
 }) {
   const points = useRef<THREE.Points>(null);
   const material = useRef<THREE.ShaderMaterial>(null);
-  const targetColor = useMemo(() => new THREE.Color(FIELD_COLORS[mode]), [mode]);
   const shapes = useMemo(() => createParticleShapes(count), [count]);
   const uniforms = useMemo(
     () => ({
-      uColor: { value: new THREE.Color(FIELD_COLORS[mode]) },
+      uColor: { value: new THREE.Color(FIELD_COLOR) },
       uDisturbance: { value: reducedMotion ? 0 : 1 },
       uOpacity: { value: 0.86 },
       uPointSize: { value: count > 10000 ? 1.35 : 1.7 },
@@ -176,7 +164,6 @@ function ParticleMorph({
       reducedMotion ? new THREE.Vector2(0, 0) : state.pointer,
       reducedMotion ? 1 : 0.08,
     );
-    material.current.uniforms.uColor.value.lerp(targetColor, 0.045);
 
     if (!reducedMotion) {
       points.current.rotation.y = THREE.MathUtils.lerp(
