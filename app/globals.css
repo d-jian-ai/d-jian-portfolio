@@ -35,8 +35,8 @@
 }
 
 .home-hero {
-  --hero-action-bg: rgba(32, 42, 37, 0.56);
-  --hero-background: #202a25;
+  --hero-action-bg: rgba(27, 36, 32, 0.56);
+  --hero-background: #1b2420;
   --hero-ink: #f2f4ed;
   --hero-muted: rgba(242, 244, 237, 0.66);
   --hero-soft: rgba(242, 244, 237, 0.88);
@@ -51,7 +51,7 @@
 
 :root[data-theme="light"] .home-hero {
   --hero-action-bg: rgba(230, 235, 231, 0.72);
-  --hero-background: #e6ebe7;
+  --hero-background: #e8ece8;
   --hero-ink: #121713;
   --hero-muted: rgba(18, 23, 19, 0.62);
   --hero-soft: rgba(18, 23, 19, 0.82);

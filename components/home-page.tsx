@@ -7,7 +7,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
-import { HeroFlowField } from "@/components/hero-flow-field";
+import { HeroSilkRibbon } from "@/components/hero-silk-ribbon";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works } from "@/data/work";
 import { useLanguage } from "@/providers/language-provider";
@@ -20,7 +20,7 @@ export function HomePage() {
     <>
       <section className="home-hero">
         <div className="hero-scene" aria-hidden="true">
-          <HeroFlowField />
+          <HeroSilkRibbon />
         </div>
 
         <div className="hero-interface">
