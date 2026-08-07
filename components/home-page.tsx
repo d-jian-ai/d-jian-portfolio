@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  ArrowDown,
-  ArrowUpRight,
-  MoveDown,
-  Sparkles,
-} from "lucide-react";
+import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { HeroFilamentField } from "@/components/home/hero-filament-field";
+import { FloatingWorkGallery } from "@/components/home/floating-work-gallery";
+import { HeroVeilField } from "@/components/home/hero-veil-field";
 import { ProjectVisual } from "@/components/project-visual";
 import { typeLabels, works } from "@/data/work";
 import { useLanguage } from "@/providers/language-provider";
@@ -17,149 +13,128 @@ export function HomePage() {
   const featuredWorks = works.filter((work) => work.featured);
 
   return (
-    <>
-      <div className="home-flow-stage">
-        <div className="home-flow-scene" aria-hidden="true">
-          <HeroFilamentField />
-        </div>
-
-        <section className="home-hero">
-          <div className="hero-interface">
-            <div className="hero-copy" data-reveal>
-              <p className="eyebrow">{dictionary.home.kicker}</p>
-              <h1>
-                {dictionary.home.title}
-                <sup>©26</sup>
-              </h1>
-              <p className="hero-lead">{dictionary.home.lead}</p>
-              <div className="hero-actions">
-                <Link className="primary-action magnetic-action" href="/work">
-                  {dictionary.home.explore}
-                  <ArrowDown aria-hidden="true" size={17} />
-                </Link>
-                <Link className="ghost-action magnetic-action" href="/space">
-                  <Sparkles aria-hidden="true" size={16} />
-                  {dictionary.home.playground}
-                </Link>
-              </div>
-            </div>
-
-            <div className="hero-meta" data-reveal>
-              <p>43.2965° N</p>
-              <p>05.3698° E</p>
-              <span>LOCAL / DIGITAL</span>
-            </div>
-
-            <a
-              className="scroll-cue"
-              href="#practice"
-              aria-label={dictionary.home.scroll}
-            >
-              <span>{dictionary.home.scroll}</span>
-              <MoveDown aria-hidden="true" size={18} />
-            </a>
-          </div>
-        </section>
-
-        <section className="practice-section section-frame" id="practice">
-          <div className="practice-index" data-reveal>
-            <span>00</span>
-            <span>POSITION</span>
-          </div>
-          <div className="practice-copy">
-            <p className="section-kicker" data-reveal>
-              {dictionary.home.recent}
-            </p>
-            <h2 data-reveal>{dictionary.home.practice}</h2>
-            <p className="practice-lead" data-reveal>
-              {dictionary.home.practiceLead}
-            </p>
-          </div>
-          <div className="practice-orbit" aria-hidden="true" data-reveal>
-            <span className="orbit-copy">DESIGN · CODE · MOTION · SPACE · </span>
-            <span className="orbit-core">+</span>
-          </div>
-        </section>
-
-        <section className="manifesto-section section-frame">
-          <p className="manifesto-number" data-reveal>
-            01
-          </p>
-          <blockquote data-reveal>{dictionary.home.quote}</blockquote>
-          <p className="manifesto-copy" data-reveal>
-            {dictionary.home.manifesto}
-          </p>
-        </section>
+    <main className="home-spatial">
+      <div className="home-spatial__scene" aria-hidden="true">
+        <HeroVeilField />
       </div>
 
-      <section className="selected-section">
-        <header className="selected-header section-frame" data-reveal>
-          <div>
-            <p className="section-kicker">{dictionary.home.selected}</p>
-            <h2>{dictionary.home.featured}</h2>
-          </div>
-          <Link className="text-action" href="/work">
-            {dictionary.home.archive}
-            <ArrowUpRight aria-hidden="true" size={17} />
+      <section className="spatial-hero section-frame">
+        <div className="spatial-hero__brand" data-reveal>
+          <p className="spatial-label">{dictionary.home.kicker}</p>
+          <h1>
+            {dictionary.home.title}
+            <sup>©26</sup>
+          </h1>
+          <p className="spatial-hero__lead">{dictionary.home.lead}</p>
+        </div>
+
+        <div className="spatial-hero__coordinates" data-reveal>
+          <span>43.2965° N</span>
+          <span>05.3698° E</span>
+          <span>MARSEILLE / DIGITAL</span>
+        </div>
+
+        <a className="spatial-scroll-cue" href="#selected">
+          <span>{dictionary.home.scroll}</span>
+          <ArrowDown aria-hidden="true" size={16} />
+        </a>
+      </section>
+
+      <section className="spatial-work-overview section-frame" id="selected">
+        <div className="spatial-work-overview__categories" data-reveal>
+          <span>{typeLabels.visual[locale]}</span>
+          <span>{typeLabels.web[locale]}</span>
+          <span>{typeLabels.video[locale]}</span>
+          <span>{dictionary.home.capabilities[2]}</span>
+          <span>{dictionary.home.capabilities[3]}</span>
+        </div>
+
+        <div className="spatial-work-overview__callout" data-reveal>
+          <p>{dictionary.home.selected}</p>
+          <Link href="/work">
+            <span>{dictionary.home.archive}</span>
+            <sup>{String(works.length).padStart(2, "0")}</sup>
+            <ArrowUpRight aria-hidden="true" size={28} />
           </Link>
-        </header>
-
-        <div className="featured-list">
-          {featuredWorks.map((work, index) => (
-            <article className="featured-project section-frame" key={work.slug}>
-              <Link
-                aria-label={`${dictionary.work.open}: ${work.title[locale]}`}
-                className="featured-visual-link"
-                href={`/work/${work.slug}`}
-                data-reveal
-              >
-                <ProjectVisual
-                  label={work.title[locale]}
-                  slug={work.slug}
-                />
-              </Link>
-              <div className="featured-copy" data-reveal>
-                <div className="featured-meta">
-                  <span>{work.index}</span>
-                  <span>
-                    {typeLabels[work.type][locale]} / {work.year}
-                  </span>
-                </div>
-                <h3>{work.title[locale]}</h3>
-                <p>{work.summary[locale]}</p>
-                <Link className="project-open" href={`/work/${work.slug}`}>
-                  {dictionary.work.open}
-                  <ArrowUpRight aria-hidden="true" size={18} />
-                </Link>
-                <span className="featured-sequence">0{index + 1} / 03</span>
-              </div>
-            </article>
-          ))}
         </div>
+
+        <FloatingWorkGallery
+          locale={locale}
+          openLabel={dictionary.work.open}
+          works={featuredWorks}
+        />
       </section>
 
-      <section className="capability-section" aria-label={dictionary.home.practice}>
-        <div className="capability-track">
-          {[...dictionary.home.capabilities, ...dictionary.home.capabilities].map(
-            (capability, index) => (
-              <span key={`${capability}-${index}`}>
-                {capability}
-                <i aria-hidden="true">✦</i>
+      <div className="spatial-projects" aria-label={dictionary.home.featured}>
+        {featuredWorks.map((work, index) => (
+          <section
+            className={`spatial-project spatial-project--${index + 1} section-frame`}
+            key={work.slug}
+          >
+            <header className="spatial-project__heading" data-reveal>
+              <span>
+                {work.index} / {typeLabels[work.type][locale]}
               </span>
-            ),
-          )}
+              <h2>{work.title[locale]}</h2>
+            </header>
+
+            <Link
+              aria-label={`${dictionary.work.open}: ${work.title[locale]}`}
+              className="spatial-project__visual"
+              href={`/work/${work.slug}`}
+              data-reveal
+            >
+              <ProjectVisual label={work.title[locale]} slug={work.slug} />
+            </Link>
+
+            <div className="spatial-project__copy" data-reveal>
+              <div>
+                <span>{work.year}</span>
+                <span>{work.role[locale]}</span>
+              </div>
+              <p>{work.summary[locale]}</p>
+              <Link href={`/work/${work.slug}`}>
+                {dictionary.work.open}
+                <ArrowUpRight aria-hidden="true" size={17} />
+              </Link>
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <section className="spatial-about section-frame" id="practice">
+        <div className="spatial-about__index" data-reveal>
+          <span>02 / POSITION</span>
+          <span>DESIGN · CODE · MOTION</span>
+        </div>
+        <div className="spatial-about__title" data-reveal>
+          <p className="spatial-label">{dictionary.home.recent}</p>
+          <h2>{dictionary.home.practice}</h2>
+        </div>
+        <blockquote data-reveal>{dictionary.home.quote}</blockquote>
+        <div className="spatial-about__body" data-reveal>
+          <p>{dictionary.home.practiceLead}</p>
+          <p>{dictionary.home.manifesto}</p>
+          <Link href="/space">
+            <Sparkles aria-hidden="true" size={17} />
+            {dictionary.home.playground}
+          </Link>
         </div>
       </section>
 
-      <section className="contact-section section-frame">
-        <p className="section-kicker" data-reveal>
+      <section className="spatial-contact section-frame">
+        <p className="spatial-label" data-reveal>
           {dictionary.home.contactKicker}
         </p>
         <h2 data-reveal>{dictionary.home.contactTitle}</h2>
-        <div className="contact-bottom" data-reveal>
+        <div className="spatial-contact__footer" data-reveal>
           <p>{dictionary.home.contactLead}</p>
+          <Link href="/work">
+            {dictionary.home.explore}
+            <ArrowUpRight aria-hidden="true" size={18} />
+          </Link>
         </div>
       </section>
-    </>
+    </main>
   );
 }

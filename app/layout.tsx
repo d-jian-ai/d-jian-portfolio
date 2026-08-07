@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { AppChrome } from "@/components/app-chrome";
 import "./globals.css";
 import "@/styles/navigation.css";
+import "@/styles/home.css";
 import "@/styles/space.css";
 
 const siteUrl =
