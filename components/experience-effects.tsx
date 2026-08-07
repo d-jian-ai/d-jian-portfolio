@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { SITE_CONFIG } from "@/config/site";
 
 export function ExperienceEffects() {
   const pathname = usePathname();
@@ -9,7 +10,6 @@ export function ExperienceEffects() {
   const progress = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -21,8 +21,40 @@ export function ExperienceEffects() {
       },
       { rootMargin: "0px 0px -10% 0px", threshold: 0.08 },
     );
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+
+    const observeReveals = () => {
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)")
+        .forEach((node) => observer.observe(node));
+    };
+
+    const syncVisibleReveals = () => {
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)")
+        .forEach((node) => {
+          const bounds = node.getBoundingClientRect();
+          if (bounds.top < window.innerHeight * 0.9 && bounds.bottom > 0) {
+            node.classList.add("is-visible");
+            observer.unobserve(node);
+            return;
+          }
+          observer.observe(node);
+        });
+    };
+
+    observeReveals();
+    window.addEventListener(
+      SITE_CONFIG.events.loaderComplete,
+      syncVisibleReveals,
+    );
+
+    return () => {
+      window.removeEventListener(
+        SITE_CONFIG.events.loaderComplete,
+        syncVisibleReveals,
+      );
+      observer.disconnect();
+    };
   }, [pathname]);
 
   useEffect(() => {

@@ -8,7 +8,9 @@ export const SITE_CONFIG = {
     mobile: 820,
   },
   events: {
+    loaderComplete: "creer:loader-complete",
     scrollLock: "creer:scroll-lock",
+    visualReady: "creer:visual-ready",
   },
   storage: {
     locale: "creer-locale",

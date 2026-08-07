@@ -25,6 +25,7 @@ import {
   HERO_FILAMENT_CONFIG,
   type HeroFilamentPalette,
 } from "@/config/home";
+import { SITE_CONFIG } from "@/config/site";
 import { useTheme } from "@/providers/theme-provider";
 
 type FilamentLayerConfig = (typeof HERO_FILAMENT_CONFIG.layers)[number];
@@ -88,6 +89,7 @@ function FilamentComposition({
 
   return (
     <>
+      <SceneReadySignal />
       {HERO_FILAMENT_CONFIG.layers.slice(0, 2).map((layer, index) => (
         <MembraneLayer
           key={`membrane-${layer.phase}`}
@@ -116,6 +118,19 @@ function FilamentComposition({
       />
     </>
   );
+}
+
+function SceneReadySignal() {
+  const dispatched = useRef(false);
+
+  useFrame(() => {
+    if (dispatched.current) return;
+    dispatched.current = true;
+    document.documentElement.dataset.visualReady = "true";
+    window.dispatchEvent(new Event(SITE_CONFIG.events.visualReady));
+  });
+
+  return null;
 }
 
 function MembraneLayer({
