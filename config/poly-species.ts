@@ -56,18 +56,22 @@ type PolySpeciesUi = {
   collection: string;
   conservation: string;
   indexCaption: string;
-  indexTitle: string;
+  indexEyebrow: string;
   language: string;
   motion: string;
   next: string;
   openThreat: string;
   piece: string;
+  piecesCountLabel: string;
   previous: string;
   random: string;
   range: string;
   scientificName: string;
+  selectStatistic: string;
+  speciesCountLabel: string;
+  statisticNote: string;
   statistics: string;
-  statisticsLead: string;
+  survivalLabel: string;
   theme: string;
   threat: string;
   viewStatistics: string;
@@ -83,18 +87,22 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     collection: "碎片物种",
     conservation: "保护行动",
     indexCaption: "选择一个碎片，或让系统随机带你前往",
-    indexTitle: "30 个物种 / 30 组碎片 / 同一个正在破碎的生态",
+    indexEyebrow: "碎片之中",
     language: "切换语言",
     motion: "暂停动态",
     next: "下一个物种",
     openThreat: "它正面临什么？",
     piece: "碎片",
+    piecesCountLabel: "组碎片",
     previous: "上一个物种",
     random: "随机选择",
     range: "分布区域",
     scientificName: "学名",
+    selectStatistic: "选择一组数据查看",
+    speciesCountLabel: "个物种",
+    statisticNote: "原始研究中的关键指标",
     statistics: "数据统计",
-    statisticsLead: "以原始资料中的时间序列和关键数字呈现物种处境。",
+    survivalLabel: "同一个破碎的生存处境",
     theme: "切换明暗模式",
     threat: "生存威胁",
     viewStatistics: "查看数据统计",
@@ -108,18 +116,22 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     collection: "Species in pieces",
     conservation: "Conservation",
     indexCaption: "Choose a piece, or let the system take you somewhere at random",
-    indexTitle: "30 species / 30 pieces / one fragmented survival",
+    indexEyebrow: "In pieces",
     language: "Change language",
     motion: "Pause motion",
     next: "Next species",
     openThreat: "What's the threat?",
     piece: "Piece",
+    piecesCountLabel: "pieces",
     previous: "Previous species",
     random: "Random piece",
     range: "Range",
     scientificName: "Scientific name",
+    selectStatistic: "Select a dataset to inspect",
+    speciesCountLabel: "species",
+    statisticNote: "Key figure from the original research",
     statistics: "Statistics",
-    statisticsLead: "Population trajectories and key figures drawn from the original research.",
+    survivalLabel: "one fragmented survival",
     theme: "Change color mode",
     threat: "The threat",
     viewStatistics: "View statistics",
@@ -133,18 +145,22 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     collection: "Especes en fragments",
     conservation: "Conservation",
     indexCaption: "Choisissez un fragment, ou laissez le systeme vous guider au hasard",
-    indexTitle: "30 especes / 30 fragments / une survie morcelee",
+    indexEyebrow: "En fragments",
     language: "Changer de langue",
     motion: "Suspendre le mouvement",
     next: "Espece suivante",
     openThreat: "Quelle est la menace ?",
     piece: "Fragment",
+    piecesCountLabel: "fragments",
     previous: "Espece precedente",
     random: "Choix aleatoire",
     range: "Aire de repartition",
     scientificName: "Nom scientifique",
+    selectStatistic: "Selectionnez un jeu de donnees",
+    speciesCountLabel: "especes",
+    statisticNote: "Indicateur cle de la recherche originale",
     statistics: "Statistiques",
-    statisticsLead: "Trajectoires de population et chiffres cles issus des recherches originales.",
+    survivalLabel: "une survie morcelee",
     theme: "Changer le mode couleur",
     threat: "La menace",
     viewStatistics: "Voir les statistiques",

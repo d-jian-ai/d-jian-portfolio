@@ -187,6 +187,11 @@
   left: clamp(24px, 3.1vw, 54px);
 }
 
+.sip-side-controls--left > button {
+  overflow: visible;
+  position: relative;
+}
+
 .sip-side-controls--right {
   justify-items: center;
   right: clamp(24px, 3.1vw, 54px);
@@ -201,6 +206,37 @@
 
 .sip-side-controls > button.is-active {
   background: var(--sip-accent-red);
+}
+
+.sip-control-label {
+  background-color: var(--sip-paper);
+  background-image: url("/species-in-pieces/white-texture.png");
+  color: #252525;
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: 0.68rem;
+  left: calc(100% + 12px);
+  opacity: 0;
+  padding: 8px 13px 7px;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  transform: translateX(-10px) scaleX(0.92);
+  transform-origin: left center;
+  transition:
+    opacity 180ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.sip-side-controls--left > button:hover .sip-control-label,
+.sip-side-controls--left > button:focus-visible .sip-control-label {
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+}
+
+.sip-side-controls--left > button:hover > svg,
+.sip-side-controls--left > button:focus-visible > svg {
+  animation: sipControlGlyph 460ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sip-threat-trigger {
@@ -339,11 +375,53 @@
   background-repeat: repeat;
   color: #f7f3eb;
   inset: 0;
-  overflow: auto;
+  overflow: hidden;
   overscroll-behavior: contain;
   position: absolute;
   touch-action: pan-y;
   z-index: 40;
+}
+
+.sip-overlay.is-closing {
+  animation: sipPanelOut 680ms cubic-bezier(0.55, 0, 0.75, 0) both;
+}
+
+.sip-overlay > :not(.sip-burst) {
+  z-index: 2;
+}
+
+.sip-burst {
+  aspect-ratio: 16 / 9;
+  left: 50%;
+  pointer-events: none;
+  position: fixed;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  width: min(88vw, 1520px);
+  z-index: 1;
+}
+
+.sip-burst-shard {
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  will-change: opacity, transform;
+}
+
+.sip-burst--opening .sip-burst-shard {
+  animation: sipBurstOut 920ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+  animation-delay: var(--burst-delay);
+}
+
+.sip-burst--settled .sip-burst-shard {
+  opacity: 0.58;
+  transform: translate3d(var(--burst-x), var(--burst-y), 0)
+    rotate(var(--burst-rotate)) scale(var(--burst-scale));
+}
+
+.sip-burst--closing .sip-burst-shard {
+  animation: sipBurstIn 620ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: var(--burst-delay);
 }
 
 .sip-panel-close {
@@ -372,6 +450,16 @@
   transform: translateX(-50%) rotate(8deg) scale(1.06);
 }
 
+.sip-index-panel > .sip-panel-close {
+  left: clamp(34px, 5vw, 80px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sip-index-panel > .sip-panel-close:hover {
+  transform: translateY(-50%) rotate(8deg) scale(1.06);
+}
+
 .sip-index-panel {
   align-items: center;
   display: flex;
@@ -391,12 +479,13 @@
 }
 
 .sip-index-ring {
-  height: min(76vw, 760px);
+  --sip-ring-radius: min(29vh, 225px);
+  height: min(68vh, 540px);
   left: 50%;
   position: absolute;
-  top: 54%;
+  top: 52%;
   transform: translate(-50%, -50%);
-  width: min(76vw, 760px);
+  width: min(68vh, 540px);
 }
 
 .sip-index-ring > button {
@@ -410,7 +499,7 @@
   padding: 0;
   position: absolute;
   top: calc(50% - 17px);
-  transform: rotate(var(--sip-angle)) translateY(clamp(-350px, -35vw, -210px)) rotate(calc(var(--sip-angle) * -1));
+  transform: rotate(var(--sip-angle)) translateY(calc(var(--sip-ring-radius) * -1)) rotate(calc(var(--sip-angle) * -1));
   width: 34px;
 }
 
@@ -459,32 +548,47 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  max-width: 450px;
+  max-width: 390px;
   padding: 24px;
   position: relative;
   text-align: center;
   z-index: 2;
 }
 
-.sip-index-center strong {
-  color: var(--sip-accent-red);
+.sip-index-eyebrow {
+  color: var(--sip-accent-red) !important;
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(5rem, 9vw, 9rem);
+  font-size: 0.68rem !important;
+  margin-bottom: 13px;
+  text-transform: uppercase;
+}
+
+.sip-index-center h2 {
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: clamp(1.8rem, 3.1vw, 3.15rem);
   font-weight: 400;
-  line-height: 0.68;
+  line-height: 0.98;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.sip-index-center h2 strong {
+  color: var(--sip-accent-red);
+  font-size: 1em;
+  font-weight: 400;
 }
 
 .sip-index-center p {
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(1.55rem, 3vw, 3.25rem);
-  line-height: 1.02;
-  margin: 30px 0 14px;
+  font-size: clamp(0.78rem, 1.15vw, 1.05rem);
+  line-height: 1.2;
+  margin: 14px 0 11px;
   text-transform: uppercase;
 }
 
-.sip-index-center span {
+.sip-index-caption {
   color: #8b8b87;
-  font-size: 0.72rem;
+  font-size: 0.65rem !important;
   line-height: 1.55;
   max-width: 300px;
 }
@@ -506,9 +610,11 @@
 }
 
 .sip-threat-panel {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: max(190px, 18vh) clamp(34px, 6vw, 110px) clamp(60px, 9vh, 100px);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(118px, 16vh, 152px) 28px clamp(36px, 6vh, 62px);
 }
 
 .sip-threat-meta {
@@ -516,7 +622,7 @@
   color: #777875;
   display: flex;
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(0.72rem, 1.2vw, 1.08rem);
+  font-size: clamp(0.56rem, 0.7vw, 0.72rem);
   gap: 16px;
   justify-content: center;
   text-align: center;
@@ -535,28 +641,27 @@
 }
 
 .sip-threat-copy {
-  align-self: center;
-  margin: 34px auto 44px;
-  max-width: 1180px;
+  margin: clamp(22px, 4vh, 36px) auto clamp(26px, 4.5vh, 42px);
+  max-width: 720px;
   text-align: center;
 }
 
 .sip-threat-copy h2 {
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(2rem, 4.15vw, 5rem);
+  font-size: clamp(1.45rem, 2.3vw, 2.55rem);
   font-weight: 400;
   line-height: 1.02;
-  margin: 0 auto clamp(32px, 5vh, 58px);
-  max-width: 1080px;
+  margin: 0 auto clamp(22px, 3.5vh, 34px);
+  max-width: 680px;
   text-transform: uppercase;
 }
 
 .sip-threat-copy p {
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(1rem, 1.8vw, 1.9rem);
-  line-height: 1.22;
-  margin: 12px auto;
-  max-width: 1050px;
+  font-size: clamp(0.78rem, 1.15vw, 1.1rem);
+  line-height: 1.28;
+  margin: 9px auto;
+  max-width: 700px;
   text-transform: uppercase;
 }
 
@@ -580,11 +685,11 @@
   cursor: pointer;
   display: inline-flex;
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(1.2rem, 2.1vw, 2.2rem);
-  gap: 18px;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  gap: 14px;
   justify-content: center;
-  min-height: 74px;
-  padding: 0 clamp(28px, 5vw, 72px);
+  min-height: 58px;
+  padding: 0 clamp(24px, 3.5vw, 48px);
   text-transform: uppercase;
   transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -608,8 +713,10 @@
 }
 
 .sip-statistics-panel {
+  align-items: center;
+  display: flex;
   min-height: 100%;
-  padding: clamp(118px, 15vh, 170px) clamp(30px, 7vw, 120px) 72px;
+  padding: 84px clamp(34px, 6vw, 88px) 46px;
 }
 
 .sip-panel-back {
@@ -626,117 +733,208 @@
   position: absolute;
   text-transform: uppercase;
   top: clamp(34px, 5vh, 60px);
+  transition: color 180ms ease, transform 280ms ease;
 }
 
-.sip-statistics-panel > header {
-  margin: 0 auto clamp(42px, 7vh, 72px);
-  max-width: 800px;
-  text-align: center;
+.sip-panel-back:hover {
+  color: #f7f3eb;
+  transform: translateX(-4px);
 }
 
-.sip-statistics-panel > header span {
-  color: var(--sip-accent-red);
-  font-family: "SIP Block", Impact, sans-serif;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+.sip-panel-close--corner {
+  height: 46px;
+  left: auto;
+  right: clamp(34px, 5vw, 80px);
+  top: clamp(28px, 4vh, 50px);
+  transform: none;
+  width: 46px;
 }
 
-.sip-statistics-panel > header h2 {
-  font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(3rem, 7vw, 7rem);
-  font-weight: 400;
-  line-height: 0.85;
-  margin: 20px 0;
-  text-transform: uppercase;
+.sip-panel-close--corner:hover {
+  transform: rotate(8deg) scale(1.06);
 }
 
-.sip-statistics-panel > header p {
-  color: #92938f;
-  font-size: 0.78rem;
-  line-height: 1.7;
-  margin: auto;
-  max-width: 520px;
-}
-
-.sip-stat-grid {
-  display: grid;
-  gap: clamp(16px, 2.2vw, 32px);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  margin: auto;
-  max-width: 1300px;
-}
-
-.sip-stat-card {
-  border: 2px solid #5c5e5a;
-  min-height: 300px;
-  padding: clamp(24px, 3vw, 42px);
-  position: relative;
-}
-
-.sip-stat-card::before {
-  border: 1px solid #3e403d;
-  content: "";
-  inset: 5px;
-  pointer-events: none;
-  position: absolute;
-}
-
-.sip-stat-card > p {
-  color: #a8a9a4;
-  font-family: "SIP Block", Impact, sans-serif;
-  font-size: 0.92rem;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.sip-stat-card--headline {
+.sip-stats-layout {
   align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  display: grid;
+  gap: clamp(44px, 8vw, 130px);
+  grid-template-columns: minmax(210px, 0.42fr) minmax(420px, 1fr);
+  margin: auto;
+  max-width: 1050px;
+  min-height: 480px;
+  width: min(82vw, 1050px);
 }
 
-.sip-stat-card--headline strong {
+.sip-stats-menu > span,
+.sip-stats-stage > span {
   color: var(--sip-accent-red);
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(4rem, 8vw, 8rem);
-  font-weight: 400;
-  line-height: 0.86;
-  margin: 34px 0 22px;
-}
-
-.sip-stat-card--headline span {
-  color: #8e8f8b;
   font-size: 0.68rem;
   text-transform: uppercase;
 }
 
-.sip-stat-card--series > p {
-  margin-bottom: 32px;
+.sip-stats-menu h2 {
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: clamp(2.5rem, 4.5vw, 4.8rem);
+  font-weight: 400;
+  line-height: 0.88;
+  margin: 14px 0 28px;
+  text-transform: uppercase;
+}
+
+.sip-stats-menu > div {
+  display: grid;
+  gap: 4px;
+}
+
+.sip-stats-menu > div > button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #737470;
+  cursor: pointer;
+  display: grid;
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: 0.68rem;
+  gap: 10px;
+  grid-template-columns: 10px 1fr;
+  line-height: 1.1;
+  padding: 7px 0;
+  text-align: left;
+  text-transform: uppercase;
+  transition: color 180ms ease, transform 280ms ease;
+}
+
+.sip-stats-menu > div > button i {
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  height: 7px;
+  transition: background 180ms ease, transform 280ms ease;
+  width: 7px;
+}
+
+.sip-stats-menu > div > button:hover,
+.sip-stats-menu > div > button.is-active {
+  color: #f7f3eb;
+  transform: translateX(4px);
+}
+
+.sip-stats-menu > div > button.is-active i {
+  background: var(--sip-accent-red);
+  border-color: var(--sip-accent-red);
+  transform: scale(1.35);
+}
+
+.sip-stats-menu > p {
+  color: #747571;
+  font-size: 0.6rem;
+  line-height: 1.5;
+  margin: 24px 0 0;
+  text-transform: uppercase;
+}
+
+.sip-stats-stage {
+  min-width: 0;
+  text-align: center;
+}
+
+.sip-stats-stage h3 {
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: clamp(1.45rem, 2.25vw, 2.35rem);
+  font-weight: 400;
+  line-height: 1;
+  margin: 14px auto 24px;
+  max-width: 570px;
+  text-transform: uppercase;
+}
+
+.sip-stat-visual--headline {
+  align-items: center;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  max-width: 390px;
+  position: relative;
+  width: min(42vw, 390px);
+}
+
+.sip-stat-visual--headline > i {
+  border: 1px solid color-mix(in srgb, var(--sip-accent-red) 60%, transparent);
+  border-radius: 50%;
+  inset: 5%;
+  position: absolute;
+}
+
+.sip-stat-visual--headline > i:nth-child(2) {
+  inset: 20%;
+}
+
+.sip-stat-visual--headline::before,
+.sip-stat-visual--headline::after {
+  border: 1px solid color-mix(in srgb, #f7f3eb 18%, transparent);
+  border-radius: 50%;
+  content: "";
+  inset: 12.5%;
+  position: absolute;
+}
+
+.sip-stat-visual--headline::after {
+  inset: 29%;
+}
+
+.sip-stat-visual--headline > div {
+  max-width: 70%;
+  position: absolute;
+  z-index: 1;
+}
+
+.sip-stat-visual--headline strong {
+  color: var(--sip-accent-red);
+  display: block;
+  font-family: "SIP Block", Impact, sans-serif;
+  font-size: clamp(3.4rem, 7vw, 7rem);
+  font-weight: 400;
+  line-height: 0.84;
+  overflow-wrap: anywhere;
+}
+
+.sip-stat-visual--headline span {
+  color: #92938f;
+  display: block;
+  font-size: 0.62rem;
+  line-height: 1.45;
+  margin-top: 16px;
+  text-transform: uppercase;
+}
+
+.sip-stat-visual--series {
+  margin: 0 auto;
+  max-width: 570px;
 }
 
 .sip-stat-series {
   display: grid;
-  gap: 13px;
+  gap: 15px;
 }
 
 .sip-stat-row {
   align-items: center;
   display: grid;
-  gap: 10px;
-  grid-template-columns: minmax(42px, 0.32fr) minmax(70px, 1fr) minmax(50px, auto);
+  gap: 12px;
+  grid-template-columns: minmax(48px, 0.32fr) minmax(90px, 1fr) minmax(56px, auto);
 }
 
 .sip-stat-row span,
 .sip-stat-row strong {
   font-family: Consolas, monospace;
-  font-size: 0.58rem;
+  font-size: 0.62rem;
   font-weight: 400;
 }
 
 .sip-stat-row span {
   color: #858682;
+  text-align: left;
 }
 
 .sip-stat-row strong {
@@ -745,7 +943,7 @@
 
 .sip-stat-row i {
   background: #3c3e3b;
-  height: 6px;
+  height: 7px;
   overflow: hidden;
   position: relative;
 }
@@ -776,6 +974,57 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes sipPanelOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sipBurstOut {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  }
+  42% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 0.58;
+    transform: translate3d(var(--burst-x), var(--burst-y), 0)
+      rotate(var(--burst-rotate)) scale(var(--burst-scale));
+  }
+}
+
+@keyframes sipBurstIn {
+  0% {
+    opacity: 0.58;
+    transform: translate3d(var(--burst-x), var(--burst-y), 0)
+      rotate(var(--burst-rotate)) scale(var(--burst-scale));
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  }
+}
+
+@keyframes sipControlGlyph {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  45% {
+    transform: rotate(-14deg) scale(0.78);
+  }
+  100% {
+    transform: rotate(0) scale(1);
   }
 }
 
@@ -810,8 +1059,8 @@
   }
 
   .sip-index-ring {
-    height: min(88vw, 680px);
-    width: min(88vw, 680px);
+    height: min(70vh, 520px);
+    width: min(70vh, 520px);
   }
 
   .sip-threat-panel {
@@ -879,6 +1128,10 @@
     width: 44px;
   }
 
+  .sip-control-label {
+    display: none;
+  }
+
   .sip-threat-trigger {
     height: 68px;
     padding: 9px;
@@ -933,8 +1186,19 @@
     width: 52px;
   }
 
+  .sip-index-panel > .sip-panel-close {
+    left: 50%;
+    top: 25px;
+    transform: translateX(-50%);
+  }
+
+  .sip-index-panel > .sip-panel-close:hover {
+    transform: translateX(-50%) rotate(8deg) scale(1.06);
+  }
+
   .sip-index-panel {
     align-items: flex-start;
+    overflow-x: hidden;
     overflow-y: auto;
     padding: 116px 20px 42px;
   }
@@ -998,16 +1262,16 @@
     width: 100%;
   }
 
-  .sip-index-center strong {
-    font-size: 4.5rem;
+  .sip-index-center h2 {
+    font-size: 1.8rem;
   }
 
   .sip-index-center p {
-    font-size: 1.35rem;
-    margin: 18px 0 8px;
+    font-size: 0.8rem;
+    margin: 10px 0 8px;
   }
 
-  .sip-index-center span {
+  .sip-index-caption {
     display: none;
   }
 
@@ -1017,6 +1281,8 @@
 
   .sip-threat-panel {
     display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 116px 22px 58px;
   }
 
@@ -1064,37 +1330,110 @@
   }
 
   .sip-statistics-panel {
-    padding: 126px 18px 52px;
+    align-items: stretch;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 94px 18px 46px;
   }
 
   .sip-panel-back {
     left: 20px;
-    top: 35px;
+    top: 33px;
   }
 
-  .sip-statistics-panel .sip-panel-close {
+  .sip-statistics-panel .sip-panel-close--corner {
+    height: 42px;
     left: auto;
     right: 20px;
-    top: 24px;
+    top: 20px;
     transform: none;
+    width: 42px;
   }
 
-  .sip-statistics-panel .sip-panel-close:hover {
+  .sip-statistics-panel .sip-panel-close--corner:hover {
     transform: rotate(8deg) scale(1.06);
   }
 
-  .sip-statistics-panel > header h2 {
-    font-size: 3.8rem;
+  .sip-stats-layout {
+    display: block;
+    min-height: 0;
+    width: 100%;
   }
 
-  .sip-stat-card {
-    min-height: 260px;
+  .sip-stats-menu h2 {
+    font-size: 2.8rem;
+    margin-block: 10px 18px;
+  }
+
+  .sip-stats-menu > div {
+    display: flex;
+    gap: 8px;
+    margin-inline: -18px;
+    overflow-x: auto;
+    padding: 2px 18px 12px;
+    scrollbar-width: none;
+  }
+
+  .sip-stats-menu > div::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sip-stats-menu > div > button {
+    border: 1px solid #4d4f4b;
+    flex: 0 0 min(66vw, 230px);
+    min-height: 48px;
+    padding: 8px 12px;
+  }
+
+  .sip-stats-menu > div > button:hover,
+  .sip-stats-menu > div > button.is-active {
+    border-color: var(--sip-accent-red);
+    transform: none;
+  }
+
+  .sip-stats-menu > p {
+    margin-top: 8px;
+  }
+
+  .sip-stats-stage {
+    margin-top: 42px;
+  }
+
+  .sip-stats-stage h3 {
+    font-size: 1.55rem;
+    margin-bottom: 18px;
+  }
+
+  .sip-stat-visual--headline {
+    width: min(82vw, 330px);
+  }
+
+  .sip-stat-visual--headline strong {
+    font-size: clamp(3.3rem, 18vw, 5.5rem);
+  }
+
+  .sip-stat-row {
+    gap: 8px;
+    grid-template-columns: minmax(45px, 0.35fr) minmax(70px, 1fr) minmax(48px, auto);
+  }
+
+  .sip-burst {
+    top: 39%;
+    width: 118vw;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sip-animal,
+  .sip-burst-shard,
   .sip-stat-row i::after {
     animation: none;
+  }
+
+  .sip-burst-shard {
+    opacity: 0.45;
+    transform: translate3d(var(--burst-x), var(--burst-y), 0)
+      rotate(var(--burst-rotate)) scale(var(--burst-scale));
   }
 }

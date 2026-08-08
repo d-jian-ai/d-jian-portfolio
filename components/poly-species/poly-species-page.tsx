@@ -27,6 +27,7 @@ import {
   type PointerEvent,
   type WheelEvent,
 } from "react";
+import { SpeciesBurst } from "@/components/poly-species/species-burst";
 import {
   POLY_SPECIES,
   POLY_SPECIES_UI,
@@ -34,6 +35,10 @@ import {
   type SpeciesStatistic,
   type SpeciesView,
 } from "@/config/poly-species";
+import {
+  getSpeciesNarrative,
+  getStatisticTitle,
+} from "@/config/poly-species-copy";
 import { LOCALE_OPTIONS } from "@/config/site";
 import { useLanguage } from "@/providers/language-provider";
 import { useTheme } from "@/providers/theme-provider";
@@ -74,22 +79,32 @@ function getBarWidths(points: SpeciesSeriesPoint[]) {
   });
 }
 
-function StatisticsCard({ statistic }: { statistic: SpeciesStatistic }) {
+function StatisticVisual({
+  locale,
+  note,
+  statistic,
+}: {
+  locale: "zh" | "en" | "fr";
+  note: string;
+  statistic: SpeciesStatistic;
+}) {
   if (statistic.kind === "headline") {
     return (
-      <article className="sip-stat-card sip-stat-card--headline">
-        <p>{statistic.title}</p>
-        <strong>{statistic.value}</strong>
-        <span>{statistic.note}</span>
-      </article>
+      <div className="sip-stat-visual sip-stat-visual--headline">
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+        <div>
+          <strong>{statistic.value}</strong>
+          <span>{locale === "en" ? statistic.note : note}</span>
+        </div>
+      </div>
     );
   }
 
   const widths = getBarWidths(statistic.points);
 
   return (
-    <article className="sip-stat-card sip-stat-card--series">
-      <p>{statistic.title}</p>
+    <div className="sip-stat-visual sip-stat-visual--series">
       <div className="sip-stat-series">
         {statistic.points.map((point, index) => (
           <div className="sip-stat-row" key={`${point.label}-${index}`}>
@@ -102,7 +117,7 @@ function StatisticsCard({ statistic }: { statistic: SpeciesStatistic }) {
           </div>
         ))}
       </div>
-    </article>
+    </div>
   );
 }
 
@@ -114,14 +129,19 @@ export function PolySpeciesPage() {
   const [autoCycle, setAutoCycle] = useState(false);
   const [motionEnabled, setMotionEnabled] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [activeStatistic, setActiveStatistic] = useState(0);
   const stageRef = useRef<HTMLDivElement>(null);
   const pointerTarget = useRef({ x: 0, y: 0 });
   const pointerCurrent = useRef({ x: 0, y: 0 });
   const pointerVelocity = useRef({ x: 0, y: 0 });
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
+  const closeTimer = useRef<number | null>(null);
   const species = POLY_SPECIES[activeIndex];
   const copy = POLY_SPECIES_UI[locale];
+  const narrative = getSpeciesNarrative(species, locale);
+  const statistic = species.statistics[activeStatistic] ?? species.statistics[0];
 
   const changeSpecies = useCallback((direction: number) => {
     setActiveIndex(
@@ -142,6 +162,17 @@ export function PolySpeciesPage() {
     const cycle = window.setInterval(() => changeSpecies(1), 4600);
     return () => window.clearInterval(cycle);
   }, [autoCycle, changeSpecies, view]);
+
+  useEffect(() => {
+    setActiveStatistic(0);
+  }, [activeIndex]);
+
+  useEffect(
+    () => () => {
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     let frame = 0;
@@ -172,7 +203,7 @@ export function PolySpeciesPage() {
 
   function selectSpecies(index: number) {
     setActiveIndex(index);
-    setView("exhibit");
+    closePanel();
   }
 
   function selectRandomSpecies() {
@@ -180,8 +211,20 @@ export function PolySpeciesPage() {
     selectSpecies((activeIndex + offset) % POLY_SPECIES.length);
   }
 
+  function openPanel(nextView: Exclude<SpeciesView, "exhibit">) {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    setIsClosing(false);
+    setView(nextView);
+  }
+
   function closePanel() {
-    setView("exhibit");
+    if (isClosing) return;
+    setIsClosing(true);
+    closeTimer.current = window.setTimeout(() => {
+      setView("exhibit");
+      setIsClosing(false);
+      closeTimer.current = null;
+    }, 680);
   }
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
@@ -287,27 +330,28 @@ export function PolySpeciesPage() {
         </div>
 
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--left">
-          <button aria-label={copy.allPieces} onClick={() => setView("index")} title={copy.allPieces} type="button">
+          <button aria-label={copy.allPieces} onClick={() => openPanel("index")} type="button">
             <Grid3X3 aria-hidden="true" size={20} />
+            <span className="sip-control-label">{copy.allPieces}</span>
           </button>
           <button
             aria-label={copy.autoCycle}
             aria-pressed={autoCycle}
             className={autoCycle ? "is-active" : ""}
             onClick={() => setAutoCycle((current) => !current)}
-            title={copy.autoCycle}
             type="button"
           >
             <Shuffle aria-hidden="true" size={20} />
+            <span className="sip-control-label">{copy.autoCycle}</span>
           </button>
           <button
             aria-label={copy.motion}
             aria-pressed={motionEnabled}
             onClick={() => setMotionEnabled((current) => !current)}
-            title={copy.motion}
             type="button"
           >
             {motionEnabled ? <Pause aria-hidden="true" size={19} /> : <Play aria-hidden="true" size={19} />}
+            <span className="sip-control-label">{copy.motion}</span>
           </button>
         </nav>
 
@@ -328,7 +372,7 @@ export function PolySpeciesPage() {
           <button aria-label={copy.previous} onClick={() => changeSpecies(-1)} title={copy.previous} type="button">
             <ChevronUp aria-hidden="true" size={22} />
           </button>
-          <button className="sip-threat-trigger" onClick={() => setView("threat")} type="button">
+          <button className="sip-threat-trigger" onClick={() => openPanel("threat")} type="button">
             <span>{copy.openThreat}</span>
           </button>
           <button aria-label={copy.next} onClick={() => changeSpecies(1)} title={copy.next} type="button">
@@ -339,47 +383,55 @@ export function PolySpeciesPage() {
         <div aria-live="polite" className="sip-species-title">
           <span>{copy.piece} {String(species.index).padStart(2, "0")}</span>
           <i aria-hidden="true" />
-          <h1>{species.name}</h1>
-          <button aria-label={copy.statistics} onClick={() => setView("statistics")} title={copy.statistics} type="button">
+          <h1>{narrative.name}</h1>
+          <button aria-label={copy.statistics} onClick={() => openPanel("statistics")} title={copy.statistics} type="button">
             <BarChart3 aria-hidden="true" size={18} />
           </button>
         </div>
 
         <footer className="sip-footer-nav">
-          <button onClick={() => setView("index")} type="button">{copy.allPieces}</button>
+          <button onClick={() => openPanel("index")} type="button">{copy.allPieces}</button>
           <i aria-hidden="true" />
-          <button onClick={() => setView("threat")} type="button">{copy.threat}</button>
+          <button onClick={() => openPanel("threat")} type="button">{copy.threat}</button>
           <i aria-hidden="true" />
-          <button onClick={() => setView("statistics")} type="button">{copy.statistics}</button>
+          <button onClick={() => openPanel("statistics")} type="button">{copy.statistics}</button>
         </footer>
       </section>
 
       {view === "index" ? (
-        <section aria-label={copy.allPieces} className="sip-overlay sip-index-panel">
+        <section aria-label={copy.allPieces} className={`sip-overlay sip-index-panel${isClosing ? " is-closing" : ""}`}>
+          <SpeciesBurst phase={isClosing ? "closing" : "opening"} shards={species.shards} />
           <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
             <X aria-hidden="true" size={24} />
           </button>
           <div className="sip-index-ring" role="list">
-            {POLY_SPECIES.map((item, index) => (
-              <button
-                aria-label={`${String(item.index).padStart(2, "0")} ${item.name}`}
-                className={index === activeIndex ? "is-active" : ""}
-                key={item.id}
-                onClick={() => selectSpecies(index)}
-                role="listitem"
-                style={{ "--sip-index": index } as RingStyle}
-                title={item.name}
-                type="button"
-              >
-                <i aria-hidden="true" />
-                <span>{String(item.index).padStart(2, "0")} {item.name}</span>
-              </button>
-            ))}
+            {POLY_SPECIES.map((item, index) => {
+              const itemName = getSpeciesNarrative(item, locale).name;
+              return (
+                <button
+                  aria-label={`${String(item.index).padStart(2, "0")} ${itemName}`}
+                  className={index === activeIndex ? "is-active" : ""}
+                  key={item.id}
+                  onClick={() => selectSpecies(index)}
+                  role="listitem"
+                  style={{ "--sip-index": index } as RingStyle}
+                  title={itemName}
+                  type="button"
+                >
+                  <i aria-hidden="true" />
+                  <span>{String(item.index).padStart(2, "0")} {itemName}</span>
+                </button>
+              );
+            })}
           </div>
           <div className="sip-index-center">
-            <strong>30</strong>
-            <p>{copy.indexTitle}</p>
-            <span>{copy.indexCaption}</span>
+            <span className="sip-index-eyebrow">{copy.indexEyebrow}</span>
+            <h2>
+              <strong>30</strong> {copy.speciesCountLabel}<br />
+              <strong>30</strong> {copy.piecesCountLabel}
+            </h2>
+            <p>{copy.survivalLabel}</p>
+            <span className="sip-index-caption">{copy.indexCaption}</span>
             <button onClick={selectRandomSpecies} type="button">
               <Shuffle aria-hidden="true" size={16} />
               {copy.random}
@@ -389,7 +441,8 @@ export function PolySpeciesPage() {
       ) : null}
 
       {view === "threat" ? (
-        <section aria-label={copy.threat} className="sip-overlay sip-threat-panel">
+        <section aria-label={copy.threat} className={`sip-overlay sip-threat-panel${isClosing ? " is-closing" : ""}`}>
+          <SpeciesBurst phase={isClosing ? "closing" : "opening"} shards={species.shards} />
           <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
             <X aria-hidden="true" size={24} />
           </button>
@@ -399,12 +452,12 @@ export function PolySpeciesPage() {
             <span>{copy.range}: <strong>{species.range}</strong></span>
           </div>
           <div className="sip-threat-copy">
-            <h2>{species.threat[0]}</h2>
-            <p>{species.threat[1]}</p>
-            <p>{species.threat[2]}</p>
+            <h2>{narrative.threat[0]}</h2>
+            <p>{narrative.threat[1]}</p>
+            <p>{narrative.threat[2]}</p>
           </div>
           <div className="sip-threat-actions">
-            <button className="sip-statistics-action" onClick={() => setView("statistics")} type="button">
+            <button className="sip-statistics-action" onClick={() => openPanel("statistics")} type="button">
               <BarChart3 aria-hidden="true" size={22} />
               {copy.viewStatistics}
               <ChevronRight aria-hidden="true" size={22} />
@@ -420,23 +473,41 @@ export function PolySpeciesPage() {
       ) : null}
 
       {view === "statistics" ? (
-        <section aria-label={copy.statistics} className="sip-overlay sip-statistics-panel">
-          <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
-            <X aria-hidden="true" size={24} />
-          </button>
-          <button className="sip-panel-back" onClick={() => setView("threat")} type="button">
+        <section aria-label={copy.statistics} className={`sip-overlay sip-statistics-panel${isClosing ? " is-closing" : ""}`}>
+          <SpeciesBurst phase={isClosing ? "closing" : "settled"} shards={species.shards} />
+          <button className="sip-panel-back" onClick={() => openPanel("threat")} type="button">
             <ArrowLeft aria-hidden="true" size={16} />
             {copy.backToThreat}
           </button>
-          <header>
-            <span>{String(species.index).padStart(2, "0")} / {species.name}</span>
-            <h2>{copy.statistics}</h2>
-            <p>{copy.statisticsLead}</p>
-          </header>
-          <div className="sip-stat-grid">
-            {species.statistics.map((statistic, index) => (
-              <StatisticsCard key={`${statistic.title}-${index}`} statistic={statistic} />
-            ))}
+          <button className="sip-panel-close sip-panel-close--corner" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
+            <X aria-hidden="true" size={20} />
+          </button>
+          <div className="sip-stats-layout">
+            <aside className="sip-stats-menu">
+              <span>{String(species.index).padStart(2, "0")} / {narrative.name}</span>
+              <h2>{copy.statistics}</h2>
+              <div role="tablist" aria-label={copy.selectStatistic}>
+                {species.statistics.map((item, index) => (
+                  <button
+                    aria-selected={activeStatistic === index}
+                    className={activeStatistic === index ? "is-active" : ""}
+                    key={`${item.title}-${index}`}
+                    onClick={() => setActiveStatistic(index)}
+                    role="tab"
+                    type="button"
+                  >
+                    <i aria-hidden="true" />
+                    <span>{getStatisticTitle(item.title, locale)}</span>
+                  </button>
+                ))}
+              </div>
+              <p>{copy.selectStatistic}</p>
+            </aside>
+            <article className="sip-stats-stage" role="tabpanel">
+              <span>{String(activeStatistic + 1).padStart(2, "0")} / {String(species.statistics.length).padStart(2, "0")}</span>
+              <h3>{getStatisticTitle(statistic.title, locale)}</h3>
+              <StatisticVisual locale={locale} note={copy.statisticNote} statistic={statistic} />
+            </article>
           </div>
         </section>
       ) : null}
