@@ -2,13 +2,19 @@
 
 import {
   ArrowLeft,
+  BarChart3,
   ChevronDown,
+  ChevronRight,
   ChevronUp,
+  ExternalLink,
+  Grid3X3,
   Globe2,
   Moon,
   Pause,
   Play,
+  Shuffle,
   Sun,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -22,29 +28,91 @@ import {
   type WheelEvent,
 } from "react";
 import {
-  POLY_SPECIES_FORMS,
-  POLY_SPECIES_SHARDS,
+  POLY_SPECIES,
+  POLY_SPECIES_UI,
+  type SpeciesSeriesPoint,
+  type SpeciesStatistic,
+  type SpeciesView,
 } from "@/config/poly-species";
-import { LOCALE_OPTIONS, NAVIGATION_COPY } from "@/config/site";
+import { LOCALE_OPTIONS } from "@/config/site";
 import { useLanguage } from "@/providers/language-provider";
 import { useTheme } from "@/providers/theme-provider";
 
-type PolyPageStyle = CSSProperties & {
-  "--poly-accent": string;
-  "--poly-background": string;
-  "--poly-ink": string;
-  "--poly-muted": string;
+type ExperienceStyle = CSSProperties & {
+  "--sip-accent": string;
+  "--sip-background": string;
 };
 
-const DRAG_THRESHOLD = 54;
-const WHEEL_COOLDOWN_MS = 760;
-const WHEEL_THRESHOLD = 16;
+type RingStyle = CSSProperties & {
+  "--sip-index": number;
+};
+
+type BarStyle = CSSProperties & {
+  "--sip-bar": string;
+};
+
+const DRAG_THRESHOLD = 48;
+const WHEEL_COOLDOWN_MS = 920;
+const WHEEL_THRESHOLD = 24;
+
+function getMetricValue(value: string) {
+  const values = value
+    .replaceAll(",", "")
+    .match(/\d+(?:\.\d+)?/g)
+    ?.map(Number);
+
+  return values?.length ? Math.max(...values) : 0;
+}
+
+function getBarWidths(points: SpeciesSeriesPoint[]) {
+  const values = points.map((point) => getMetricValue(point.value));
+  const maximum = Math.max(...values, 0);
+
+  return values.map((value, index) => {
+    if (!maximum) return 42 + ((index * 13) % 46);
+    return Math.max(7, (value / maximum) * 100);
+  });
+}
+
+function StatisticsCard({ statistic }: { statistic: SpeciesStatistic }) {
+  if (statistic.kind === "headline") {
+    return (
+      <article className="sip-stat-card sip-stat-card--headline">
+        <p>{statistic.title}</p>
+        <strong>{statistic.value}</strong>
+        <span>{statistic.note}</span>
+      </article>
+    );
+  }
+
+  const widths = getBarWidths(statistic.points);
+
+  return (
+    <article className="sip-stat-card sip-stat-card--series">
+      <p>{statistic.title}</p>
+      <div className="sip-stat-series">
+        {statistic.points.map((point, index) => (
+          <div className="sip-stat-row" key={`${point.label}-${index}`}>
+            <span>{point.label}</span>
+            <i
+              aria-hidden="true"
+              style={{ "--sip-bar": `${widths[index]}%` } as BarStyle}
+            />
+            <strong>{point.value}</strong>
+          </div>
+        ))}
+      </div>
+    </article>
+  );
+}
 
 export function PolySpeciesPage() {
-  const { dictionary, locale, setLocale } = useLanguage();
+  const { locale, setLocale } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const [activeForm, setActiveForm] = useState(0);
-  const [ambientMotion, setAmbientMotion] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(21);
+  const [view, setView] = useState<SpeciesView>("exhibit");
+  const [autoCycle, setAutoCycle] = useState(false);
+  const [motionEnabled, setMotionEnabled] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const pointerTarget = useRef({ x: 0, y: 0 });
@@ -52,50 +120,72 @@ export function PolySpeciesPage() {
   const pointerVelocity = useRef({ x: 0, y: 0 });
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
-  const formCount = POLY_SPECIES_FORMS.length;
-  const form = POLY_SPECIES_FORMS[activeForm];
-  const appearance = form.theme[theme];
-  const copy = dictionary.polySpecies;
-  const formCopy = copy.forms[activeForm];
-  const navigationCopy = NAVIGATION_COPY[locale];
+  const species = POLY_SPECIES[activeIndex];
+  const copy = POLY_SPECIES_UI[locale];
 
-  const changeForm = useCallback(
-    (direction: number) => {
-      setActiveForm((current) => (current + direction + formCount) % formCount);
-    },
-    [formCount],
-  );
+  const changeSpecies = useCallback((direction: number) => {
+    setActiveIndex(
+      (current) =>
+        (current + direction + POLY_SPECIES.length) % POLY_SPECIES.length,
+    );
+  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (reducedMotion) {
-      setAmbientMotion(false);
-      return;
-    }
+    if (reducedMotion) setMotionEnabled(false);
+  }, []);
 
+  useEffect(() => {
+    if (!autoCycle || view !== "exhibit") return;
+    const cycle = window.setInterval(() => changeSpecies(1), 4600);
+    return () => window.clearInterval(cycle);
+  }, [autoCycle, changeSpecies, view]);
+
+  useEffect(() => {
     let frame = 0;
+
     const tick = () => {
-      const target = ambientMotion ? pointerTarget.current : { x: 0, y: 0 };
+      const target = motionEnabled ? pointerTarget.current : { x: 0, y: 0 };
       const current = pointerCurrent.current;
       const velocity = pointerVelocity.current;
 
-      velocity.x = (velocity.x + (target.x - current.x) * 0.075) * 0.76;
-      velocity.y = (velocity.y + (target.y - current.y) * 0.075) * 0.76;
+      velocity.x = (velocity.x + (target.x - current.x) * 0.055) * 0.78;
+      velocity.y = (velocity.y + (target.y - current.y) * 0.055) * 0.78;
       current.x += velocity.x;
       current.y += velocity.y;
 
-      stageRef.current?.style.setProperty("--poly-x", current.x.toFixed(4));
-      stageRef.current?.style.setProperty("--poly-y", current.y.toFixed(4));
+      stageRef.current?.style.setProperty("--sip-x", current.x.toFixed(4));
+      stageRef.current?.style.setProperty("--sip-y", current.y.toFixed(4));
       frame = window.requestAnimationFrame(tick);
     };
 
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
-  }, [ambientMotion]);
+  }, [motionEnabled]);
+
+  function cycleLocale() {
+    const current = LOCALE_OPTIONS.findIndex((option) => option.value === locale);
+    setLocale(LOCALE_OPTIONS[(current + 1) % LOCALE_OPTIONS.length].value);
+  }
+
+  function selectSpecies(index: number) {
+    setActiveIndex(index);
+    setView("exhibit");
+  }
+
+  function selectRandomSpecies() {
+    const offset = 1 + Math.floor(Math.random() * (POLY_SPECIES.length - 1));
+    selectSpecies((activeIndex + offset) % POLY_SPECIES.length);
+  }
+
+  function closePanel() {
+    setView("exhibit");
+  }
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
+    if (view !== "exhibit") return;
     const rect = event.currentTarget.getBoundingClientRect();
     pointerTarget.current = {
       x: ((event.clientX - rect.left) / rect.width - 0.5) * 2,
@@ -104,7 +194,9 @@ export function PolySpeciesPage() {
   }
 
   function handlePointerDown(event: PointerEvent<HTMLElement>) {
-    if ((event.target as HTMLElement).closest("a, button")) return;
+    if (view !== "exhibit" || (event.target as HTMLElement).closest("a, button")) {
+      return;
+    }
     dragState.current = {
       active: true,
       pointerId: event.pointerId,
@@ -124,47 +216,47 @@ export function PolySpeciesPage() {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    if (Math.abs(distance) >= DRAG_THRESHOLD) changeForm(distance < 0 ? 1 : -1);
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (["ArrowDown", "ArrowRight", "PageDown"].includes(event.key)) {
-      event.preventDefault();
-      changeForm(1);
-    }
-    if (["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key)) {
-      event.preventDefault();
-      changeForm(-1);
+    if (Math.abs(distance) >= DRAG_THRESHOLD) {
+      changeSpecies(distance < 0 ? 1 : -1);
     }
   }
 
   function handleWheel(event: WheelEvent<HTMLElement>) {
-    if (Math.abs(event.deltaY) < WHEEL_THRESHOLD) return;
+    if (view !== "exhibit" || Math.abs(event.deltaY) < WHEEL_THRESHOLD) return;
     event.preventDefault();
 
     const now = performance.now();
     if (now - lastWheelStep.current < WHEEL_COOLDOWN_MS) return;
     lastWheelStep.current = now;
-    changeForm(event.deltaY > 0 ? 1 : -1);
+    changeSpecies(event.deltaY > 0 ? 1 : -1);
   }
 
-  function cycleLocale() {
-    const current = LOCALE_OPTIONS.findIndex((option) => option.value === locale);
-    const next = LOCALE_OPTIONS[(current + 1) % LOCALE_OPTIONS.length];
-    setLocale(next.value);
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (event.key === "Escape" && view !== "exhibit") {
+      closePanel();
+      return;
+    }
+    if (view !== "exhibit") return;
+
+    if (["ArrowDown", "ArrowRight", "PageDown"].includes(event.key)) {
+      event.preventDefault();
+      changeSpecies(1);
+    }
+    if (["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key)) {
+      event.preventDefault();
+      changeSpecies(-1);
+    }
   }
 
-  const pageStyle: PolyPageStyle = {
-    "--poly-accent": appearance.accent,
-    "--poly-background": appearance.background,
-    "--poly-ink": appearance.ink,
-    "--poly-muted": appearance.muted,
+  const pageStyle: ExperienceStyle = {
+    "--sip-accent": species.theme.accent,
+    "--sip-background": species.theme.background,
   };
 
   return (
-    <section
-      aria-label={copy.collection}
-      className={`poly-species-experience${isDragging ? " is-dragging" : ""}${ambientMotion ? " has-ambient-motion" : ""}`}
+    <main
+      className={`sip-experience sip-mode-${theme}${isDragging ? " is-dragging" : ""}${motionEnabled ? " has-motion" : ""}`}
+      data-view={view}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerUp}
       onPointerDown={handlePointerDown}
@@ -177,125 +269,177 @@ export function PolySpeciesPage() {
       style={pageStyle}
       tabIndex={0}
     >
-      <Link className="poly-species-back" href="/space">
-        <ArrowLeft aria-hidden="true" size={15} />
-        {copy.back}
-      </Link>
+      <section aria-label={copy.collection} className="sip-frame">
+        <div className="sip-utility sip-utility--left">
+          <Link aria-label={copy.back} href="/space" title={copy.back}>
+            <ArrowLeft aria-hidden="true" size={19} />
+          </Link>
+        </div>
 
-      <div className="poly-species-tools">
-        <button
-          aria-label={theme === "dark" ? navigationCopy.themeToLight : navigationCopy.themeToDark}
-          onClick={toggleTheme}
-          title={theme === "dark" ? navigationCopy.themeToLight : navigationCopy.themeToDark}
-          type="button"
-        >
-          {theme === "dark" ? (
-            <Sun aria-hidden="true" size={17} />
-          ) : (
-            <Moon aria-hidden="true" size={17} />
-          )}
-        </button>
-        <button
-          aria-label={navigationCopy.language}
-          onClick={cycleLocale}
-          title={navigationCopy.language}
-          type="button"
-        >
-          <Globe2 aria-hidden="true" size={17} />
-          <span>{locale.toUpperCase()}</span>
-        </button>
-      </div>
+        <div className="sip-utility sip-utility--right">
+          <button aria-label={copy.theme} onClick={toggleTheme} title={copy.theme} type="button">
+            {theme === "dark" ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
+          </button>
+          <button aria-label={copy.language} onClick={cycleLocale} title={copy.language} type="button">
+            <Globe2 aria-hidden="true" size={17} />
+            <span>{locale.toUpperCase()}</span>
+          </button>
+        </div>
 
-      <header className="poly-species-header">
-        <span>{copy.collection}</span>
-        <span>
-          {(activeForm + 1).toString().padStart(2, "0")} / {formCount
-            .toString()
-            .padStart(2, "0")}
-        </span>
-      </header>
+        <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--left">
+          <button aria-label={copy.allPieces} onClick={() => setView("index")} title={copy.allPieces} type="button">
+            <Grid3X3 aria-hidden="true" size={20} />
+          </button>
+          <button
+            aria-label={copy.autoCycle}
+            aria-pressed={autoCycle}
+            className={autoCycle ? "is-active" : ""}
+            onClick={() => setAutoCycle((current) => !current)}
+            title={copy.autoCycle}
+            type="button"
+          >
+            <Shuffle aria-hidden="true" size={20} />
+          </button>
+          <button
+            aria-label={copy.motion}
+            aria-pressed={motionEnabled}
+            onClick={() => setMotionEnabled((current) => !current)}
+            title={copy.motion}
+            type="button"
+          >
+            {motionEnabled ? <Pause aria-hidden="true" size={19} /> : <Play aria-hidden="true" size={19} />}
+          </button>
+        </nav>
 
-      <div className="poly-species-stage" ref={stageRef} aria-hidden="true">
-        <div className="poly-species-breath">
-          <div className="poly-species-shards">
-            {POLY_SPECIES_SHARDS[activeForm].map((shard, index) => (
+        <div className="sip-stage" ref={stageRef}>
+          <div className="sip-animal" aria-hidden="true">
+            {species.shards.map((shard, index) => (
               <i
-                className={`poly-species-shard poly-species-shard--${(index % 5) + 1}`}
+                className={`sip-shard sip-shard--${(index % 6) + 1}`}
                 key={index}
-                style={{
-                  background: appearance.palette[shard.tone],
-                  clipPath: shard.clipPath,
-                }}
+                style={{ backgroundColor: shard.color, clipPath: shard.clipPath }}
               />
             ))}
           </div>
+          <i className="sip-animal-shadow" aria-hidden="true" />
         </div>
-        <div className="poly-species-shadow" />
-      </div>
 
-      <article className="poly-species-copy" aria-live="polite">
-        <p>{formCopy.kicker}</p>
-        <h1>{formCopy.title}</h1>
-        <span>{formCopy.trait}</span>
-        <div className="poly-species-copy__body">
-          <i aria-hidden="true" />
-          <p>{formCopy.body}</p>
-        </div>
-      </article>
-
-      <nav aria-label={copy.collection} className="poly-species-rail">
-        {copy.forms.map((item, index) => (
-          <button
-            aria-label={`${(index + 1).toString().padStart(2, "0")} / ${item.title}`}
-            aria-pressed={activeForm === index}
-            className={activeForm === index ? "is-active" : ""}
-            key={item.title}
-            onClick={() => setActiveForm(index)}
-            title={item.title}
-            type="button"
-          >
-            <span>{(index + 1).toString().padStart(2, "0")}</span>
-            <i aria-hidden="true" />
+        <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--right">
+          <button aria-label={copy.previous} onClick={() => changeSpecies(-1)} title={copy.previous} type="button">
+            <ChevronUp aria-hidden="true" size={22} />
           </button>
-        ))}
-      </nav>
+          <button className="sip-threat-trigger" onClick={() => setView("threat")} type="button">
+            <span>{copy.openThreat}</span>
+          </button>
+          <button aria-label={copy.next} onClick={() => changeSpecies(1)} title={copy.next} type="button">
+            <ChevronDown aria-hidden="true" size={22} />
+          </button>
+        </nav>
 
-      <div className="poly-species-controls">
-        <button
-          aria-label={copy.previous}
-          onClick={() => changeForm(-1)}
-          title={copy.previous}
-          type="button"
-        >
-          <ChevronUp aria-hidden="true" size={19} />
-        </button>
-        <span>
-          30 {copy.shards}
-        </span>
-        <button
-          aria-label={copy.next}
-          onClick={() => changeForm(1)}
-          title={copy.next}
-          type="button"
-        >
-          <ChevronDown aria-hidden="true" size={19} />
-        </button>
-        <button
-          aria-label={ambientMotion ? copy.motionOff : copy.motionOn}
-          className="poly-species-motion-toggle"
-          onClick={() => setAmbientMotion((current) => !current)}
-          title={ambientMotion ? copy.motionOff : copy.motionOn}
-          type="button"
-        >
-          {ambientMotion ? (
-            <Pause aria-hidden="true" size={15} />
-          ) : (
-            <Play aria-hidden="true" size={15} />
-          )}
-        </button>
-      </div>
+        <div aria-live="polite" className="sip-species-title">
+          <span>{copy.piece} {String(species.index).padStart(2, "0")}</span>
+          <i aria-hidden="true" />
+          <h1>{species.name}</h1>
+          <button aria-label={copy.statistics} onClick={() => setView("statistics")} title={copy.statistics} type="button">
+            <BarChart3 aria-hidden="true" size={18} />
+          </button>
+        </div>
 
-      <p className="poly-species-gesture">{copy.gesture}</p>
-    </section>
+        <footer className="sip-footer-nav">
+          <button onClick={() => setView("index")} type="button">{copy.allPieces}</button>
+          <i aria-hidden="true" />
+          <button onClick={() => setView("threat")} type="button">{copy.threat}</button>
+          <i aria-hidden="true" />
+          <button onClick={() => setView("statistics")} type="button">{copy.statistics}</button>
+        </footer>
+      </section>
+
+      {view === "index" ? (
+        <section aria-label={copy.allPieces} className="sip-overlay sip-index-panel">
+          <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
+            <X aria-hidden="true" size={24} />
+          </button>
+          <div className="sip-index-ring" role="list">
+            {POLY_SPECIES.map((item, index) => (
+              <button
+                aria-label={`${String(item.index).padStart(2, "0")} ${item.name}`}
+                className={index === activeIndex ? "is-active" : ""}
+                key={item.id}
+                onClick={() => selectSpecies(index)}
+                role="listitem"
+                style={{ "--sip-index": index } as RingStyle}
+                title={item.name}
+                type="button"
+              >
+                <i aria-hidden="true" />
+                <span>{String(item.index).padStart(2, "0")} {item.name}</span>
+              </button>
+            ))}
+          </div>
+          <div className="sip-index-center">
+            <strong>30</strong>
+            <p>{copy.indexTitle}</p>
+            <span>{copy.indexCaption}</span>
+            <button onClick={selectRandomSpecies} type="button">
+              <Shuffle aria-hidden="true" size={16} />
+              {copy.random}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {view === "threat" ? (
+        <section aria-label={copy.threat} className="sip-overlay sip-threat-panel">
+          <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
+            <X aria-hidden="true" size={24} />
+          </button>
+          <div className="sip-threat-meta">
+            <span>{copy.scientificName}: <strong>{species.scientificName}</strong></span>
+            <i aria-hidden="true" />
+            <span>{copy.range}: <strong>{species.range}</strong></span>
+          </div>
+          <div className="sip-threat-copy">
+            <h2>{species.threat[0]}</h2>
+            <p>{species.threat[1]}</p>
+            <p>{species.threat[2]}</p>
+          </div>
+          <div className="sip-threat-actions">
+            <button className="sip-statistics-action" onClick={() => setView("statistics")} type="button">
+              <BarChart3 aria-hidden="true" size={22} />
+              {copy.viewStatistics}
+              <ChevronRight aria-hidden="true" size={22} />
+            </button>
+            {species.conservation.href ? (
+              <a href={species.conservation.href} rel="noreferrer" target="_blank">
+                {copy.conservation}
+                <ExternalLink aria-hidden="true" size={15} />
+              </a>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {view === "statistics" ? (
+        <section aria-label={copy.statistics} className="sip-overlay sip-statistics-panel">
+          <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
+            <X aria-hidden="true" size={24} />
+          </button>
+          <button className="sip-panel-back" onClick={() => setView("threat")} type="button">
+            <ArrowLeft aria-hidden="true" size={16} />
+            {copy.backToThreat}
+          </button>
+          <header>
+            <span>{String(species.index).padStart(2, "0")} / {species.name}</span>
+            <h2>{copy.statistics}</h2>
+            <p>{copy.statisticsLead}</p>
+          </header>
+          <div className="sip-stat-grid">
+            {species.statistics.map((statistic, index) => (
+              <StatisticsCard key={`${statistic.title}-${index}`} statistic={statistic} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </main>
   );
 }

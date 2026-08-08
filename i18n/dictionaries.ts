@@ -75,22 +75,6 @@ export type Dictionary = {
     gesture: string;
     particles: string;
   };
-  polySpecies: {
-    back: string;
-    collection: string;
-    gesture: string;
-    motionOff: string;
-    motionOn: string;
-    next: string;
-    previous: string;
-    shards: string;
-    forms: Array<{
-      body: string;
-      kicker: string;
-      title: string;
-      trait: string;
-    }>;
-  };
 };
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -194,42 +178,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       ],
       gesture: "滚动切换 / 移动扰动",
       particles: "粒子",
-    },
-    polySpecies: {
-      back: "返回空间",
-      collection: "数字物种档案",
-      gesture: "滚轮、纵向滑动或使用方向键切换形态",
-      motionOff: "暂停微动",
-      motionOn: "恢复微动",
-      next: "下一形态",
-      previous: "上一形态",
-      shards: "面片",
-      forms: [
-        {
-          kicker: "01 / AERIAL CURRENT",
-          title: "气流鳐",
-          body: "宽阔翼面把微小的指针位移转化为滑翔，三十枚面片在阻力中保持同一轮廓。",
-          trait: "浮力 / 低频漂移",
-        },
-        {
-          kicker: "02 / SIGNAL BLOOM",
-          title: "信号蛾",
-          body: "对称的翼面像展开的频谱，越靠近画面中心，层次之间的视差越清晰。",
-          trait: "对称 / 光谱响应",
-        },
-        {
-          kicker: "03 / DELTA TRACE",
-          title: "三角鹭",
-          body: "细长结构把重量从躯体引向边缘，每一次转向都会留下短暂而克制的回弹。",
-          trait: "平衡 / 延迟回声",
-        },
-        {
-          kicker: "04 / TIDAL SENSE",
-          title: "潮汐狐",
-          body: "锐利轮廓与柔和阻尼共存，移动停止后，形态仍会用很短的时间重新找到平衡。",
-          trait: "敏捷 / 弹性归位",
-        },
-      ],
     },
   },
   en: {
@@ -340,42 +288,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       gesture: "Scroll to morph / Move to disturb",
       particles: "particles",
     },
-    polySpecies: {
-      back: "Back to space",
-      collection: "Digital species archive",
-      gesture: "Scroll, swipe vertically, or use arrow keys to change form",
-      motionOff: "Pause ambient motion",
-      motionOn: "Resume ambient motion",
-      next: "Next form",
-      previous: "Previous form",
-      shards: "shards",
-      forms: [
-        {
-          kicker: "01 / AERIAL CURRENT",
-          title: "Aero ray",
-          body: "A broad wingspan turns subtle pointer movement into a glide while thirty shards hold one coherent outline.",
-          trait: "Buoyancy / Low-frequency drift",
-        },
-        {
-          kicker: "02 / SIGNAL BLOOM",
-          title: "Signal moth",
-          body: "Its symmetric wings unfold like a spectrum, revealing stronger parallax as attention moves toward the center.",
-          trait: "Symmetry / Spectral response",
-        },
-        {
-          kicker: "03 / DELTA TRACE",
-          title: "Delta heron",
-          body: "A slender structure carries weight from body to edge; every change of direction leaves a restrained rebound.",
-          trait: "Balance / Delayed echo",
-        },
-        {
-          kicker: "04 / TIDAL SENSE",
-          title: "Tidal fox",
-          body: "A sharp profile and soft damping coexist, finding equilibrium for a brief moment after movement stops.",
-          trait: "Agility / Elastic return",
-        },
-      ],
-    },
   },
   fr: {
     nav: {
@@ -484,42 +396,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       ],
       gesture: "Défiler pour transformer / Bouger pour troubler",
       particles: "particules",
-    },
-    polySpecies: {
-      back: "Retour à l’espace",
-      collection: "Archive des espèces numériques",
-      gesture: "Défiler, glisser verticalement ou utiliser les flèches",
-      motionOff: "Suspendre le mouvement",
-      motionOn: "Reprendre le mouvement",
-      next: "Forme suivante",
-      previous: "Forme précédente",
-      shards: "facettes",
-      forms: [
-        {
-          kicker: "01 / AERIAL CURRENT",
-          title: "Raie aérienne",
-          body: "Une grande envergure transforme le mouvement du pointeur en glissement tandis que trente facettes maintiennent la silhouette.",
-          trait: "Portance / Dérive lente",
-        },
-        {
-          kicker: "02 / SIGNAL BLOOM",
-          title: "Phalène signal",
-          body: "Ses ailes symétriques s’ouvrent comme un spectre et révèlent une parallaxe plus nette près du centre.",
-          trait: "Symétrie / Réponse spectrale",
-        },
-        {
-          kicker: "03 / DELTA TRACE",
-          title: "Héron delta",
-          body: "Une structure élancée conduit le poids vers les bords; chaque changement de direction laisse un rebond retenu.",
-          trait: "Équilibre / Écho différé",
-        },
-        {
-          kicker: "04 / TIDAL SENSE",
-          title: "Renard de marée",
-          body: "Un profil vif et un amorti doux coexistent, puis retrouvent brièvement leur équilibre après le mouvement.",
-          trait: "Agilité / Retour élastique",
-        },
-      ],
     },
   },
 };
