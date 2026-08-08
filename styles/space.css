@@ -445,6 +445,361 @@
   padding-top: 14px;
 }
 
+/* Low-poly species preview */
+.poly-species-preview {
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+.poly-species-preview__body {
+  animation: polyPreviewDrift 5.8s ease-in-out infinite alternate;
+  inset: 8% 5%;
+  position: absolute;
+}
+
+.poly-species-preview__body i {
+  inset: 0;
+  position: absolute;
+}
+
+.poly-species-preview > span {
+  bottom: 28px;
+  color: rgba(250, 246, 255, 0.54);
+  font-family: Consolas, monospace;
+  font-size: 0.56rem;
+  left: 32px;
+  position: absolute;
+}
+
+/* Poly species: 30 DOM shards, one continuous morphology */
+.poly-species-experience {
+  --poly-x: 0;
+  --poly-y: 0;
+  background: var(--poly-background);
+  color: var(--poly-ink);
+  cursor: grab;
+  height: 100svh;
+  min-height: 620px;
+  outline: 0;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  transition:
+    background 860ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 520ms ease;
+}
+
+.poly-species-experience.is-dragging {
+  cursor: grabbing;
+}
+
+.poly-species-experience::after {
+  border: 1px solid color-mix(in srgb, var(--poly-ink) 14%, transparent);
+  content: "";
+  inset: 12px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.poly-species-back,
+.poly-species-header,
+.poly-species-copy,
+.poly-species-rail,
+.poly-species-controls,
+.poly-species-gesture {
+  position: absolute;
+  z-index: 4;
+}
+
+.poly-species-back {
+  align-items: center;
+  color: var(--poly-muted);
+  display: inline-flex;
+  font-size: 0.62rem;
+  gap: 9px;
+  left: 48px;
+  text-decoration: none;
+  text-transform: uppercase;
+  top: 118px;
+  transition: color 220ms ease;
+}
+
+.poly-species-back:hover {
+  color: var(--poly-ink);
+}
+
+.poly-species-header {
+  color: var(--poly-muted);
+  display: flex;
+  font-family: Consolas, monospace;
+  font-size: 0.58rem;
+  justify-content: space-between;
+  left: 48px;
+  right: 48px;
+  text-transform: uppercase;
+  top: 164px;
+}
+
+.poly-species-stage {
+  height: min(68svh, 760px);
+  left: 58%;
+  perspective: 1300px;
+  pointer-events: none;
+  position: absolute;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: min(70vw, 1040px);
+  z-index: 1;
+}
+
+.poly-species-breath {
+  height: 100%;
+  transform: translate3d(
+      calc(var(--poly-x) * 15px),
+      calc(var(--poly-y) * 11px),
+      0
+    )
+    rotateX(calc(var(--poly-y) * -2deg))
+    rotateY(calc(var(--poly-x) * 3deg));
+  transform-style: preserve-3d;
+  width: 100%;
+  will-change: transform;
+}
+
+.poly-species-shards {
+  height: 100%;
+  position: relative;
+  transform-origin: 50% 50%;
+  width: 100%;
+}
+
+.has-ambient-motion .poly-species-shards {
+  animation: polySpeciesBreathe 6.8s ease-in-out infinite alternate;
+}
+
+.poly-species-shard {
+  inset: 0;
+  position: absolute;
+  transform: translate3d(0, 0, 0);
+  transition:
+    clip-path 1080ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 420ms ease,
+    transform 420ms ease;
+  will-change: clip-path, transform;
+}
+
+.poly-species-shard--1,
+.poly-species-shard--5 {
+  filter: brightness(1.05);
+  transform: translate3d(
+    calc(var(--poly-x) * 3px),
+    calc(var(--poly-y) * 2px),
+    4px
+  );
+}
+
+.poly-species-shard--2 {
+  transform: translate3d(
+    calc(var(--poly-x) * -5px),
+    calc(var(--poly-y) * -3px),
+    10px
+  );
+}
+
+.poly-species-shard--3 {
+  filter: brightness(0.94);
+  transform: translate3d(
+    calc(var(--poly-x) * 7px),
+    calc(var(--poly-y) * -4px),
+    16px
+  );
+}
+
+.poly-species-shard--4 {
+  transform: translate3d(
+    calc(var(--poly-x) * -2px),
+    calc(var(--poly-y) * 5px),
+    7px
+  );
+}
+
+.poly-species-shadow {
+  background: color-mix(in srgb, var(--poly-ink) 28%, transparent);
+  border-radius: 50%;
+  bottom: 3%;
+  filter: blur(17px);
+  height: 10px;
+  left: 31%;
+  opacity: 0.42;
+  position: absolute;
+  transform: translateX(calc(var(--poly-x) * 10px));
+  transition: background 720ms ease;
+  width: 38%;
+}
+
+.poly-species-copy {
+  left: 48px;
+  top: 31%;
+  width: min(310px, 24vw);
+}
+
+.poly-species-copy > p,
+.poly-species-copy > span {
+  color: var(--poly-muted);
+  font-family: Consolas, monospace;
+  font-size: 0.58rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.poly-species-copy h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 4.15rem;
+  font-weight: 400;
+  line-height: 0.91;
+  margin: 22px 0 20px;
+}
+
+.poly-species-copy__body {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 18px 1fr;
+  margin-top: 28px;
+}
+
+.poly-species-copy__body i {
+  background: var(--poly-accent);
+  height: 1px;
+  margin-top: 8px;
+  width: 18px;
+}
+
+.poly-species-copy__body p {
+  color: var(--poly-muted);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.poly-species-rail {
+  display: grid;
+  gap: 5px;
+  right: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.poly-species-rail button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--poly-muted);
+  cursor: pointer;
+  display: grid;
+  font-family: Consolas, monospace;
+  font-size: 0.56rem;
+  gap: 10px;
+  grid-template-columns: 22px 30px;
+  padding: 8px 0;
+  transition: color 220ms ease;
+}
+
+.poly-species-rail button i {
+  background: color-mix(in srgb, var(--poly-ink) 24%, transparent);
+  height: 1px;
+  transition:
+    background 240ms ease,
+    width 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 12px;
+}
+
+.poly-species-rail button:hover,
+.poly-species-rail button.is-active {
+  color: var(--poly-ink);
+}
+
+.poly-species-rail button.is-active i {
+  background: var(--poly-accent);
+  width: 30px;
+}
+
+.poly-species-controls {
+  align-items: center;
+  bottom: 32px;
+  display: flex;
+  gap: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.poly-species-controls button {
+  align-items: center;
+  background: color-mix(in srgb, var(--poly-background) 86%, var(--poly-ink));
+  border: 1px solid color-mix(in srgb, var(--poly-ink) 22%, transparent);
+  border-radius: 50%;
+  color: var(--poly-ink);
+  cursor: pointer;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 42px;
+}
+
+.poly-species-controls button:hover {
+  border-color: var(--poly-accent);
+  transform: translateY(-3px);
+}
+
+.poly-species-controls > span {
+  color: var(--poly-muted);
+  font-family: Consolas, monospace;
+  font-size: 0.56rem;
+  min-width: 92px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.poly-species-controls .poly-species-motion-toggle {
+  height: 34px;
+  margin-left: 8px;
+  width: 34px;
+}
+
+.poly-species-gesture {
+  bottom: 39px;
+  color: var(--poly-muted);
+  font-size: 0.58rem;
+  left: 48px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+@keyframes polySpeciesBreathe {
+  0% {
+    transform: translate3d(0, 2px, 0) scale(0.992);
+  }
+  100% {
+    transform: translate3d(0, -5px, 0) scale(1.006);
+  }
+}
+
+@keyframes polyPreviewDrift {
+  from {
+    transform: translate3d(-4px, 3px, 0) rotate(-0.45deg) scale(0.96);
+  }
+  to {
+    transform: translate3d(5px, -3px, 0) rotate(0.4deg) scale(1.01);
+  }
+}
+
 @keyframes fieldPulse {
   0%,
   100% {
@@ -468,6 +823,14 @@
 
   .space-system-note {
     display: none;
+  }
+
+  .poly-species-copy {
+    width: 250px;
+  }
+
+  .poly-species-copy h1 {
+    font-size: 3.45rem;
   }
 }
 
@@ -532,6 +895,33 @@
 
   .space-chapter-nav {
     right: 22px;
+  }
+
+  .poly-species-back {
+    left: 24px;
+  }
+
+  .poly-species-header {
+    left: 24px;
+    right: 24px;
+  }
+
+  .poly-species-stage {
+    left: 55%;
+    width: 88vw;
+  }
+
+  .poly-species-copy {
+    left: 24px;
+    width: 230px;
+  }
+
+  .poly-species-rail {
+    right: 18px;
+  }
+
+  .poly-species-gesture {
+    left: 24px;
   }
 }
 
@@ -635,6 +1025,104 @@
   .space-status .status-gesture,
   .space-status .status-chapter,
   .space-status .status-line {
+    display: none;
+  }
+
+  .poly-species-experience {
+    min-height: 580px;
+  }
+
+  .poly-species-experience::after {
+    inset: 7px;
+  }
+
+  .poly-species-back {
+    left: 16px;
+    top: 90px;
+  }
+
+  .poly-species-header {
+    left: auto;
+    right: 16px;
+    top: 93px;
+  }
+
+  .poly-species-header span:first-child {
+    display: none;
+  }
+
+  .poly-species-stage {
+    height: 48svh;
+    left: 50%;
+    top: 37%;
+    width: 116vw;
+  }
+
+  .poly-species-copy {
+    bottom: 87px;
+    left: 16px;
+    right: 42px;
+    top: auto;
+    width: auto;
+  }
+
+  .poly-species-copy h1 {
+    font-size: 2.8rem;
+    margin: 12px 0 10px;
+  }
+
+  .poly-species-copy__body {
+    gap: 9px;
+    grid-template-columns: 12px 1fr;
+    margin-top: 13px;
+  }
+
+  .poly-species-copy__body i {
+    width: 12px;
+  }
+
+  .poly-species-copy__body p {
+    font-size: 0.66rem;
+    line-height: 1.55;
+    max-width: 430px;
+  }
+
+  .poly-species-rail {
+    gap: 1px;
+    right: 8px;
+    top: 38%;
+  }
+
+  .poly-species-rail button {
+    gap: 4px;
+    grid-template-columns: 18px 16px;
+    padding-block: 5px;
+  }
+
+  .poly-species-rail button i {
+    width: 7px;
+  }
+
+  .poly-species-rail button.is-active i {
+    width: 16px;
+  }
+
+  .poly-species-controls {
+    bottom: 18px;
+  }
+
+  .poly-species-controls button {
+    height: 38px;
+    width: 38px;
+  }
+
+  .poly-species-controls .poly-species-motion-toggle {
+    height: 32px;
+    margin-left: 3px;
+    width: 32px;
+  }
+
+  .poly-species-gesture {
     display: none;
   }
 }

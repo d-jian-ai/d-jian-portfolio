@@ -3,6 +3,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { ExperimentalParticleField } from "@/components/experimental-particle-field";
+import { PolySpeciesPreview } from "@/components/poly-species/poly-species-preview";
 import {
   SPACE_EXPERIMENTS,
   type SpacePreviewKind,
@@ -73,5 +74,7 @@ function ExperimentPreview({ kind }: { kind: SpacePreviewKind }) {
   switch (kind) {
     case "particle-field":
       return <ExperimentalParticleField chapter={0} />;
+    case "poly-species":
+      return <PolySpeciesPreview />;
   }
 }

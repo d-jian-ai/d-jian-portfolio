@@ -3,7 +3,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 
 type ExperimentKey = keyof Dictionary["space"]["experiments"];
 
-export type SpacePreviewKind = "particle-field";
+export type SpacePreviewKind = "particle-field" | "poly-species";
 
 export const SPACE_EXPERIMENTS: ReadonlyArray<{
   code: string;
@@ -19,6 +19,14 @@ export const SPACE_EXPERIMENTS: ReadonlyArray<{
     key: "generativeField",
     preview: "particle-field",
     slug: "generative-field",
+    year: "2026",
+  },
+  {
+    code: "02",
+    href: "/space/poly-species",
+    key: "polySpecies",
+    preview: "poly-species",
+    slug: "poly-species",
     year: "2026",
   },
 ];
