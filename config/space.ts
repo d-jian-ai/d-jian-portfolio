@@ -5,6 +5,14 @@ type ExperimentKey = keyof Dictionary["space"]["experiments"];
 
 export type SpacePreviewKind = "particle-field" | "poly-species";
 
+export const STANDALONE_SPACE_ROUTES = ["/space/poly-species"] as const;
+
+export function isStandaloneSpaceRoute(pathname: string) {
+  return STANDALONE_SPACE_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+}
+
 export const SPACE_EXPERIMENTS: ReadonlyArray<{
   code: string;
   href: string;

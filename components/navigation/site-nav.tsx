@@ -8,6 +8,7 @@ import {
   NAVIGATION_ITEMS,
   SITE_CONFIG,
 } from "@/config/site";
+import { isStandaloneSpaceRoute } from "@/config/space";
 import { useLanguage } from "@/providers/language-provider";
 import { useTheme } from "@/providers/theme-provider";
 import { DesktopNavigation } from "./desktop-navigation";
@@ -162,6 +163,8 @@ export function SiteNav() {
     setLocale(nextLocale);
     setLocaleOpen(false);
   }
+
+  if (isStandaloneSpaceRoute(pathname)) return null;
 
   return (
     <>

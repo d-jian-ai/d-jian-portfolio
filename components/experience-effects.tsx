@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { SITE_CONFIG } from "@/config/site";
+import { isStandaloneSpaceRoute } from "@/config/space";
 
 export function ExperienceEffects() {
   const pathname = usePathname();
@@ -83,6 +84,8 @@ export function ExperienceEffects() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+  if (isStandaloneSpaceRoute(pathname)) return null;
 
   return (
     <>

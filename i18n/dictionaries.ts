@@ -198,7 +198,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     polySpecies: {
       back: "返回空间",
       collection: "数字物种档案",
-      gesture: "拖动、滑动或使用方向键切换形态",
+      gesture: "滚轮、纵向滑动或使用方向键切换形态",
       motionOff: "暂停微动",
       motionOn: "恢复微动",
       next: "下一形态",
@@ -343,7 +343,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     polySpecies: {
       back: "Back to space",
       collection: "Digital species archive",
-      gesture: "Drag, swipe, or use arrow keys to change form",
+      gesture: "Scroll, swipe vertically, or use arrow keys to change form",
       motionOff: "Pause ambient motion",
       motionOn: "Resume ambient motion",
       next: "Next form",
@@ -488,7 +488,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     polySpecies: {
       back: "Retour à l’espace",
       collection: "Archive des espèces numériques",
-      gesture: "Glisser ou utiliser les flèches pour changer de forme",
+      gesture: "Défiler, glisser verticalement ou utiliser les flèches",
       motionOff: "Suspendre le mouvement",
       motionOn: "Reprendre le mouvement",
       next: "Forme suivante",

@@ -2,10 +2,13 @@
 
 import {
   ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  Globe2,
+  Moon,
   Pause,
   Play,
+  Sun,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -16,11 +19,13 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type PointerEvent,
+  type WheelEvent,
 } from "react";
 import {
   POLY_SPECIES_FORMS,
   POLY_SPECIES_SHARDS,
 } from "@/config/poly-species";
+import { LOCALE_OPTIONS, NAVIGATION_COPY } from "@/config/site";
 import { useLanguage } from "@/providers/language-provider";
 import { useTheme } from "@/providers/theme-provider";
 
@@ -32,10 +37,12 @@ type PolyPageStyle = CSSProperties & {
 };
 
 const DRAG_THRESHOLD = 54;
+const WHEEL_COOLDOWN_MS = 760;
+const WHEEL_THRESHOLD = 16;
 
 export function PolySpeciesPage() {
-  const { dictionary } = useLanguage();
-  const { theme } = useTheme();
+  const { dictionary, locale, setLocale } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [activeForm, setActiveForm] = useState(0);
   const [ambientMotion, setAmbientMotion] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
@@ -43,12 +50,14 @@ export function PolySpeciesPage() {
   const pointerTarget = useRef({ x: 0, y: 0 });
   const pointerCurrent = useRef({ x: 0, y: 0 });
   const pointerVelocity = useRef({ x: 0, y: 0 });
-  const dragState = useRef({ active: false, pointerId: -1, startX: 0 });
+  const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
+  const lastWheelStep = useRef(0);
   const formCount = POLY_SPECIES_FORMS.length;
   const form = POLY_SPECIES_FORMS[activeForm];
   const appearance = form.theme[theme];
   const copy = dictionary.polySpecies;
   const formCopy = copy.forms[activeForm];
+  const navigationCopy = NAVIGATION_COPY[locale];
 
   const changeForm = useCallback(
     (direction: number) => {
@@ -99,7 +108,7 @@ export function PolySpeciesPage() {
     dragState.current = {
       active: true,
       pointerId: event.pointerId,
-      startX: event.clientX,
+      startY: event.clientY,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     setIsDragging(true);
@@ -109,7 +118,7 @@ export function PolySpeciesPage() {
     const drag = dragState.current;
     if (!drag.active || drag.pointerId !== event.pointerId) return;
 
-    const distance = event.clientX - drag.startX;
+    const distance = event.clientY - drag.startY;
     dragState.current.active = false;
     setIsDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -119,14 +128,30 @@ export function PolySpeciesPage() {
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (event.key === "ArrowRight") {
+    if (["ArrowDown", "ArrowRight", "PageDown"].includes(event.key)) {
       event.preventDefault();
       changeForm(1);
     }
-    if (event.key === "ArrowLeft") {
+    if (["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key)) {
       event.preventDefault();
       changeForm(-1);
     }
+  }
+
+  function handleWheel(event: WheelEvent<HTMLElement>) {
+    if (Math.abs(event.deltaY) < WHEEL_THRESHOLD) return;
+    event.preventDefault();
+
+    const now = performance.now();
+    if (now - lastWheelStep.current < WHEEL_COOLDOWN_MS) return;
+    lastWheelStep.current = now;
+    changeForm(event.deltaY > 0 ? 1 : -1);
+  }
+
+  function cycleLocale() {
+    const current = LOCALE_OPTIONS.findIndex((option) => option.value === locale);
+    const next = LOCALE_OPTIONS[(current + 1) % LOCALE_OPTIONS.length];
+    setLocale(next.value);
   }
 
   const pageStyle: PolyPageStyle = {
@@ -148,6 +173,7 @@ export function PolySpeciesPage() {
       }}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onWheel={handleWheel}
       style={pageStyle}
       tabIndex={0}
     >
@@ -155,6 +181,30 @@ export function PolySpeciesPage() {
         <ArrowLeft aria-hidden="true" size={15} />
         {copy.back}
       </Link>
+
+      <div className="poly-species-tools">
+        <button
+          aria-label={theme === "dark" ? navigationCopy.themeToLight : navigationCopy.themeToDark}
+          onClick={toggleTheme}
+          title={theme === "dark" ? navigationCopy.themeToLight : navigationCopy.themeToDark}
+          type="button"
+        >
+          {theme === "dark" ? (
+            <Sun aria-hidden="true" size={17} />
+          ) : (
+            <Moon aria-hidden="true" size={17} />
+          )}
+        </button>
+        <button
+          aria-label={navigationCopy.language}
+          onClick={cycleLocale}
+          title={navigationCopy.language}
+          type="button"
+        >
+          <Globe2 aria-hidden="true" size={17} />
+          <span>{locale.toUpperCase()}</span>
+        </button>
+      </div>
 
       <header className="poly-species-header">
         <span>{copy.collection}</span>
@@ -217,7 +267,7 @@ export function PolySpeciesPage() {
           title={copy.previous}
           type="button"
         >
-          <ChevronLeft aria-hidden="true" size={19} />
+          <ChevronUp aria-hidden="true" size={19} />
         </button>
         <span>
           30 {copy.shards}
@@ -228,7 +278,7 @@ export function PolySpeciesPage() {
           title={copy.next}
           type="button"
         >
-          <ChevronRight aria-hidden="true" size={19} />
+          <ChevronDown aria-hidden="true" size={19} />
         </button>
         <button
           aria-label={ambientMotion ? copy.motionOff : copy.motionOn}
