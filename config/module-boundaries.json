@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "protected": [
+    ".github/**",
+    ".gitignore",
+    "AGENTS.md",
+    "ARCHITECTURE.md",
+    "README.md",
+    "config/module-boundaries.json",
+    "next-env.d.ts",
+    "next.config.ts",
+    "package-lock.json",
+    "package.json",
+    "scripts/check-module-scope.mjs",
+    "tsconfig.json",
+    "vercel.json"
+  ],
+  "scopes": {
+    "home": [
+      "app/page.tsx",
+      "components/home-page.tsx",
+      "components/home/**",
+      "config/home.ts",
+      "styles/home.css"
+    ],
+    "work": [
+      "app/work/**",
+      "components/project-visual.tsx",
+      "components/work-detail.tsx",
+      "components/work-index.tsx",
+      "data/work.ts",
+      "public/images/**"
+    ],
+    "space-index": [
+      "app/space/page.tsx",
+      "components/poly-species/poly-species-preview.tsx",
+      "components/space-index-page.tsx",
+      "config/poly-species-preview.ts"
+    ],
+    "space-generative-field": [
+      "app/space/generative-field/**",
+      "components/generative-field-page.tsx"
+    ],
+    "space-shared": [
+      "components/experimental-particle-field.tsx",
+      "config/space.ts",
+      "styles/space.css"
+    ],
+    "space-poly-species": [
+      "app/space/poly-species/**",
+      "components/poly-species/**",
+      "config/poly-species*.ts",
+      "data/species-in-pieces.json",
+      "public/species-in-pieces/**",
+      "scripts/validate-poly-species.mjs",
+      "styles/species-*.css"
+    ],
+    "shared": [
+      "app/globals.css",
+      "app/layout.tsx",
+      "app/loading.tsx",
+      "components/app-chrome.tsx",
+      "components/experience-effects.tsx",
+      "components/loading/**",
+      "components/navigation/**",
+      "components/smooth-scroll.tsx",
+      "config/loading.ts",
+      "config/site.ts",
+      "i18n/**",
+      "providers/**",
+      "public/og.png",
+      "styles/navigation.css",
+      "types/**"
+    ],
+    "infrastructure": [
+      ".github/**",
+      ".gitignore",
+      "AGENTS.md",
+      "ARCHITECTURE.md",
+      "README.md",
+      "config/module-boundaries.json",
+      "next-env.d.ts",
+      "next.config.ts",
+      "package-lock.json",
+      "package.json",
+      "scripts/check-module-scope.mjs",
+      "tsconfig.json",
+      "vercel.json"
+    ],
+    "new-module": [
+      "app/**",
+      "components/**",
+      "config/**",
+      "data/**",
+      "i18n/**",
+      "public/**",
+      "styles/**",
+      "types/**"
+    ]
+  }
+}
+

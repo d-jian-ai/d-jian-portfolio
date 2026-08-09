@@ -2,6 +2,26 @@
 
 一个沉浸式个人作品集网站，面向设计、网页和影像作品展示。项目使用 Next.js App Router 构建，适合托管到 GitHub 并由 Vercel 自动部署。
 
+## 跨账号协作
+
+新的 Codex、GPT 账号或开发者开始修改前，必须先阅读：
+
+- `AGENTS.md`：修改范围、验证和 Git 工作规则。
+- `ARCHITECTURE.md`：模块边界、依赖关系和新增模块流程。
+- `config/module-boundaries.json`：机器可读的文件白名单。
+
+指定模块后使用以下命令检查是否越界：
+
+```bash
+npm run check:scope -- <scope>
+```
+
+跨模块任务必须同时列出经过确认的范围，例如：
+
+```bash
+npm run check:scope -- space-poly-species shared
+```
+
 ## 本地运行
 
 ```bash

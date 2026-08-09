@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:scope": "node scripts/check-module-scope.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "validate:poly": "node scripts/validate-poly-species.mjs"
