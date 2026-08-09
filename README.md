@@ -1,6 +1,8 @@
-# CREER Portfolio
+# D-JIAN Portfolio
 
 一个沉浸式个人作品集网站，面向设计、网页和影像作品展示。项目使用 Next.js App Router 构建，适合托管到 GitHub 并由 Vercel 自动部署。
+
+正式网站：<https://d-jian-portfolio.vercel.app>
 
 ## 跨账号协作
 

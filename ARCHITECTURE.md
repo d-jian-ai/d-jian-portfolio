@@ -1,4 +1,4 @@
-# CREER Architecture
+# D-JIAN Portfolio Architecture
 
 This document is the repository handoff for new accounts, coding agents, and human contributors. It describes ownership boundaries rather than historical conversation context.
 
