@@ -26,6 +26,12 @@
   cursor: grabbing;
 }
 
+.sip-motion-root {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
 .sip-mode-dark {
   --sip-ink: #f4f0e8;
   --sip-paper: #1c1d1c;
@@ -160,9 +166,29 @@
   z-index: 2;
 }
 
-.sip-animal {
+.sip-shard-field,
+.sip-shard-field .level-one,
+.sip-shard-field .level-two,
+.sip-shard-field .animal-mover,
+.sip-shard-field .wrap {
   height: 100%;
-  position: relative;
+  position: absolute;
+  width: 100%;
+}
+
+.sip-shard-field {
+  background-color: transparent !important;
+  inset: 0;
+}
+
+.sip-shard-field .level-one,
+.sip-shard-field .level-two,
+.sip-shard-field .animal-mover,
+.sip-shard-field .wrap {
+  inset: 0;
+}
+
+.sip-animal {
   transform: translate3d(
     calc(var(--sip-x) * 12px),
     calc(var(--sip-y) * 8px),
@@ -174,41 +200,87 @@
   will-change: transform;
 }
 
-.has-motion .sip-animal {
-  animation: sipAnimalFloat 5.8s ease-in-out infinite alternate;
+.sip-shard-field .shard-wrap {
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
 }
 
-.has-motion .sip-shard {
-  animation: sipShardDrift var(--sip-shard-duration) ease-in-out
-    var(--sip-shard-delay) infinite alternate;
+.sip-shard-field .shard-wrap.peripheral {
+  z-index: 1;
 }
 
 .sip-shard {
+  background-color: #1a1a1d;
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%);
   inset: 0;
   position: absolute;
   transition:
-    clip-path var(--sip-shard-morph-duration) cubic-bezier(0.18, 0.78, 0.22, 1)
-      var(--sip-shard-morph-delay),
-    background-color 960ms cubic-bezier(0.22, 1, 0.36, 1)
-      var(--sip-shard-morph-delay);
+    clip-path var(--sip-clip-duration) var(--sip-clip-delay)
+      cubic-bezier(0.7, 0.3, 0, 1),
+    background-color var(--sip-clip-duration) var(--sip-bg-delay),
+    transform 300ms,
+    margin 300ms var(--sip-clip-delay);
+  width: 100%;
   will-change: clip-path;
 }
 
-.sip-animal-shadow {
-  background: rgba(25, 24, 22, 0.26);
-  border-radius: 50%;
-  bottom: 18%;
-  filter: blur(18px);
-  height: 8px;
-  left: 37%;
-  opacity: 0.64;
+.chromebrowser .sip-shard::before {
+  background: rgba(255, 255, 255, 0);
+  content: "";
+  height: 100%;
+  inset: 0;
   position: absolute;
-  transform: translateX(calc(var(--sip-x) * 8px));
-  transition:
-    left 980ms cubic-bezier(0.16, 1, 0.3, 1),
-    width 980ms cubic-bezier(0.16, 1, 0.3, 1);
-  width: 28%;
+  width: 100%;
+}
+
+.sip-animal-shadow {
+  background-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.35) 0,
+    rgba(0, 0, 0, 0.14) 35%,
+    transparent 100%
+  );
+  bottom: 10%;
+  height: 5%;
+  left: 30%;
+  position: absolute;
+  transition: 600ms cubic-bezier(1, 0.3, 0.3, 1) 600ms;
+  width: 50%;
   z-index: -1;
+}
+
+.sip-animal-shadow::before,
+.sip-animal-shadow::after {
+  background-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.38) 0,
+    rgba(0, 0, 0, 0.185) 35%,
+    transparent 100%
+  );
+  bottom: 0;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 50%;
+}
+
+.sip-animal-shadow::before {
+  left: 30%;
+}
+
+.sip-animal-shadow::after {
+  background-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.1) 0,
+    transparent 100%
+  );
+  bottom: 20%;
+  height: 60%;
+  left: -37%;
 }
 
 .sip-side-controls {
@@ -408,9 +480,7 @@
 
 .sip-overlay {
   animation: sipPanelIn 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  background-color: var(--sip-dark);
-  background-image: url("/species-in-pieces/black-texture.png");
-  background-repeat: repeat;
+  background: transparent;
   color: #f7f3eb;
   inset: 0;
   overflow: hidden;
@@ -421,46 +491,43 @@
 }
 
 .sip-overlay.is-closing {
-  animation: sipPanelOut 680ms cubic-bezier(0.55, 0, 0.75, 0) both;
+  animation: sipPanelOut 820ms cubic-bezier(0.55, 0, 0.75, 0) both;
 }
 
-.sip-overlay > :not(.sip-burst) {
-  z-index: 2;
-}
-
-.sip-burst {
-  aspect-ratio: 16 / 9;
-  left: 50%;
+.sip-source-burst-shell {
+  background-color: #232323;
+  background-image: url("/species-in-pieces/black-texture.png");
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   position: fixed;
-  top: var(--sip-stage-top);
-  transform: translate(-50%, -50%);
-  width: var(--sip-stage-width);
-  z-index: 1;
+  z-index: 39;
 }
 
-.sip-burst-shard {
-  inset: 0;
-  opacity: 0;
+.sip-source-burst {
+  aspect-ratio: 10 / 7;
+  height: auto;
+  left: 50%;
   position: absolute;
-  will-change: opacity, transform;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max(99vw, 143svh);
 }
 
-.sip-burst--opening .sip-burst-shard {
-  animation:
-    sipBurstOut 920ms cubic-bezier(0.2, 0.72, 0.24, 1) var(--burst-delay) both,
-    sipBurstDrift var(--burst-duration) ease-in-out
-      calc(980ms + var(--burst-delay)) infinite alternate;
+.sip-source-burst .level-one {
+  transform: scale(0.5) translateY(-14%);
+  transform-origin: center;
+  transition: 800ms cubic-bezier(0.88, 0.005, 0, 1);
 }
 
-.sip-burst--settled .sip-burst-shard {
-  animation: sipBurstDrift var(--burst-duration) ease-in-out infinite alternate;
-  opacity: 0.58;
+.sip-source-burst .level-two {
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: all 400ms cubic-bezier(0.02, 0.65, 0.49, 0.99);
 }
 
-.sip-burst--closing .sip-burst-shard {
-  animation: sipBurstIn 620ms cubic-bezier(0.4, 0, 0.2, 1) both;
-  animation-delay: var(--burst-delay);
+.sip-source-burst .sip-animal {
+  transform: none;
 }
 
 .sip-panel-close {
@@ -996,30 +1063,6 @@
   width: var(--sip-bar);
 }
 
-@keyframes sipAnimalFloat {
-  from {
-    translate: 0 3px;
-  }
-  to {
-    translate: 0 -7px;
-  }
-}
-
-@keyframes sipShardDrift {
-  from {
-    transform: translate3d(
-        calc(var(--sip-shard-x) * -1),
-        calc(var(--sip-shard-y) * -1),
-        0
-      )
-      rotate(calc(var(--sip-shard-rotate) * -1));
-  }
-  to {
-    transform: translate3d(var(--sip-shard-x), var(--sip-shard-y), 0)
-      rotate(var(--sip-shard-rotate));
-  }
-}
-
 @keyframes sipPanelIn {
   from {
     opacity: 0;
@@ -1032,64 +1075,12 @@
 }
 
 @keyframes sipPanelOut {
-  from {
+  0%,
+  38% {
     opacity: 1;
   }
-  to {
+  100% {
     opacity: 0;
-  }
-}
-
-@keyframes sipBurstOut {
-  0% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(0) scale(1);
-  }
-  42% {
-    opacity: 0.92;
-  }
-  100% {
-    opacity: 0.58;
-    transform: translate3d(var(--burst-x), var(--burst-y), 0)
-      rotate(var(--burst-rotate)) scale(var(--burst-scale));
-  }
-}
-
-@keyframes sipBurstDrift {
-  from {
-    opacity: 0.48;
-    transform: translate3d(
-        calc(var(--burst-x) - var(--burst-drift-x)),
-        calc(var(--burst-y) - var(--burst-drift-y)),
-        0
-      )
-      rotate(calc(var(--burst-rotate) - var(--burst-drift-rotate)))
-      scale(var(--burst-scale));
-  }
-  to {
-    opacity: 0.68;
-    transform: translate3d(
-        calc(var(--burst-x) + var(--burst-drift-x)),
-        calc(var(--burst-y) + var(--burst-drift-y)),
-        0
-      )
-      rotate(calc(var(--burst-rotate) + var(--burst-drift-rotate)))
-      scale(var(--burst-scale));
-  }
-}
-
-@keyframes sipBurstIn {
-  0% {
-    opacity: 0.58;
-    transform: translate3d(var(--burst-x), var(--burst-y), 0)
-      rotate(var(--burst-rotate)) scale(var(--burst-scale));
-  }
-  78% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(0) scale(1);
   }
 }
 
@@ -1529,22 +1520,10 @@
     grid-template-columns: minmax(45px, 0.35fr) minmax(70px, 1fr) minmax(48px, auto);
   }
 
-  .sip-burst {
-    top: var(--sip-stage-top);
-    width: var(--sip-stage-width);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sip-animal,
-  .sip-burst-shard,
   .sip-stat-row i::after {
     animation: none;
-  }
-
-  .sip-burst-shard {
-    opacity: 0.45;
-    transform: translate3d(var(--burst-x), var(--burst-y), 0)
-      rotate(var(--burst-rotate)) scale(var(--burst-scale));
   }
 }

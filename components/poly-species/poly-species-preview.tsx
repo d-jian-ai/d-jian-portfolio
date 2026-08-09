@@ -1,7 +1,7 @@
-import { POLY_SPECIES } from "@/config/poly-species";
+import { POLY_SPECIES_PREVIEW } from "@/config/poly-species-preview";
 
 export function PolySpeciesPreview() {
-  const species = POLY_SPECIES[21];
+  const species = POLY_SPECIES_PREVIEW;
 
   return (
     <div

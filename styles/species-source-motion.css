@@ -1,0 +1,1277 @@
+/* Vendored interaction states from the original Species in Pieces source. */
+.smash .animalchanger {
+  -webkit-transition: background 0.13s linear;
+  -moz-transition: background 0.13s linear;
+  transition: background 0.13s linear;
+  background-color: #232323; }
+  .smash .animalchanger::before {
+    opacity: 0.13;
+    -webkit-transition-delay: 0.24s;
+    -moz-transition-delay: 0.24s;
+    transition-delay: 0.24s;
+    -webkit-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -o-transform: scale(1.3);
+    transform: scale(1.3); }
+  .smash .animalchanger .level-one {
+    -webkit-transition: all 3.5s cubic-bezier(0, 0.77, 0.2, 1) 0.13s;
+    -moz-transition: all 3.5s cubic-bezier(0, 0.77, 0.2, 1) 0.13s;
+    transition: all 3.5s cubic-bezier(0, 0.77, 0.2, 1) 0.13s;
+    -webkit-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -o-transform: scale(1.3);
+    transform: scale(1.3);
+    margin-top: 0; }
+    .smash .animalchanger .level-one .level-two {
+      -webkit-transition: 1500s linear 0.4s;
+      -moz-transition: 1500s linear 0.4s;
+      transition: 1500s linear 0.4s;
+      -webkit-transform: rotate(6000deg) !important;
+      -moz-transform: rotate(6000deg) !important;
+      -ms-transform: rotate(6000deg) !important;
+      -o-transform: rotate(6000deg) !important;
+      transform: rotate(6000deg) !important; }
+    .smash .animalchanger .level-one .animal-mover {
+      -webkit-transform: translateX(0) translateY(0) rotate(0deg);
+      -moz-transform: translateX(0) translateY(0) rotate(0deg);
+      -ms-transform: translateX(0) translateY(0) rotate(0deg);
+      -o-transform: translateX(0) translateY(0) rotate(0deg);
+      transform: translateX(0) translateY(0) rotate(0deg);
+      -webkit-transition: 0.1s;
+      -moz-transition: 0.1s;
+      transition: 0.1s; }
+.smash .wrap .shard-wrap .shard {
+  -webkit-transition: all 0.24s 0.13s, background-image 0s;
+  -moz-transition: all 0.24s 0.13s, background-image 0s;
+  transition: all 0.24s 0.13s, background-image 0s; }
+.smash .wrap .shard-wrap:nth-child(2n) .shard {
+  background-image: url("/species-in-pieces/blood.png");
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: 10%; }
+.smash .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(23.2% 21.571%, 21.7% 17.714%, 20.2% 19.857%) !important; }
+.smash .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(18.8% 25.714%, 16.3% 22.714%, 15.6% 24%) !important; }
+.smash .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(10% 20%, 10.5% 20.5%, 11% 20%) !important; }
+.smash .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(10% 30%, 11% 32%, 12% 31%) !important; }
+.smash .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(18.5% 42.286%, 15.2% 40.286%, 15.9% 42.857%) !important; }
+.smash .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(10% 50%, 10.5% 50.5%, 11% 50%) !important; }
+.smash .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(8.5% 55%, 8% 57.286%, 11.7% 55.429%) !important; }
+.smash .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-clip-path: polygon(15.1% 63.857%, 15.5% 65.714%, 18.1% 63.857%) !important; }
+.smash .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(18.8% 78%, 15.8% 79.143%, 17.3% 80.714%) !important; }
+.smash .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(25% 90%, 25.5% 90.5%, 26% 90%) !important; }
+.smash .wrap .shard-wrap:nth-child(11) .shard {
+  -webkit-clip-path: polygon(39.3% 17.143%, 38.7% 13%, 36.9% 15.571%) !important; }
+.smash .wrap .shard-wrap:nth-child(12) .shard {
+  -webkit-clip-path: polygon(32.1% 82%, 34.1% 84.429%, 35.5% 79.714%) !important; }
+.smash .wrap .shard-wrap:nth-child(13) .shard {
+  -webkit-clip-path: polygon(48.5% 2.571%, 49.4% 5.571%, 50% 2.714%) !important; }
+.smash .wrap .shard-wrap:nth-child(14) .shard {
+  -webkit-clip-path: polygon(50% 93%, 51% 95%, 52% 94%) !important; }
+.smash .wrap .shard-wrap:nth-child(15) .shard {
+  -webkit-clip-path: polygon(60.3% 8%, 62.3% 5.571%, 60.9% 3.857%) !important; }
+.smash .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-clip-path: polygon(59.9% 92.714%, 60.4% 98.286%, 63.6% 96.714%) !important; }
+.smash .wrap .shard-wrap:nth-child(17) .shard {
+  -webkit-clip-path: polygon(70.5% 11.429%, 71.3% 8.571%, 73.1% 9.571%) !important; }
+.smash .wrap .shard-wrap:nth-child(18) .shard {
+  -webkit-clip-path: polygon(70% 90%, 71% 92%, 72% 91%) !important; }
+.smash .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-clip-path: polygon(73.5% 16.857%, 76.3% 14.857%, 74.4% 12.429%) !important; }
+.smash .wrap .shard-wrap:nth-child(20) .shard {
+  -webkit-clip-path: polygon(80% 90%, 81% 92%, 82% 91%) !important; }
+.smash .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(73.3% 28.429%, 75.5% 26.714%, 74.8% 25.857%) !important; }
+.smash .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(85% 25%, 86% 27%, 87% 26%) !important; }
+.smash .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(79.6% 33.571%, 82.8% 32.714%, 81.8% 30%) !important; }
+.smash .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(86.9% 42.643%, 90.5% 42.929%, 89.8% 39.786%) !important; }
+.smash .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(80% 50%, 80.5% 50.5%, 81% 50%) !important; }
+.smash .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(84.5% 60%, 83% 62%, 81% 61%) !important; }
+.smash .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(84.1% 67.857%, 85.5% 68.714%, 85.3% 67.286%) !important; }
+.smash .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(80% 70%, 81% 73%, 82% 71%) !important; }
+.smash .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(85% 80%, 85.5% 80.5%, 86% 80%) !important; }
+.smash .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(76.6% 81.214%, 78% 84.786%, 78.4% 83.5%) !important; }
+.smash .wrap .shard-wrap:nth-child(31).peripheral .shard, .smash .wrap .shard-wrap:nth-child(32).peripheral .shard, .smash .wrap .shard-wrap:nth-child(33).peripheral .shard {
+  -webkit-clip-path: polygon(50% 50%, 50% 50%, 50% 50%) !important;
+  -webkit-transition: 0.05s !important;
+  -moz-transition: 0.05s !important;
+  transition: 0.05s !important;
+  background-image: none;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  animation: none !important; }
+  .smash .wrap .shard-wrap:nth-child(31).peripheral .shard::before, .smash .wrap .shard-wrap:nth-child(32).peripheral .shard::before, .smash .wrap .shard-wrap:nth-child(33).peripheral .shard::before {
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    animation: none !important; }
+
+.animal-mover {
+  -webkit-transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1); }
+
+.animal-animations-on .animalchanger.vaquita .animal-mover {
+  -webkit-transform: translateX(2%);
+  -moz-transform: translateX(2%);
+  -ms-transform: translateX(2%);
+  -o-transform: translateX(2%);
+  transform: translateX(2%); }
+.animal-animations-on.state-three .animalchanger.vaquita .animal-mover {
+  -webkit-transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  -moz-transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  -webkit-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  -ms-transform: translateX(0%);
+  -o-transform: translateX(0%);
+  transform: translateX(0%); }
+.animal-animations-on.state-two .animalchanger.vaquita .animal-mover {
+  -webkit-transform: translateX(4%);
+  -moz-transform: translateX(4%);
+  -ms-transform: translateX(4%);
+  -o-transform: translateX(4%);
+  transform: translateX(4%);
+  -webkit-transition: 1s linear;
+  -moz-transition: 1s linear;
+  transition: 1s linear; }
+.animal-animations-on.state-four .animalchanger.vaquita .animal-mover {
+  -webkit-transition: 2s linear;
+  -moz-transition: 2s linear;
+  transition: 2s linear; }
+
+.animal-animations-on .animalchanger.turtle .animal-mover, .animal-animations-on .animalchanger.parrotfish .animal-mover {
+  -webkit-transform: translateX(-1%);
+  -moz-transform: translateX(-1%);
+  -ms-transform: translateX(-1%);
+  -o-transform: translateX(-1%);
+  transform: translateX(-1%); }
+.animal-animations-on.state-three .animalchanger.turtle .animal-mover, .animal-animations-on.state-three .animalchanger.parrotfish .animal-mover {
+  -webkit-transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  -moz-transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  transition: 1.2s cubic-bezier(1, 0, 0, 1);
+  -webkit-transform: translateX(2%);
+  -moz-transform: translateX(2%);
+  -ms-transform: translateX(2%);
+  -o-transform: translateX(2%);
+  transform: translateX(2%); }
+.animal-animations-on.state-two .animalchanger.turtle .animal-mover, .animal-animations-on.state-two .animalchanger.parrotfish .animal-mover {
+  -webkit-transform: translateX(-2%);
+  -moz-transform: translateX(-2%);
+  -ms-transform: translateX(-2%);
+  -o-transform: translateX(-2%);
+  transform: translateX(-2%);
+  -webkit-transition: 1s linear;
+  -moz-transition: 1s linear;
+  transition: 1s linear; }
+.animal-animations-on.state-four .animalchanger.turtle .animal-mover, .animal-animations-on.state-four .animalchanger.parrotfish .animal-mover {
+  -webkit-transition: 2s linear;
+  -moz-transition: 2s linear;
+  transition: 2s linear; }
+
+.chromebrowser .animalchanger.damselfly .animal-mover, .chromebrowser .animalchanger.damselfly .shadow, .chromebrowser .animalchanger.butterfly .animal-mover, .chromebrowser .animalchanger.butterfly .shadow {
+  -webkit-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.chromebrowser .animal-animations-on.state-two .animalchanger.damselfly .animal-mover, .chromebrowser .animal-animations-on.state-two .animalchanger.butterfly .animal-mover, .chromebrowser .animal-animations-on.state-four .animalchanger.damselfly .animal-mover, .chromebrowser .animal-animations-on.state-four .animalchanger.butterfly .animal-mover {
+  -webkit-transform: translateY(-18px);
+  -moz-transform: translateY(-18px);
+  -ms-transform: translateY(-18px);
+  -o-transform: translateY(-18px);
+  transform: translateY(-18px); }
+.chromebrowser .animal-animations-on.state-two .animalchanger.damselfly .shadow, .chromebrowser .animal-animations-on.state-two .animalchanger.butterfly .shadow, .chromebrowser .animal-animations-on.state-four .animalchanger.damselfly .shadow, .chromebrowser .animal-animations-on.state-four .animalchanger.butterfly .shadow {
+  -webkit-transform: translateY(18px);
+  -moz-transform: translateY(18px);
+  -ms-transform: translateY(18px);
+  -o-transform: translateY(18px);
+  transform: translateY(18px); }
+
+.animal-animations-on .level-one .level-two .wrap .shard-wrap .shard {
+  -webkit-transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1);
+  -moz-transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1);
+  transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1); }
+.animal-animations-on .level-one .level-two .wrap .shadow, .animal-animations-on .level-one .level-two .wrap .shadow::before, .animal-animations-on .level-one .level-two .wrap .shadow::after {
+  -webkit-transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1);
+  -moz-transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1);
+  transition: 0.6s 0s cubic-bezier(0.7, 0.3, 0, 1); }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.013s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.013s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.013s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.026s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.026s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.026s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.039s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.039s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.039s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.052s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.052s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.052s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.065s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.065s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.065s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.078s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.078s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.078s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.091s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.091s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.091s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.104s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.104s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.104s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.117s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.117s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.117s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.13s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.13s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.13s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(11) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.143s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.143s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.143s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(12) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.156s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.156s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.156s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(13) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.169s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.169s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.169s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(14) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.182s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.182s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.182s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(15) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.195s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.195s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.195s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.208s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.208s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.208s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(17) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.221s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.221s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.221s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(18) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.234s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.234s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.234s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.247s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.247s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.247s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(20) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.26s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.26s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.26s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.273s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.273s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.273s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.286s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.286s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.286s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.299s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.299s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.299s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.312s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.312s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.312s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.325s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.325s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.325s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.338s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.338s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.338s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.351s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.351s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.351s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.364s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.364s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.364s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.377s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.377s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.377s; }
+.animal-animations-on .animalchanger.iguana .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.39s;
+  -moz-transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.39s;
+  transition: 0.5s 0s cubic-bezier(0.7, 0.3, 0, 1), background-color 0.8s 0.39s; }
+.animal-animations-on .animalchanger.frog .shard-wrap:nth-child(10) .shard, .animal-animations-on .animalchanger.frog .shard-wrap:nth-child(11) .shard, .animal-animations-on .animalchanger.frog .shard-wrap:nth-child(12) .shard {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s; }
+.animal-animations-on .animalchanger.tamarin .shard-wrap .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on .animalchanger.loris .shard-wrap .shard {
+  -webkit-transition: 1.2s 0s;
+  -moz-transition: 1.2s 0s;
+  transition: 1.2s 0s; }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(11) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(12) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(13) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(14) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(15) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(16) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(17) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(18) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(19) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(20) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(21) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(22) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(23) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(24) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(25) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(26) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(27) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(28) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(29) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.63s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow:nth-child(1) .shard {
+  -webkit-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow:nth-child(2) .shard {
+  -webkit-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on .animalchanger.crow:nth-child(3) .shard {
+  -webkit-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.23s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on.state-two .animalchanger.crow .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(72.5% 27.2%, 75.4% 24.3%, 80.1% 31%);
+  -webkit-transition-duration: 1s;
+  -moz-transition-duration: 1s;
+  transition-duration: 1s; }
+.animal-animations-on.state-two .animalchanger.crow .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(72.6% 27.2%, 78.2% 35.15%, 71.3% 30.35%);
+  -webkit-transition-duration: 1s;
+  -moz-transition-duration: 1s;
+  transition-duration: 1s; }
+.animal-animations-on.state-two .animalchanger.crow .wrap .shard-wrap:nth-child(33) .shard {
+  -webkit-clip-path: polygon(76.5% 32.6%, 77.5% 29.7%, 78.9% 32.9%);
+  -webkit-transition-duration: 1s;
+  -moz-transition-duration: 1s;
+  transition-duration: 1s; }
+.animal-animations-on.state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(82% 47.9%, 86.45% 43.5%, 87.413% 45.7%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s; }
+.animal-animations-on.state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(82% 48%, 86.3% 51.571%, 85.413% 53.286%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s; }
+.animal-animations-on.state-two .animalchanger.seahorse .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(23.96% 44.643%, 22.9% 50.643%, 25.5% 49%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s; }
+.animal-animations-on.state-two .animalchanger.penguin .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-clip-path: polygon(46.95% 80.714%, 58.95% 77.143%, 56.75% 82.571%);
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  transition-duration: 0.8s; }
+.animal-animations-on.state-two .animalchanger.penguin .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(60.55% 62.714%, 63.05% 53.571%, 65.45% 69.429%);
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  transition-duration: 0.8s; }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(22.45% 33.071%, 23.15% 20.214%, 28.05% 29.929%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(22.35% 33.071%, 30.3% 24.786%, 31.05% 43.67%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(23.15% 20.214%, 26.75% 28.929%, 30.85% 21.214%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(23.05% 20.214%, 34.65% 14.786%, 29.75% 22.214%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(29% 26%, 43.15% 29.357%, 30.85% 40.5%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(29.75% 21.071%, 34.7% 14.8%, 32.95% 27.4%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(26.25% 24.5%, 28.95% 21.1%, 26.75% 30.786%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-clip-path: polygon(26.75% 30.643%, 28.75% 21.214%, 29.15% 29.214%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(26.75% 30.7%, 29% 27.1%, 30.8% 31.929%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(28.75% 21.071%, 33% 26.3%, 29.05% 27.214%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(11) .shard {
+  -webkit-clip-path: polygon(29% 27.214%, 33.05% 26.357%, 30.7% 32.071%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(12) .shard {
+  -webkit-clip-path: polygon(28.75% 21.214%, 32.3% 20.786%, 33.05% 26.357%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(13) .shard {
+  -webkit-clip-path: polygon(32.95% 27.214%, 34.65% 14.929%, 42.25% 29.357%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(15) .shard {
+  -webkit-clip-path: polygon(22.45% 33.071%, 31.95% 39.357%, 32.05% 52.214%); }
+.animal-animations-on.state-two .animalchanger.tamarin .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-clip-path: polygon(34.65% 15.071%, 47.25% 23.357%, 41.8% 29.1%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-clip-path: polygon(61.85% 32.857%, 72.75% 43.571%, 60.65% 56.4%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(20) .shard {
+  -webkit-clip-path: polygon(61.85% 32.9%, 68.95% 27%, 73.15% 30.143%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(61.85% 32.857%, 72.95% 30%, 72.45% 44.143%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(61.35% 55.429%, 72.55% 43.714%, 64.8% 64%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(63.75% 66.429%, 72.5% 43.714%, 72.25% 58.429%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(72.85% 29%, 78.65% 49.143%, 71.85% 62.143%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(72.85% 30.143%, 78.85% 34.8%, 79.25% 54.714%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(68.85% 26.571%, 71.65% 19.571%, 79.15% 25.857%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(73.05% 26.286%, 73.55% 18.571%, 79.15% 26%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(68.75% 26.714%, 82.25% 25.286%, 73.95% 31.286%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(73.85% 31.143%, 82.25% 25.286%, 84.95% 30.286%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(73.85% 31.143%, 84.15% 30.286%, 78.85% 34.857%); }
+.animal-animations-on.state-two .animalchanger.camel .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-clip-path: polygon(84% 32.5%, 83% 33.5%, 81% 22%); }
+.animal-animations-on.state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(14) .shard {
+  -webkit-clip-path: polygon(34% 79.286%, 36% 72%, 39.4% 81.143%); }
+.animal-animations-on.state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(15) .shard {
+  -webkit-clip-path: polygon(32.1% 64.286%, 45.2% 69.286%, 34% 79.429%); }
+.animal-animations-on.state-two .animalchanger.echidna .wrap .shadow::after {
+  left: 19%;
+  bottom: 32%; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(28.35% 14.214%, 31.45% 10.2%, 31.7% 18.5%); }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(28.25% 14.4%, 29.05% 13.3%, 29.3% 15.786%); }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(32) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(33) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-clip-path: polygon(30.25% 21.214%, 32.05% 18.071%, 30.8% 15.786%);
+  background-color: #F1A9E2; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(32) .shard {
+  -webkit-clip-path: polygon(30.25% 21.214%, 31.7% 18.7%, 31.7% 32.786%);
+  background-color: #D289D3; }
+.animal-animations-on.state-two .animalchanger.bear .wrap .shard-wrap:nth-child(33) .shard {
+  -webkit-clip-path: polygon(31.3% 30.214%, 33.7% 34.7%, 31.6% 32.786%);
+  background-color: #CA6CA5; }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(60.25% 41.571%, 62.45% 19.429%, 67.95% 21.857%); }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(60.25% 41.571%, 67.85% 21.714%, 68.05% 42.714%); }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(55.05% 51.571%, 60.25% 41.429%, 68.05% 42.714%); }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(62.55% 19.714%, 62.95% 11%, 67.95% 22%); }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(81.65% 53.286%, 82.25% 49.857%, 83% 54.3%); }
+.animal-animations-on.state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(75.35% 53.857%, 82.35% 49.857%, 81.75% 53.429%); }
+.animal-animations-on.state-two .animalchanger.frog .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(25.95% 36.857%, 36.25% 47.714%, 27.85% 49.714%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s;
+  background-color: #B89A00; }
+.animal-animations-on.state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(28.6% 62.5%, 37.2% 60.071%, 30.4% 82.786%); }
+.animal-animations-on.state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(11) .shard {
+  -webkit-clip-path: polygon(30.3% 82.786%, 34.7% 68.071%, 36.7% 82.8%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(19.4% 78.8%, 18% 74.2%, 22.75% 68.1%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(17.95% 74.5%, 20.95% 57.357%, 24.55% 57.786%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(17.75% 74.8%, 24.35% 57.5%, 22.75% 68.214%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(22.65% 68.071%, 24.25% 57.643%, 28.05% 72.786%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(19.36% 78.8%, 22.7% 68.1%, 28.2% 72.8%); }
+.animal-animations-on.state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(20.2% 77.8%, 25.95% 74%, 21.65% 78.7%); }
+.animal-animations-on.state-two .animalchanger.owl .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(43.1% 56.929%, 39.7% 61.071%, 45.2% 58.786%); }
+.animal-animations-on.state-two .animalchanger.owl .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-transition-delay: 0.2s;
+  -moz-transition-delay: 0.2s;
+  transition-delay: 0.2s;
+  -webkit-clip-path: polygon(45.2% 58.786%, 43.6% 65.214%, 47.4% 60.786%); }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(10.612% 33.268%, 33.813% 25.268%, 22.213% 33.268%); }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(21.513% 33.125%, 39.813% 51.8%, 23.413% 43.125%);
+  background-color: #436a2c; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-clip-path: polygon(34.041% 25.2%, 58.841% 3.871%, 56.741% 12.299%);
+  background-color: #6aa84e; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(12) .shard {
+  -webkit-clip-path: polygon(46.413% 41.696%, 56.712% 12.2%, 66.712% 23%);
+  background-color: #32401e; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(17) .shard {
+  -webkit-clip-path: polygon(33.712% 25.411%, 56.612% 12.411%, 46.513% 41.696%);
+  background-color: #283214; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(13) .shard {
+  -webkit-clip-path: polygon(33.953% 25.21%, 46.453% 41.781%, 21.353% 33.353%);
+  background-color: #32401e; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(14) .shard {
+  -webkit-clip-path: polygon(21.253% 33.353%, 46.353% 41.781%, 39.753% 51.781%);
+  background-color: #39512c; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(46.453% 40.781%, 62.153% 48.6%, 39.753% 51.781%);
+  background-color: #445f2f; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(46.453% 41.638%, 66.653% 23.067%, 62.23% 49.21%);
+  background-color: #39512c; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(56.741% 12.228%, 58.741% 3.656%, 66.741% 23.085%);
+  background-color: #519f4b; }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(58.653% 32.281%, 69.053% 44.138%, 63.2% 54.4%); }
+.animal-animations-on.state-two .animalchanger.kakapo .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(42.45% 66.337%, 62.195% 48.766%, 63.25% 54.337%); }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(20) .shard {
+  -webkit-clip-path: polygon(60.3% 19.5%, 69.2% 24.5%, 59.85% 36.96%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(60.3% 19.5%, 67.7% 15.5%, 73.6% 27.2%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(66.3% 28.5%, 73.4% 26.8%, 69.1% 24.6%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(64.8% 13.2%, 75.45% 13%, 73.5% 27.1%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(68.27% 28.1%, 73.44% 26.6%, 73.3% 30.6%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(73.6% 27.1%, 75.52% 12.8%, 75.8% 22.34%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(73.5% 26.8%, 75.4% 22.3%, 82% 27.7%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(73.5% 26.9%, 80.4% 32.15%, 73.2% 30.55%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.crow .wrap .shard-wrap:nth-child(33) .shard {
+  -webkit-clip-path: polygon(78.1% 30.1%, 79.2% 27.6%, 80.7% 30%);
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  transition-duration: 0.4s; }
+.animal-animations-on.state-three .animalchanger.turtle .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(56.25% 41.571%, 55.45% 23.429%, 62.95% 21.857%); }
+.animal-animations-on.state-three .animalchanger.turtle .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(56.25% 41.571%, 62.85% 21.714%, 65.05% 41.714%); }
+.animal-animations-on.state-three .animalchanger.turtle .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(55.05% 51.571%, 56.25% 41.429%, 65.05% 41.714%); }
+.animal-animations-on.state-three .animalchanger.turtle .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(55.55% 23.714%, 53.95% 15%, 62.95% 22%); }
+.animal-animations-on.state-three .animalchanger.penguin .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(40.75% 84.571%, 51.35% 85%, 49.05% 82.857%);
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  transition-duration: 0.8s; }
+.animal-animations-on.state-three .animalchanger.penguin .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(38.15% 57.857%, 31.65% 78.571%, 52.75% 51%);
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  transition-duration: 0.8s; }
+.animal-animations-on.state-three .animalchanger.penguin .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(44.65% 39.571%, 35.85% 59.429%, 52.85% 50.857%);
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  transition-duration: 0.8s; }
+.animal-animations-on.state-three .animalchanger.seahorse .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(72% 64.214%, 75.5% 66.8%, 73.5% 67.45%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s; }
+.animal-animations-on.state-three .animalchanger.bear .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-three .animalchanger.bear .wrap .shard-wrap:nth-child(32) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-three .animalchanger.bear .wrap .shard-wrap:nth-child(33) .shard {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  transition: 1s; }
+.animal-animations-on.state-three .animalchanger.rhino .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(28.6% 62.5%, 37.2% 60.071%, 34.4% 80.786%); }
+.animal-animations-on.state-three .animalchanger.rhino .wrap .shard-wrap:nth-child(11) .shard {
+  -webkit-clip-path: polygon(34.3% 80.786%, 35.9% 69.071%, 39.7% 74.8%); }
+.animal-animations-on.state-three .animalchanger.loris .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(60.15% 38.929%, 67.55% 32.357%, 66.55% 51.929%); }
+.animal-animations-on.state-three .animalchanger.loris .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(60.25% 38.929%, 66.65% 48.786%, 64.65% 55.071%); }
+.animal-animations-on.state-three .animalchanger.loris .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(64.65% 54.643%, 66.65% 48.643%, 75.25% 59.5%); }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(1) .shard {
+  background-color: #8A8E5B; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(2) .shard {
+  background-color: #1D321B; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(3) .shard {
+  background-color: #396C28; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(4) .shard {
+  background-color: #255222; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(5) .shard {
+  background-color: #1B4120; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(6) .shard {
+  background-color: #54725E; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(8) .shard {
+  background-color: #223322; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(9) .shard {
+  background-color: #244D20; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(10) .shard {
+  background-color: #1D2E1E; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(12) .shard {
+  background-color: #2F5641; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(13) .shard {
+  background-color: #1B4120; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(14) .shard {
+  background-color: #1B361C; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(15) .shard {
+  background-color: #223322; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(16) .shard {
+  background-color: #335F25; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(17) .shard {
+  background-color: #476C3D; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(18) .shard {
+  background-color: #345524; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(20) .shard {
+  background-color: #1D2E1E; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(21) .shard {
+  background-color: #43642E; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(22) .shard {
+  background-color: #225122; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(23) .shard {
+  background-color: #253A1B; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(25) .shard {
+  background-color: #2C411C; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(26) .shard {
+  background-color: #1D2E1E; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(27) .shard {
+  background-color: #355423; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(28) .shard {
+  background-color: #182318; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(29) .shard {
+  background-color: #1A3319; }
+.animal-animations-on.state-three .animalchanger.iguana .wrap .shard-wrap:nth-child(30) .shard {
+  background-color: #236124; }
+.animal-animations-on.state-four .animalchanger.sloth .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-transition: 1.2s 0s;
+  -moz-transition: 1.2s 0s;
+  transition: 1.2s 0s;
+  -webkit-clip-path: polygon(63.15% 54%, 80.35% 68.143%, 71.55% 70.286%); }
+.animal-animations-on.state-four .animalchanger.sloth .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 1.2s 0s;
+  -moz-transition: 1.2s 0s;
+  transition: 1.2s 0s;
+  -webkit-clip-path: polygon(71.35% 70.2%, 81.75% 77.286%, 80.35% 68%); }
+.animal-animations-on.state-four .animalchanger.camel .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(70.85% 29.143%, 75.85% 33.143%, 77.25% 51.714%); }
+.animal-animations-on.state-four .animalchanger.camel .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(70.85% 29.143%, 80.15% 31.286%, 75.85% 33.857%); }
+.animal-animations-on.state-four .animalchanger.camel .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-clip-path: polygon(79% 33.5%, 78% 34.5%, 76% 24%); }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(1) .shard {
+  background-color: #6D7263; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(2) .shard {
+  background-color: #28262B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(3) .shard {
+  background-color: #464247; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(4) .shard {
+  background-color: #3B3A3E; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(5) .shard {
+  background-color: #332F2F; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(6) .shard {
+  background-color: #717176; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(7) .shard {
+  background-color: #96969A; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(8) .shard {
+  background-color: #323232; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(9) .shard {
+  background-color: #3B3A38; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(10) .shard {
+  background-color: #1C1B1B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(12) .shard {
+  background-color: #4C4B4A; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(13) .shard {
+  background-color: #3B3A3B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(14) .shard {
+  background-color: #232427; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(15) .shard {
+  background-color: #232427; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(16) .shard {
+  background-color: #484344; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(17) .shard {
+  background-color: #545554; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(18) .shard {
+  background-color: #3B3A3B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(19) .shard {
+  background-color: #96969A; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(20) .shard {
+  background-color: #1C1B1B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(21) .shard {
+  background-color: #464744; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(22) .shard {
+  background-color: #363431; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(23) .shard {
+  background-color: #2A2829; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(25) .shard {
+  background-color: #363637; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(26) .shard {
+  background-color: #1C1B1B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(27) .shard {
+  background-color: #2E2C2F; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(28) .shard {
+  background-color: #3B3A3B; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(29) .shard {
+  background-color: #323232; }
+.animal-animations-on.state-four .animalchanger.iguana .wrap .shard-wrap:nth-child(30) .shard {
+  background-color: #595656; }
+.animal-animations-on.state-four .animalchanger.frog .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(25.95% 36.857%, 36.25% 47.714%, 27.85% 47.714%);
+  -webkit-transition-duration: 1.2s;
+  -moz-transition-duration: 1.2s;
+  transition-duration: 1.2s;
+  background-color: #B89A00; }
+.animal-animations-on.two-state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(17.5% 56.929%, 36.4% 52.071%, 21% 74.5%);
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(15.1% 70.071%, 18% 56.929%, 21% 74.5%);
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(31) .shard {
+  -webkit-clip-path: polygon(24% 72.5%, 23% 73.5%, 13% 65%);
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.rhino .wrap .shard-wrap:nth-child(32) .shard {
+  -webkit-clip-path: polygon(23% 75.5%, 14% 64.5%, 15% 63%);
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(1) .shard, .animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(2) .shard, .animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(3) .shard, .animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(4) .shard, .animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(5) .shard, .animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-transition-duration: 0.12s;
+  -moz-transition-duration: 0.12s;
+  transition-duration: 0.12s; }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(15.95% 78.214%, 14.95% 79.929%, 22.25% 79.929%); }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(17.85% 58.786%, 22.05% 58.5%, 16.05% 78.214%); }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(15.95% 78.214%, 21.95% 58.214%, 22% 79.929%); }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(21.95% 58.643%, 26.85% 58.357%, 22% 79.929%); }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(21.95% 58.5%, 26.85% 58.357%, 22.15% 59%); }
+.animal-animations-on.two-state-two .animalchanger.peccary .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(26.75% 58.5%, 29.8% 79.8%, 22.55% 77.071%); }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(13.4% 75.429%, 22.2% 61.143%, 23.9% 63.429%); }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(13.4% 75.286%, 21.5% 66.143%, 14.7% 76.429%); }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(23.6% 63.429%, 26.9% 63.714%, 19.9% 68.286%); }
+.animal-animations-on.two-state-two .animalchanger.echidna .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(24.8% 60.571%, 26% 59.429%, 27.2% 58.571%); }
+.animal-animations-on.two-state-two .animalchanger.crow .shard-wrap:nth-child(1) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-clip-path: polygon(32.8% 58%, 38.4% 61.2%, 12.2% 77.5%); }
+.animal-animations-on.two-state-two .animalchanger.crow .shard-wrap:nth-child(2) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-clip-path: polygon(21.9% 66.8%, 34.5% 55.9%, 27% 59.7%); }
+.animal-animations-on.two-state-two .animalchanger.crow .shard-wrap:nth-child(3) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-clip-path: polygon(22.7% 61.9%, 39.2% 42.8%, 50.8% 49.8%); }
+.animal-animations-on.two-state-two .animalchanger.crow .shard-wrap:nth-child(6) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-clip-path: polygon(30.3% 58.6%, 50% 49.9%, 61% 55.3%); }
+.animal-animations-on.two-state-two .animalchanger.tamarin .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s;
+  -webkit-clip-path: polygon(64.45% 80%, 75.85% 78.643%, 64.55% 84.643%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(1) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(2) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(3) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(4) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(5) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(6) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(7) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(8) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(9) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(10) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(21) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(22) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(23) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(24) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(25) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(26) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(27) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(28) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(29) .shard, .animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 0.12s cubic-bezier(0.4, 0.3, 0.1, 0.4);
+  -moz-transition: 0.12s cubic-bezier(0.4, 0.3, 0.1, 0.4);
+  transition: 0.12s cubic-bezier(0.4, 0.3, 0.1, 0.4); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(31.15% 16.5%, 39.25% 27.643%, 46.55% 47.929%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(31.15% 16.5%, 30.9% 53.929%, 33.25% 34.3%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(31.05% 16.5%, 32% 36.3%, 38.4% 27.5%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(32% 36.214%, 38.3% 27.4%, 46.6% 48.2%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(31.9% 36.1%, 46.55% 48.214%, 30.85% 53.929%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(30.75% 53.786%, 46.55% 48.071%, 46.05% 52.643%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(34.25% 55.5%, 45.95% 52.786%, 33.65% 64.786%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-clip-path: polygon(34.15% 55.5%, 45.95% 52.929%, 37.05% 57.643%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(35.45% 60.5%, 36.45% 61.214%, 35.35% 62.071%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(33.55% 64.643%, 45.85% 52.929%, 38.45% 70.214%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(48.45% 54.214%, 55.95% 68.214%, 49.95% 75.214%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(48.35% 54.214%, 55.95% 68.071%, 51.65% 64.786%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(48.45% 54.214%, 49.95% 75.214%, 45.05% 74.214%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(51.05% 70.071%, 51.85% 70.357%, 51.25% 71.929%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(48.35% 54.214%, 50.35% 49.929%, 58.75% 70.786%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(50.45% 50.071%, 64.85% 43.929%, 76.55% 48.929%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(50.45% 50.071%, 64.75% 45.214%, 65.85% 57.5%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(50.35% 50.071%, 65.85% 57.357%, 58.65% 70.786%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(64.65% 45%, 76.55% 48.929%, 65.85% 57.5%); }
+.animal-animations-on.two-state-two .animalchanger.butterfly .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(65.75% 57.357%, 76.65% 48.929%, 58.65% 70.786%); }
+.animal-animations-on.two-state-two .animalchanger.kakapo .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(9.353% 45.567%, 12.853% 54.281%, 10.253% 51.138%);
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.kakapo .shard-wrap:nth-child(6) .shard {
+  -webkit-clip-path: polygon(9.353% 45.424%, 12.753% 44.996%, 12.553% 54.71%);
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.kakapo .shard-wrap:nth-child(7) .shard {
+  -webkit-clip-path: polygon(12.753% 50.424%, 12.753% 44.996%, 20.853% 56.138%);
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.kakapo .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(63.153% 54.138%, 70.753% 51.424%, 89.153% 66.996%); }
+.animal-animations-on.two-state-two .animalchanger.kakapo .shard-wrap:nth-child(4) .shard {
+  background-color: #d2c895;
+  -webkit-transition: 0.03s;
+  -moz-transition: 0.03s;
+  transition: 0.03s; }
+.animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(19) .shard, .animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(20) .shard, .animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-clip-path: polygon(53.15% 38.35%, 56.8% 33.4%, 68.5% 48.3%); }
+.animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(20) .shard {
+  -webkit-clip-path: polygon(51.84% 44.6%, 53.212% 38.286%, 68.5% 48.2%); }
+.animal-animations-on.two-state-two .animalchanger.parrotfish .wrap .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(51.812% 44.3%, 68.4% 48%, 55.112% 53.429%); }
+.animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(27) .shard, .animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(28) .shard, .animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(29) .shard, .animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s; }
+.animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(31.6% 39%, 69.5% 53.714%, 41.5% 30.857%); }
+.animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(53.4% 40.714%, 69.5% 53.857%, 45.4% 42.286%); }
+.animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(42.7% 45%, 45.5% 30%, 55.5% 41.429%); }
+.animal-animations-on.two-state-two .animalchanger.damselfly .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(42.7% 45%, 34% 31.857%, 45.6% 30.143%); }
+.animal-animations-on.two-state-two .animalchanger.armadillo .wrap .shard-wrap:nth-child(8) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-clip-path: polygon(21.75% 58.214%, 25.45% 49.071%, 25.75% 62.071%); }
+.animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(2) .shard, .animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(3) .shard, .animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(4) .shard, .animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(26.35% 55.857%, 32.45% 58.714%, 21.95% 69.571%); }
+.animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(22.65% 61%, 26.45% 56.286%, 21.95% 69.429%); }
+.animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(10.65% 56.714%, 19.05% 52.143%, 30.85% 51.857%); }
+.animal-animations-on.two-state-two .animalchanger.turtle .wrap .shard-wrap:nth-child(5) .shard {
+  -webkit-clip-path: polygon(10.55% 56.571%, 30.85% 51.857%, 25.45% 58.143%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap .shard {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s; }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(27) .shard {
+  -webkit-clip-path: polygon(48.05% 42.1%, 67.4% 71.214%, 63.3% 47.643%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(25) .shard {
+  -webkit-clip-path: polygon(55% 20.929%, 64% 42.214%, 61.9% 30.214%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(24) .shard {
+  -webkit-clip-path: polygon(55% 20.929%, 55.9% 35.071%, 64.2% 42.5%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(23) .shard {
+  -webkit-clip-path: polygon(48.1% 42.2%, 57.8% 32.071%, 64.9% 48.3%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(22) .shard {
+  -webkit-clip-path: polygon(48% 20.643%, 55.03% 20.929%, 56% 35.7%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(21) .shard {
+  -webkit-clip-path: polygon(48.076% 20.643%, 48.076% 42.3%, 56% 35.1%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(26) .shard {
+  -webkit-clip-path: polygon(55.3% 34.8%, 62.7% 43.929%, 61.4% 40.1%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(18) .shard {
+  -webkit-clip-path: polygon(44.976% 31.357%, 35.876% 50.786%, 56.176% 53.643%); }
+.animal-animations-on.two-state-two .animalchanger.owl .shard-wrap:nth-child(28) .shard {
+  -webkit-clip-path: polygon(58.3% 57.5%, 61.5% 75.071%, 63.8% 65.357%); }
+.animal-animations-on.two-state-two .animalchanger.frog .shard-wrap:nth-child(10) .shard {
+  -webkit-clip-path: polygon(31.15% 35.571%, 34.4% 35.9%, 37.35% 38.2%); }
+.animal-animations-on.two-state-two .animalchanger.frog .shard-wrap:nth-child(11) .shard {
+  -webkit-clip-path: polygon(31.15% 35.429%, 37.45% 38.143%, 34.1% 37.714%); }
+.animal-animations-on.two-state-two .animalchanger.frog .shard-wrap:nth-child(12) .shard {
+  -webkit-clip-path: polygon(32.65% 35.286%, 33.55% 36.1%, 33.15% 36%); }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap .shard {
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s; }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap:nth-child(1) .shard {
+  -webkit-clip-path: polygon(11.6% 81.286%, 14.9% 79%, 13.9% 74.429%); }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap:nth-child(2) .shard {
+  -webkit-clip-path: polygon(9.9% 72.3%, 11.7% 81.2%, 13.95% 74.571%); }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap:nth-child(3) .shard {
+  -webkit-clip-path: polygon(9.8% 72.3%, 13.8% 74.571%, 18% 65.7%); }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap:nth-child(4) .shard {
+  -webkit-clip-path: polygon(9.9% 72.4%, 17.9% 65.857%, 11.7% 56.286%); }
+.animal-animations-on.two-state-two .animalchanger.tapir .shard-wrap:nth-child(9) .shard {
+  -webkit-clip-path: polygon(15% 41.857%, 18% 40%, 17.4% 47.429%); }
+.animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap .shard-wrap:nth-child(16) .shard, .animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap .shard-wrap:nth-child(18) .shard, .animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-transition: 0.45s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  -moz-transition: 0.45s 0s cubic-bezier(0.62, 0.02, 0.34, 1);
+  transition: 0.45s 0s cubic-bezier(0.62, 0.02, 0.34, 1); }
+.animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-clip-path: polygon(25.99% 61.716%, 32.64% 61.368%, 32.91% 73.146%);
+  background-color: #0d1417; }
+.animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(18) .shard {
+  -webkit-clip-path: polygon(27.107% 55.964%, 39.318% 59.352%, 38.467% 66.772%);
+  background-color: #334543; }
+.animal-animations-on.state-two .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-clip-path: polygon(27.107% 55.964%, 38.467% 66.772%, 42.128% 75.085%);
+  background-color: #21282f; }
+.animal-animations-on.state-three .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(16) .shard {
+  -webkit-clip-path: polygon(25.99% 61.716%, 32.64% 61.368%, 37.91% 68.146%); }
+.animal-animations-on.state-three .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(18) .shard {
+  -webkit-clip-path: polygon(27.107% 55.964%, 39.318% 59.352%, 42.467% 65.772%); }
+.animal-animations-on.state-three .animalchanger.vaquita .level-two .wrap .shard-wrap:nth-child(19) .shard {
+  -webkit-clip-path: polygon(27.107% 55.964%, 42.467% 65.772%, 47.128% 71.085%); }
+.animal-animations-on.two-state-two .animalchanger.vaquita .wrap .shard-wrap:nth-child(29) .shard {
+  -webkit-clip-path: polygon(78.275% 41.979%, 86.099% 34.183%, 96.64% 34.788%); }
+.animal-animations-on.two-state-two .animalchanger.vaquita .wrap .shard-wrap:nth-child(30) .shard {
+  -webkit-clip-path: polygon(78.275% 41.979%, 96.64% 34.788%, 88.644% 39.784%); }
+
+.shimmer .level-one .wrap .shard-wrap:nth-child(1) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.07s forwards;
+  -moz-animation: shimmer 0.8s 0.07s forwards;
+  animation: shimmer 0.8s 0.07s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(2) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.12s forwards;
+  -moz-animation: shimmer 0.8s 0.12s forwards;
+  animation: shimmer 0.8s 0.12s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(3) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.17s forwards;
+  -moz-animation: shimmer 0.8s 0.17s forwards;
+  animation: shimmer 0.8s 0.17s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(4) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.22s forwards;
+  -moz-animation: shimmer 0.8s 0.22s forwards;
+  animation: shimmer 0.8s 0.22s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(5) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.27s forwards;
+  -moz-animation: shimmer 0.8s 0.27s forwards;
+  animation: shimmer 0.8s 0.27s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(6) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.32s forwards;
+  -moz-animation: shimmer 0.8s 0.32s forwards;
+  animation: shimmer 0.8s 0.32s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(7) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.37s forwards;
+  -moz-animation: shimmer 0.8s 0.37s forwards;
+  animation: shimmer 0.8s 0.37s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(8) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.42s forwards;
+  -moz-animation: shimmer 0.8s 0.42s forwards;
+  animation: shimmer 0.8s 0.42s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(9) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.47s forwards;
+  -moz-animation: shimmer 0.8s 0.47s forwards;
+  animation: shimmer 0.8s 0.47s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(10) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.52s forwards;
+  -moz-animation: shimmer 0.8s 0.52s forwards;
+  animation: shimmer 0.8s 0.52s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(11) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.57s forwards;
+  -moz-animation: shimmer 0.8s 0.57s forwards;
+  animation: shimmer 0.8s 0.57s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(12) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.62s forwards;
+  -moz-animation: shimmer 0.8s 0.62s forwards;
+  animation: shimmer 0.8s 0.62s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(13) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.67s forwards;
+  -moz-animation: shimmer 0.8s 0.67s forwards;
+  animation: shimmer 0.8s 0.67s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(14) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.72s forwards;
+  -moz-animation: shimmer 0.8s 0.72s forwards;
+  animation: shimmer 0.8s 0.72s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(15) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.77s forwards;
+  -moz-animation: shimmer 0.8s 0.77s forwards;
+  animation: shimmer 0.8s 0.77s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(16) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.82s forwards;
+  -moz-animation: shimmer 0.8s 0.82s forwards;
+  animation: shimmer 0.8s 0.82s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(17) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.87s forwards;
+  -moz-animation: shimmer 0.8s 0.87s forwards;
+  animation: shimmer 0.8s 0.87s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(18) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.92s forwards;
+  -moz-animation: shimmer 0.8s 0.92s forwards;
+  animation: shimmer 0.8s 0.92s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(19) .shard::before {
+  -webkit-animation: shimmer 0.8s 0.97s forwards;
+  -moz-animation: shimmer 0.8s 0.97s forwards;
+  animation: shimmer 0.8s 0.97s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(20) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.02s forwards;
+  -moz-animation: shimmer 0.8s 1.02s forwards;
+  animation: shimmer 0.8s 1.02s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(21) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.07s forwards;
+  -moz-animation: shimmer 0.8s 1.07s forwards;
+  animation: shimmer 0.8s 1.07s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(22) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.12s forwards;
+  -moz-animation: shimmer 0.8s 1.12s forwards;
+  animation: shimmer 0.8s 1.12s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(23) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.17s forwards;
+  -moz-animation: shimmer 0.8s 1.17s forwards;
+  animation: shimmer 0.8s 1.17s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(24) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.22s forwards;
+  -moz-animation: shimmer 0.8s 1.22s forwards;
+  animation: shimmer 0.8s 1.22s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(25) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.27s forwards;
+  -moz-animation: shimmer 0.8s 1.27s forwards;
+  animation: shimmer 0.8s 1.27s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(26) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.32s forwards;
+  -moz-animation: shimmer 0.8s 1.32s forwards;
+  animation: shimmer 0.8s 1.32s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(27) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.37s forwards;
+  -moz-animation: shimmer 0.8s 1.37s forwards;
+  animation: shimmer 0.8s 1.37s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(28) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.42s forwards;
+  -moz-animation: shimmer 0.8s 1.42s forwards;
+  animation: shimmer 0.8s 1.42s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(29) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.47s forwards;
+  -moz-animation: shimmer 0.8s 1.47s forwards;
+  animation: shimmer 0.8s 1.47s forwards; }
+.shimmer .level-one .wrap .shard-wrap:nth-child(30) .shard::before {
+  -webkit-animation: shimmer 0.8s 1.52s forwards;
+  -moz-animation: shimmer 0.8s 1.52s forwards;
+  animation: shimmer 0.8s 1.52s forwards; }
+
+
+@-webkit-keyframes shimmer {
+  0% {
+    background-color: rgba(255, 255, 255, 0); }
+  35% {
+    background-color: rgba(255, 255, 255, 0.1); }
+  100% {
+    background-color: rgba(255, 255, 255, 0); } }
+@-moz-keyframes shimmer {
+  0% {
+    background-color: rgba(255, 255, 255, 0); }
+  35% {
+    background-color: rgba(255, 255, 255, 0.1); }
+  100% {
+    background-color: rgba(255, 255, 255, 0); } }
+@keyframes shimmer {
+  0% {
+    background-color: rgba(255, 255, 255, 0); }
+  35% {
+    background-color: rgba(255, 255, 255, 0.1); }
+  100% {
+    background-color: rgba(255, 255, 255, 0); } }

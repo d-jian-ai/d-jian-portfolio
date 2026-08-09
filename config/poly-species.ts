@@ -1,11 +1,6 @@
 import speciesSource from "@/data/species-in-pieces.json";
 import type { Locale } from "@/i18n/types";
 
-export type SpeciesShard = {
-  clipPath: string;
-  color: string;
-};
-
 export type SpeciesSeriesPoint = {
   label: string;
   value: string;
@@ -34,7 +29,6 @@ export type SpeciesRecord = {
   name: string;
   range: string;
   scientificName: string;
-  shards: SpeciesShard[];
   statistics: SpeciesStatistic[];
   theme: {
     accent: string;

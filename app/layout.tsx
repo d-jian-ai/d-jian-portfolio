@@ -4,7 +4,6 @@ import "./globals.css";
 import "@/styles/navigation.css";
 import "@/styles/home.css";
 import "@/styles/space.css";
-import "@/styles/species-in-pieces.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??

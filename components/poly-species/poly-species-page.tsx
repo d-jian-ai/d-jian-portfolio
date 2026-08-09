@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -28,9 +27,10 @@ import {
   type WheelEvent,
 } from "react";
 import {
-  getShardOrigin,
-  SpeciesBurst,
-} from "@/components/poly-species/species-burst";
+  SpeciesShards,
+  SpeciesSourceBurst,
+} from "@/components/poly-species/species-shards";
+import { useSourceSpeciesMotion } from "@/components/poly-species/use-source-species-motion";
 import {
   POLY_SPECIES,
   POLY_SPECIES_UI,
@@ -57,16 +57,6 @@ type RingStyle = CSSProperties & {
 
 type BarStyle = CSSProperties & {
   "--sip-bar": string;
-};
-
-type ShardStyle = CSSProperties & {
-  "--sip-shard-delay": string;
-  "--sip-shard-duration": string;
-  "--sip-shard-morph-delay": string;
-  "--sip-shard-morph-duration": string;
-  "--sip-shard-rotate": string;
-  "--sip-shard-x": string;
-  "--sip-shard-y": string;
 };
 
 const DRAG_THRESHOLD = 48;
@@ -137,7 +127,6 @@ function StatisticVisual({
 export function PolySpeciesPage() {
   const { locale, setLocale } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const [activeIndex, setActiveIndex] = useState(21);
   const [view, setView] = useState<SpeciesView>("exhibit");
   const [autoCycle, setAutoCycle] = useState(false);
   const [motionEnabled, setMotionEnabled] = useState(true);
@@ -151,17 +140,21 @@ export function PolySpeciesPage() {
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
   const closeTimer = useRef<number | null>(null);
+  const {
+    activeIndex,
+    direction,
+    rootClassName: sourceMotionClass,
+    selectSpecies: transitionToSpecies,
+    stepSpecies: changeSpecies,
+  } = useSourceSpeciesMotion({
+    count: POLY_SPECIES.length,
+    enabled: motionEnabled && view === "exhibit",
+    initialIndex: 21,
+  });
   const species = POLY_SPECIES[activeIndex];
   const copy = POLY_SPECIES_UI[locale];
   const narrative = getSpeciesNarrative(species, locale);
   const statistic = species.statistics[activeStatistic] ?? species.statistics[0];
-
-  const changeSpecies = useCallback((direction: number) => {
-    setActiveIndex(
-      (current) =>
-        (current + direction + POLY_SPECIES.length) % POLY_SPECIES.length,
-    );
-  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -215,7 +208,7 @@ export function PolySpeciesPage() {
   }
 
   function selectSpecies(index: number) {
-    setActiveIndex(index);
+    transitionToSpecies(index);
     closePanel();
   }
 
@@ -237,7 +230,7 @@ export function PolySpeciesPage() {
       setView("exhibit");
       setIsClosing(false);
       closeTimer.current = null;
-    }, 680);
+    }, 820);
   }
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
@@ -308,10 +301,9 @@ export function PolySpeciesPage() {
     "--sip-accent": species.theme.accent,
     "--sip-background": species.theme.background,
   };
-
   return (
     <main
-      className={`sip-experience sip-mode-${theme}${isDragging ? " is-dragging" : ""}${motionEnabled ? " has-motion" : ""}`}
+      className={`sip-experience chromebrowser sip-mode-${theme}${isDragging ? " is-dragging" : ""}`}
       data-view={view}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerUp}
@@ -325,7 +317,8 @@ export function PolySpeciesPage() {
       style={pageStyle}
       tabIndex={0}
     >
-      <section aria-label={copy.collection} className="sip-frame">
+      <div className={sourceMotionClass}>
+        <section aria-label={copy.collection} className="sip-frame">
         <div className="sip-utility sip-utility--left">
           <Link aria-label={copy.back} href="/space" title={copy.back}>
             <ArrowLeft aria-hidden="true" size={19} />
@@ -369,27 +362,7 @@ export function PolySpeciesPage() {
         </nav>
 
         <div className="sip-stage" ref={stageRef}>
-          <div className="sip-animal" aria-hidden="true">
-            {species.shards.map((shard, index) => (
-              <i
-                className={`sip-shard sip-shard--${(index % 6) + 1}`}
-                key={index}
-                style={{
-                  "--sip-shard-delay": `${-((index * 0.37) % 5.4)}s`,
-                  "--sip-shard-duration": `${5.8 + (index % 7) * 0.72}s`,
-                  "--sip-shard-morph-delay": `${(index % 10) * 16}ms`,
-                  "--sip-shard-morph-duration": `${1180 + (index % 6) * 58}ms`,
-                  "--sip-shard-rotate": `${0.12 + (index % 5) * 0.055}deg`,
-                  "--sip-shard-x": `${0.35 + (index % 4) * 0.18}px`,
-                  "--sip-shard-y": `${0.28 + (index % 6) * 0.13}px`,
-                  backgroundColor: shard.color,
-                  clipPath: shard.clipPath,
-                  transformOrigin: getShardOrigin(shard.clipPath),
-                } as ShardStyle}
-              />
-            ))}
-          </div>
-          <i className="sip-animal-shadow" aria-hidden="true" />
+          <SpeciesShards direction={direction} speciesId={species.id} />
         </div>
 
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--right">
@@ -420,11 +393,19 @@ export function PolySpeciesPage() {
           <i aria-hidden="true" />
           <button onClick={() => openPanel("statistics")} type="button">{copy.statistics}</button>
         </footer>
-      </section>
+        </section>
+      </div>
+
+      {view !== "exhibit" ? (
+        <SpeciesSourceBurst
+          direction={direction}
+          phase={isClosing ? "closing" : "opening"}
+          speciesId={species.id}
+        />
+      ) : null}
 
       {view === "index" ? (
         <section aria-label={copy.allPieces} className={`sip-overlay sip-index-panel${isClosing ? " is-closing" : ""}`}>
-          <SpeciesBurst phase={isClosing ? "closing" : "opening"} shards={species.shards} />
           <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
             <X aria-hidden="true" size={24} />
           </button>
@@ -466,7 +447,6 @@ export function PolySpeciesPage() {
 
       {view === "threat" ? (
         <section aria-label={copy.threat} className={`sip-overlay sip-threat-panel${isClosing ? " is-closing" : ""}`}>
-          <SpeciesBurst phase={isClosing ? "closing" : "opening"} shards={species.shards} />
           <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
             <X aria-hidden="true" size={24} />
           </button>
@@ -498,7 +478,6 @@ export function PolySpeciesPage() {
 
       {view === "statistics" ? (
         <section aria-label={copy.statistics} className={`sip-overlay sip-statistics-panel${isClosing ? " is-closing" : ""}`}>
-          <SpeciesBurst phase={isClosing ? "closing" : "settled"} shards={species.shards} />
           <button className="sip-panel-back" onClick={() => openPanel("threat")} type="button">
             <ArrowLeft aria-hidden="true" size={16} />
             {copy.backToThreat}
