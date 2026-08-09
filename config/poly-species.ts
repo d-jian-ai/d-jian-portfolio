@@ -20,10 +20,6 @@ export type SpeciesStatistic =
     };
 
 export type SpeciesRecord = {
-  conservation: {
-    href: string;
-    label: string;
-  };
   id: string;
   index: number;
   name: string;
@@ -48,7 +44,6 @@ type PolySpeciesUi = {
   backToThreat: string;
   close: string;
   collection: string;
-  conservation: string;
   indexCaption: string;
   indexEyebrow: string;
   language: string;
@@ -63,7 +58,6 @@ type PolySpeciesUi = {
   scientificName: string;
   selectStatistic: string;
   speciesCountLabel: string;
-  statisticNote: string;
   statistics: string;
   survivalLabel: string;
   theme: string;
@@ -79,7 +73,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     backToThreat: "返回威胁说明",
     close: "关闭",
     collection: "碎片物种",
-    conservation: "保护行动",
     indexCaption: "选择一个碎片，或让系统随机带你前往",
     indexEyebrow: "碎片之中",
     language: "切换语言",
@@ -94,7 +87,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     scientificName: "学名",
     selectStatistic: "选择一组数据查看",
     speciesCountLabel: "个物种",
-    statisticNote: "原始研究中的关键指标",
     statistics: "数据统计",
     survivalLabel: "同一个破碎的生存处境",
     theme: "切换明暗模式",
@@ -108,7 +100,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     backToThreat: "Back to threat",
     close: "Close",
     collection: "Species in pieces",
-    conservation: "Conservation",
     indexCaption: "Choose a piece, or let the system take you somewhere at random",
     indexEyebrow: "In pieces",
     language: "Change language",
@@ -123,7 +114,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     scientificName: "Scientific name",
     selectStatistic: "Select a dataset to inspect",
     speciesCountLabel: "species",
-    statisticNote: "Key figure from the original research",
     statistics: "Statistics",
     survivalLabel: "one fragmented survival",
     theme: "Change color mode",
@@ -137,7 +127,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     backToThreat: "Retour a la menace",
     close: "Fermer",
     collection: "Especes en fragments",
-    conservation: "Conservation",
     indexCaption: "Choisissez un fragment, ou laissez le systeme vous guider au hasard",
     indexEyebrow: "En fragments",
     language: "Changer de langue",
@@ -152,7 +141,6 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     scientificName: "Nom scientifique",
     selectStatistic: "Selectionnez un jeu de donnees",
     speciesCountLabel: "especes",
-    statisticNote: "Indicateur cle de la recherche originale",
     statistics: "Statistiques",
     survivalLabel: "une survie morcelee",
     theme: "Changer le mode couleur",

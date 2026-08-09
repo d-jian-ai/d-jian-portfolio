@@ -6,7 +6,6 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
-  ExternalLink,
   Grid3X3,
   Globe2,
   Moon,
@@ -39,8 +38,11 @@ import {
   type SpeciesView,
 } from "@/config/poly-species";
 import {
+  getStatisticLabel,
+  getStatisticNote,
   getSpeciesNarrative,
   getStatisticTitle,
+  getStatisticValue,
 } from "@/config/poly-species-copy";
 import { LOCALE_OPTIONS } from "@/config/site";
 import { useLanguage } from "@/providers/language-provider";
@@ -84,11 +86,9 @@ function getBarWidths(points: SpeciesSeriesPoint[]) {
 
 function StatisticVisual({
   locale,
-  note,
   statistic,
 }: {
   locale: "zh" | "en" | "fr";
-  note: string;
   statistic: SpeciesStatistic;
 }) {
   if (statistic.kind === "headline") {
@@ -97,8 +97,8 @@ function StatisticVisual({
         <i aria-hidden="true" />
         <i aria-hidden="true" />
         <div>
-          <strong>{statistic.value}</strong>
-          <span>{locale === "en" ? statistic.note : note}</span>
+          <strong>{getStatisticValue(statistic.value, locale)}</strong>
+          <span>{getStatisticNote(statistic.note, locale)}</span>
         </div>
       </div>
     );
@@ -111,12 +111,12 @@ function StatisticVisual({
       <div className="sip-stat-series">
         {statistic.points.map((point, index) => (
           <div className="sip-stat-row" key={`${point.label}-${index}`}>
-            <span>{point.label}</span>
+            <span>{getStatisticLabel(point.label, locale)}</span>
             <i
               aria-hidden="true"
               style={{ "--sip-bar": `${widths[index]}%` } as BarStyle}
             />
-            <strong>{point.value}</strong>
+            <strong>{getStatisticValue(point.value, locale)}</strong>
           </div>
         ))}
       </div>
@@ -466,12 +466,6 @@ export function PolySpeciesPage() {
               {copy.viewStatistics}
               <ChevronRight aria-hidden="true" size={22} />
             </button>
-            {species.conservation.href ? (
-              <a href={species.conservation.href} rel="noreferrer" target="_blank">
-                {copy.conservation}
-                <ExternalLink aria-hidden="true" size={15} />
-              </a>
-            ) : null}
           </div>
         </section>
       ) : null}
@@ -509,7 +503,7 @@ export function PolySpeciesPage() {
             <article className="sip-stats-stage" role="tabpanel">
               <span>{String(activeStatistic + 1).padStart(2, "0")} / {String(species.statistics.length).padStart(2, "0")}</span>
               <h3>{getStatisticTitle(statistic.title, locale)}</h3>
-              <StatisticVisual locale={locale} note={copy.statisticNote} statistic={statistic} />
+              <StatisticVisual locale={locale} statistic={statistic} />
             </article>
           </div>
         </section>

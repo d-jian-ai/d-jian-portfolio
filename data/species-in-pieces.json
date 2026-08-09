@@ -27,11 +27,7 @@
                                "value":  "12%",
                                "note":  "loss of forest in range \u002700 to \u002712"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://rangkong.org/",
-                             "label":  "Rangkong"
-                         }
+                       ]
     },
     {
         "id":  "vaquita",
@@ -123,11 +119,7 @@
                                "value":  "18.5%",
                                "note":  "estimated yearly decline"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://vaquita.tv",
-                             "label":  "Conservation"
-                         }
+                       ]
     },
     {
         "id":  "tamarin",
@@ -219,11 +211,7 @@
                                "value":  "3,200",
                                "note":  "estimated Tamarin population"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.savetheliontamarin.org/",
-                             "label":  "Save the GLT"
-                         }
+                       ]
     },
     {
         "id":  "frog",
@@ -269,11 +257,7 @@
                                "value":  "1\"",
                                "note":  "length of frog (inches)"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "https://www.rainforesttrust.org/projects/complete-projects/preventing-extinction-golden-poison-frog/",
-                             "label":  "Rainforest Trust"
-                         }
+                       ]
     },
     {
         "id":  "owl",
@@ -297,11 +281,7 @@
                                "value":  "250",
                                "note":  "total current population"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.edgeofexistence.org/birds/species_info.php?id=1934",
-                             "label":  "Further info"
-                         }
+                       ]
     },
     {
         "id":  "turtle",
@@ -369,11 +349,7 @@
                                "value":  "1,000",
                                "note":  "Breeding females existing"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.conserveturtles.org/seaturtleinformation.php?page=kemps-ridley",
-                             "label":  "Sea Turtle Conservancy"
-                         }
+                       ]
     },
     {
         "id":  "oryx",
@@ -473,11 +449,7 @@
                                               }
                                           ]
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.saharaconservation.org/?Scimitar-horned-Oryx-Chad",
-                             "label":  "Sahara Fund"
-                         }
+                       ]
     },
     {
         "id":  "iguana",
@@ -507,11 +479,7 @@
                                "value":  "6,000",
                                "note":  "Highest Area Population (Yadua Taba)"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://taronga.org.au/animals-conservation/breeding-programs/global-breeding-programs/fijian-crested-iguana-breeding",
-                             "label":  "Breeding Program"
-                         }
+                       ]
     },
     {
         "id":  "seahorse",
@@ -541,11 +509,7 @@
                                "value":  "30%",
                                "note":  "Decline in Knysna estuary 2000-1"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://seahorse.fisheries.ubc.ca/species/capensis",
-                             "label":  "Project Seahorse"
-                         }
+                       ]
     },
     {
         "id":  "armadillo",
@@ -569,11 +533,7 @@
                                "value":  "30%",
                                "note":  "Decline in last 10 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.acaatinga.org.br/english/index.php/2014/i-help-to-save-the-three-banded-armadillo/",
-                             "label":  "Caatinga"
-                         }
+                       ]
     },
     {
         "id":  "sloth",
@@ -657,11 +617,7 @@
                                "value":  "80%",
                                "note":  "Decline in last 10 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.zsl.org/conservation/regions/americas/pygmy-three-toed-sloth-conservation",
-                             "label":  "ZSL Initiative"
-                         }
+                       ]
     },
     {
         "id":  "kakapo",
@@ -717,11 +673,7 @@
                                               }
                                           ]
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://kakaporecovery.org.nz/",
-                             "label":  "Kakapo Recovery"
-                         }
+                       ]
     },
     {
         "id":  "echidna",
@@ -751,11 +703,7 @@
                                "value":  "3",
                                "note":  "Long-beakeds - all critically endangered"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.edgeofexistence.org/mammals/species_info.php?id=1395",
-                             "label":  "Further info"
-                         }
+                       ]
     },
     {
         "id":  "penguin",
@@ -835,11 +783,7 @@
                                "value":  "99%",
                                "note":  "Decline since turn of century"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.sanccob.co.za/",
-                             "label":  "SANCCOB initiative"
-                         }
+                       ]
     },
     {
         "id":  "damselfly",
@@ -869,11 +813,7 @@
                                "value":  "36-38mm",
                                "note":  "Average length of body"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.iucnredlist.org/details/60274/0",
-                             "label":  "Further Info"
-                         }
+                       ]
     },
     {
         "id":  "bear",
@@ -903,11 +843,7 @@
                                "value":  "20-25cm",
                                "note":  "Average length of tongue"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://sunbears.wildlifedirect.org/",
-                             "label":  "BNSBCC Iniative"
-                         }
+                       ]
     },
     {
         "id":  "parrotfish",
@@ -937,11 +873,7 @@
                                "value":  "27%",
                                "note":  "Decline in catches since 2003"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://blog.nature.org/science/2014/07/31/parrotfish-caribbean-coral-reef-iucn-report/",
-                             "label":  "Nature Conservancy"
-                         }
+                       ]
     },
     {
         "id":  "camel",
@@ -1021,11 +953,7 @@
                                "value":  "80%",
                                "note":  "Decline in next 45-50 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.sospecies.org/sos_projects/pilot_projects/edge_of_existence/wild_camel/",
-                             "label":  "SOS Wild Camel"
-                         }
+                       ]
     },
     {
         "id":  "butterfly",
@@ -1049,11 +977,7 @@
                                "value":  "17-20cm",
                                "note":  "Average wingspan"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.sawai-ecotourism.com/rainforest-conservation/",
-                             "label":  "Sawai Ecotourism"
-                         }
+                       ]
     },
     {
         "id":  "ostrich",
@@ -1077,11 +1001,7 @@
                                "value":  "2014",
                                "note":  "Year declared distinct species"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.awf.org/",
-                             "label":  "AWF Foundation"
-                         }
+                       ]
     },
     {
         "id":  "panda",
@@ -1141,11 +1061,7 @@
                                "value":  "40%",
                                "note":  "Population decline in last 50 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://redpandanetwork.org/",
-                             "label":  "Red Panda Network"
-                         }
+                       ]
     },
     {
         "id":  "tapir",
@@ -1175,11 +1091,7 @@
                                "value":  "50%",
                                "note":  "Population decline in Sumatra"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.malaytapir.org/",
-                             "label":  "Malay Tapir Project"
-                         }
+                       ]
     },
     {
         "id":  "sifaka",
@@ -1225,11 +1137,7 @@
                                "value":  "\u003e80%",
                                "note":  "Population decline in next 45 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.sadabe.org/whatis.html",
-                             "label":  "Sadabe"
-                         }
+                       ]
     },
     {
         "id":  "lynx",
@@ -1285,11 +1193,7 @@
                                               }
                                           ]
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://soslynx.org/",
-                             "label":  "SOS Lynx"
-                         }
+                       ]
     },
     {
         "id":  "rhino",
@@ -1381,11 +1285,7 @@
                                "value":  "80%",
                                "note":  "Decline in last 20 years"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.rhinos.org/rhinos/sumatran-rhino",
-                             "label":  "IRF"
-                         }
+                       ]
     },
     {
         "id":  "peccary",
@@ -1453,11 +1353,7 @@
                                "value":  "5,000",
                                "note":  "Estimated population in Paraguay"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.worldlandtrust.org/education/species/chacoan-peccary",
-                             "label":  "WLT Initiative"
-                         }
+                       ]
     },
     {
         "id":  "okapi",
@@ -1493,11 +1389,7 @@
                                "value":  "47%",
                                "note":  "Decline 1998-2012"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.okapiconservation.org",
-                             "label":  "Okapi Project"
-                         }
+                       ]
     },
     {
         "id":  "loris",
@@ -1527,11 +1419,7 @@
                                "value":  "20%",
                                "note":  "of suitable habitat remaining"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.conservationleadershipprogramme.org/project/javan-slow-loris-project-indonesia/",
-                             "label":  "JSL Project"
-                         }
+                       ]
     },
     {
         "id":  "hirola",
@@ -1607,11 +1495,7 @@
                                "value":  "85-90%",
                                "note":  "Decline between \u002783-85"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "http://www.hirolaconservation.org/",
-                             "label":  "Hirola Program"
-                         }
+                       ]
     },
     {
         "id":  "drill",
@@ -1635,10 +1519,6 @@
                                "value":  "3,000",
                                "note":  "Current estimated population"
                            }
-                       ],
-        "conservation":  {
-                             "href":  "https://www.facebook.com/pages/The-Drill-Project/258035237544233",
-                             "label":  "Drill Project"
-                         }
+                       ]
     }
 ]

@@ -336,6 +336,76 @@ const STATISTIC_TITLES: Record<string, { zh: string; fr: string }> = {
   "1983-85 Decline": { zh: "1983-85 年下降", fr: "Déclin 1983-85" },
 };
 
+const STATISTIC_NOTES: Record<string, { zh: string; fr: string }> = {
+  "Average length of body": { zh: "身体平均长度", fr: "Longueur moyenne du corps" },
+  "Average length of tongue": { zh: "舌头平均长度", fr: "Longueur moyenne de la langue" },
+  "Average wingspan": { zh: "平均翼展", fr: "Envergure moyenne" },
+  "Breeding females existing": { zh: "现存繁殖雌性数量", fr: "Femelles reproductrices existantes" },
+  "Current estimated population": { zh: "当前估计种群数量", fr: "Population actuelle estimée" },
+  "Date first discovered": { zh: "首次发现日期", fr: "Date de la première découverte" },
+  "Decline 1995-2007": { zh: "1995 至 2007 年下降幅度", fr: "Déclin entre 1995 et 2007" },
+  "Decline 1998-2012": { zh: "1998 至 2012 年下降幅度", fr: "Déclin entre 1998 et 2012" },
+  "Decline between '83-85": { zh: "1983 至 1985 年下降幅度", fr: "Déclin entre 1983 et 1985" },
+  "Decline in catches since 2003": { zh: "自 2003 年以来捕获量下降", fr: "Baisse des captures depuis 2003" },
+  "Decline in Knysna estuary 2000-1": { zh: "2000 至 2001 年克尼斯纳河口下降幅度", fr: "Déclin dans l'estuaire de Knysna entre 2000 et 2001" },
+  "Decline in last 10 years": { zh: "过去 10 年下降幅度", fr: "Déclin au cours des 10 dernières années" },
+  "Decline in last 20 years": { zh: "过去 20 年下降幅度", fr: "Déclin au cours des 20 dernières années" },
+  "Decline in last 24 years": { zh: "过去 24 年下降幅度", fr: "Déclin au cours des 24 dernières années" },
+  "Decline in last 35-40 years": { zh: "过去 35 至 40 年下降幅度", fr: "Déclin au cours des 35 à 40 dernières années" },
+  "Decline in next 45-50 years": { zh: "未来 45 至 50 年预计下降幅度", fr: "Déclin prévu au cours des 45 à 50 prochaines années" },
+  "Decline in Swartvlei estuary 2002-3": { zh: "2002 至 2003 年斯瓦特弗莱河口下降幅度", fr: "Déclin dans l'estuaire de Swartvlei entre 2002 et 2003" },
+  "decline over last 3 decades": { zh: "过去 30 年下降幅度", fr: "Déclin au cours des trois dernières décennies" },
+  "Decline since turn of century": { zh: "本世纪以来下降幅度", fr: "Déclin depuis le début du siècle" },
+  "Estimated current population": { zh: "当前估计种群数量", fr: "Population actuelle estimée" },
+  "Estimated population in Malaysia": { zh: "马来西亚估计种群数量", fr: "Population estimée en Malaisie" },
+  "Estimated population in Paraguay": { zh: "巴拉圭估计种群数量", fr: "Population estimée au Paraguay" },
+  "estimated Tamarin population": { zh: "狮面狨估计种群数量", fr: "Population estimée de tamarins" },
+  "estimated yearly decline": { zh: "年度下降估算", fr: "Déclin annuel estimé" },
+  "Highest Area Population (Yadua Taba)": { zh: "亚杜阿塔巴最高区域种群数量", fr: "Population régionale la plus élevée à Yadua Taba" },
+  "killed in 2015 in West Kalimantan": { zh: "2015 年在西加里曼丹被捕杀的数量", fr: "Tués en 2015 au Kalimantan occidental" },
+  "length of frog (inches)": { zh: "蛙类体长（英寸）", fr: "Longueur de la grenouille en pouces" },
+  "Long-beakeds - all critically endangered": { zh: "长喙针鼹类均处于极危状态", fr: "Tous les échidnés à long bec sont en danger critique" },
+  "loss of forest in range '00 to '12": { zh: "2000 至 2012 年分布区森林损失", fr: "Perte de forêt dans l'aire entre 2000 et 2012" },
+  "min. number females in 1947": { zh: "1947 年雌性个体最低数量", fr: "Nombre minimal de femelles en 1947" },
+  "of suitable habitat remaining": { zh: "适宜栖息地剩余比例", fr: "Part de l'habitat favorable restant" },
+  "Population decline in last 50 years": { zh: "过去 50 年种群下降幅度", fr: "Déclin de la population au cours des 50 dernières années" },
+  "Population decline in next 45 years": { zh: "未来 45 年预计种群下降幅度", fr: "Déclin prévu de la population au cours des 45 prochaines années" },
+  "Population decline in Sumatra": { zh: "苏门答腊种群下降幅度", fr: "Déclin de la population à Sumatra" },
+  "Projected decline in next decade": { zh: "未来 10 年预计下降幅度", fr: "Déclin prévu au cours de la prochaine décennie" },
+  "Recent habitat loss": { zh: "近期栖息地损失", fr: "Perte récente d'habitat" },
+  "total current population": { zh: "当前种群总数", fr: "Population actuelle totale" },
+  "Year declared distinct species": { zh: "被认定为独立物种的年份", fr: "Année de reconnaissance comme espèce distincte" },
+};
+
+const STATISTIC_LABELS: Record<string, { zh: string; fr: string }> = {
+  EX: { zh: "灭绝", fr: "Éteinte" },
+  TH: { zh: "受威胁", fr: "Menacée" },
+  "Near-TH": { zh: "近危", fr: "Quasi menacée" },
+  other: { zh: "其他", fr: "Autres" },
+  "Bou Hedma": { zh: "布海德马", fr: "Bou Hedma" },
+  Ferlo: { zh: "费洛", fr: "Ferlo" },
+  Guembeul: { zh: "甘贝尔", fr: "Guembeul" },
+  "O. Dekouk": { zh: "德库克", fr: "O. Dekouk" },
+  "S. Massa": { zh: "马萨", fr: "S. Massa" },
+  "Sidi-Toui": { zh: "西迪图伊", fr: "Sidi-Toui" },
+};
+
+const STATISTIC_STATUS_VALUES: Record<string, { zh: string; en: string; fr: string }> = {
+  "CR EN": { zh: "极危 / 濒危", en: "CR / EN", fr: "CR / EN" },
+  EIW: { zh: "野外灭绝", en: "Extinct in the wild", fr: "Éteinte à l'état sauvage" },
+  EN: { zh: "濒危", en: "Endangered", fr: "En danger" },
+  Fewer: { zh: "较少", en: "Fewer", fr: "Moins" },
+  VU: { zh: "易危", en: "Vulnerable", fr: "Vulnérable" },
+};
+
+const STATISTIC_VALUE_PREFIXES = [
+  { source: "no more than", zh: "不超过 ", en: "no more than ", fr: "au plus " },
+  { source: "less than", zh: "少于 ", en: "less than ", fr: "moins de " },
+  { source: "more than", zh: "多于 ", en: "more than ", fr: "plus de " },
+  { source: "around", zh: "约 ", en: "around ", fr: "environ " },
+  { source: "over", zh: "超过 ", en: "over ", fr: "plus de " },
+] as const;
+
 export function getSpeciesNarrative(
   species: SpeciesRecord,
   locale: Locale,
@@ -347,4 +417,26 @@ export function getSpeciesNarrative(
 export function getStatisticTitle(title: string, locale: Locale) {
   if (locale === "en") return title;
   return STATISTIC_TITLES[title]?.[locale] ?? title;
+}
+
+export function getStatisticNote(note: string, locale: Locale) {
+  if (locale === "en") return note;
+  return STATISTIC_NOTES[note]?.[locale]
+    ?? (locale === "zh" ? "原始研究中的关键指标" : "Indicateur clé de l'étude d'origine");
+}
+
+export function getStatisticLabel(label: string, locale: Locale) {
+  if (locale === "en") return label;
+  return STATISTIC_LABELS[label]?.[locale] ?? label;
+}
+
+export function getStatisticValue(value: string, locale: Locale) {
+  const status = STATISTIC_STATUS_VALUES[value];
+  if (status) return status[locale];
+
+  const prefix = STATISTIC_VALUE_PREFIXES.find(({ source }) => value.startsWith(source));
+  if (!prefix) return value;
+
+  const numericValue = value.slice(prefix.source.length).trim();
+  return `${prefix[locale]}${numericValue}`;
 }
