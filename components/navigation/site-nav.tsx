@@ -43,7 +43,6 @@ export function SiteNav() {
       })),
     [dictionary.nav, pathname],
   );
-  const activeLink = links.find((link) => link.active) ?? links[0];
   const copy = NAVIGATION_COPY[locale];
   const themeLabel = theme === "dark" ? copy.themeToLight : copy.themeToDark;
 
@@ -188,7 +187,6 @@ export function SiteNav() {
           themeLabel={themeLabel}
         />
         <MobileMenuBar
-          activeLink={activeLink}
           copy={copy}
           menuTrigger={mobileMenuTrigger}
           onToggle={() => setMobileOpen((current) => !current)}

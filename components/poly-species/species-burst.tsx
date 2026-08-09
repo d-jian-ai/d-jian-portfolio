@@ -5,13 +5,17 @@ type BurstPhase = "closing" | "opening" | "settled";
 
 type BurstStyle = CSSProperties & {
   "--burst-delay": string;
+  "--burst-drift-rotate": string;
+  "--burst-drift-x": string;
+  "--burst-drift-y": string;
+  "--burst-duration": string;
   "--burst-rotate": string;
   "--burst-scale": number;
   "--burst-x": string;
   "--burst-y": string;
 };
 
-function getShardOrigin(clipPath: string) {
+export function getShardOrigin(clipPath: string) {
   const points = Array.from(
     clipPath.matchAll(/([\d.]+)%\s+([\d.]+)%/g),
     (match) => [Number(match[1]), Number(match[2])] as const,
@@ -36,6 +40,10 @@ function getBurstStyle(index: number): BurstStyle {
 
   return {
     "--burst-delay": `${(index % 10) * 14}ms`,
+    "--burst-drift-rotate": `${7 + (index % 6) * 2.4}deg`,
+    "--burst-drift-x": `${0.25 + (index % 4) * 0.13}vw`,
+    "--burst-drift-y": `${0.18 + (index % 5) * 0.09}vh`,
+    "--burst-duration": `${12 + (index % 7) * 1.7}s`,
     "--burst-rotate": `${rotation}deg`,
     "--burst-scale": 0.2 + (index % 5) * 0.035,
     "--burst-x": `${x}vw`,

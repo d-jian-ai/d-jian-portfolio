@@ -27,7 +27,10 @@ import {
   type PointerEvent,
   type WheelEvent,
 } from "react";
-import { SpeciesBurst } from "@/components/poly-species/species-burst";
+import {
+  getShardOrigin,
+  SpeciesBurst,
+} from "@/components/poly-species/species-burst";
 import {
   POLY_SPECIES,
   POLY_SPECIES_UI,
@@ -54,6 +57,16 @@ type RingStyle = CSSProperties & {
 
 type BarStyle = CSSProperties & {
   "--sip-bar": string;
+};
+
+type ShardStyle = CSSProperties & {
+  "--sip-shard-delay": string;
+  "--sip-shard-duration": string;
+  "--sip-shard-morph-delay": string;
+  "--sip-shard-morph-duration": string;
+  "--sip-shard-rotate": string;
+  "--sip-shard-x": string;
+  "--sip-shard-y": string;
 };
 
 const DRAG_THRESHOLD = 48;
@@ -361,7 +374,18 @@ export function PolySpeciesPage() {
               <i
                 className={`sip-shard sip-shard--${(index % 6) + 1}`}
                 key={index}
-                style={{ backgroundColor: shard.color, clipPath: shard.clipPath }}
+                style={{
+                  "--sip-shard-delay": `${-((index * 0.37) % 5.4)}s`,
+                  "--sip-shard-duration": `${5.8 + (index % 7) * 0.72}s`,
+                  "--sip-shard-morph-delay": `${(index % 10) * 16}ms`,
+                  "--sip-shard-morph-duration": `${1180 + (index % 6) * 58}ms`,
+                  "--sip-shard-rotate": `${0.12 + (index % 5) * 0.055}deg`,
+                  "--sip-shard-x": `${0.35 + (index % 4) * 0.18}px`,
+                  "--sip-shard-y": `${0.28 + (index % 6) * 0.13}px`,
+                  backgroundColor: shard.color,
+                  clipPath: shard.clipPath,
+                  transformOrigin: getShardOrigin(shard.clipPath),
+                } as ShardStyle}
               />
             ))}
           </div>

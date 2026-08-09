@@ -11,7 +11,6 @@ import type { LocaleOption, NavigationLink } from "./types";
 type NavigationCopy = (typeof NAVIGATION_COPY)[Locale];
 
 type MobileMenuBarProps = {
-  activeLink: NavigationLink;
   copy: NavigationCopy;
   menuTrigger: RefObject<HTMLButtonElement | null>;
   onToggle: () => void;
@@ -35,7 +34,6 @@ type MobileDrawerProps = {
 };
 
 export function MobileMenuBar({
-  activeLink,
   copy,
   menuTrigger,
   onToggle,
@@ -43,10 +41,6 @@ export function MobileMenuBar({
 }: MobileMenuBarProps) {
   return (
     <div className="mobile-nav-bar">
-      <span className="mobile-current-page">
-        <span>{activeLink.code}</span>
-        {activeLink.label}
-      </span>
       <button
         aria-controls="mobile-navigation-drawer"
         aria-expanded={open}

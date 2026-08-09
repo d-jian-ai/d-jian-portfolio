@@ -9,6 +9,8 @@
   --sip-dark: #252525;
   --sip-ink: #293432;
   --sip-paper: #f7f4ed;
+  --sip-stage-top: 42%;
+  --sip-stage-width: min(52vw, 900px);
   background: var(--sip-paper);
   color: var(--sip-ink);
   cursor: grab;
@@ -96,6 +98,17 @@
   width: 44px;
 }
 
+.sip-utility a,
+.sip-utility button {
+  backdrop-filter: blur(16px) saturate(1.14);
+  background: color-mix(in srgb, var(--sip-paper) 64%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sip-ink) 15%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 72%, transparent),
+    0 7px 22px rgba(24, 28, 25, 0.16);
+  color: var(--sip-ink);
+}
+
 .sip-utility button:last-child {
   border-radius: 24px;
   gap: 6px;
@@ -116,6 +129,24 @@
   transform: scale(1.08);
 }
 
+.sip-utility a:hover,
+.sip-utility button:hover {
+  background: color-mix(in srgb, var(--sip-paper) 82%, transparent);
+  border-color: color-mix(in srgb, var(--sip-ink) 24%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 82%, transparent),
+    0 10px 28px rgba(24, 28, 25, 0.22);
+}
+
+.sip-mode-dark .sip-utility a,
+.sip-mode-dark .sip-utility button {
+  background: rgba(244, 240, 232, 0.13);
+  border-color: rgba(244, 240, 232, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
 .sip-stage {
   --sip-x: 0;
   --sip-y: 0;
@@ -123,9 +154,9 @@
   left: 50%;
   pointer-events: none;
   position: absolute;
-  top: 44%;
+  top: var(--sip-stage-top);
   transform: translate(-50%, -50%);
-  width: min(88vw, 1520px);
+  width: var(--sip-stage-width);
   z-index: 2;
 }
 
@@ -147,12 +178,19 @@
   animation: sipAnimalFloat 5.8s ease-in-out infinite alternate;
 }
 
+.has-motion .sip-shard {
+  animation: sipShardDrift var(--sip-shard-duration) ease-in-out
+    var(--sip-shard-delay) infinite alternate;
+}
+
 .sip-shard {
   inset: 0;
   position: absolute;
   transition:
-    clip-path 1280ms cubic-bezier(0.18, 0.78, 0.22, 1),
-    background-color 880ms cubic-bezier(0.22, 1, 0.36, 1);
+    clip-path var(--sip-shard-morph-duration) cubic-bezier(0.18, 0.78, 0.22, 1)
+      var(--sip-shard-morph-delay),
+    background-color 960ms cubic-bezier(0.22, 1, 0.36, 1)
+      var(--sip-shard-morph-delay);
   will-change: clip-path;
 }
 
@@ -200,8 +238,8 @@
 .sip-side-controls > button:not(.sip-threat-trigger) {
   border: 3px solid color-mix(in srgb, #263331 88%, transparent);
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--sip-paper) 30%, transparent);
-  height: 54px;
-  width: 54px;
+  height: 48px;
+  width: 48px;
 }
 
 .sip-side-controls > button.is-active {
@@ -247,7 +285,7 @@
   color: color-mix(in srgb, var(--sip-background) 76%, #222);
   cursor: pointer;
   display: flex;
-  height: 112px;
+  height: 94px;
   justify-content: center;
   margin-block: 3px;
   padding: 13px;
@@ -255,7 +293,7 @@
   transition:
     color 240ms ease,
     transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  width: 112px;
+  width: 94px;
 }
 
 .sip-threat-trigger::before {
@@ -271,7 +309,7 @@
 
 .sip-threat-trigger span {
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.88rem;
   line-height: 1.02;
   position: relative;
   text-align: center;
@@ -289,7 +327,7 @@
 
 .sip-species-title {
   align-items: center;
-  bottom: clamp(74px, 12.5vh, 132px);
+  bottom: clamp(110px, 18vh, 150px);
   display: flex;
   gap: 18px;
   left: 50%;
@@ -316,7 +354,7 @@
 
 .sip-species-title h1 {
   font-family: "SIP Block", Impact, sans-serif;
-  font-size: clamp(2.2rem, 4.2vw, 5.2rem);
+  font-size: clamp(1.8rem, 3.15vw, 3.8rem);
   font-weight: 400;
   letter-spacing: 0;
   line-height: 0.82;
@@ -395,9 +433,9 @@
   left: 50%;
   pointer-events: none;
   position: fixed;
-  top: 44%;
+  top: var(--sip-stage-top);
   transform: translate(-50%, -50%);
-  width: min(88vw, 1520px);
+  width: var(--sip-stage-width);
   z-index: 1;
 }
 
@@ -409,14 +447,15 @@
 }
 
 .sip-burst--opening .sip-burst-shard {
-  animation: sipBurstOut 920ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
-  animation-delay: var(--burst-delay);
+  animation:
+    sipBurstOut 920ms cubic-bezier(0.2, 0.72, 0.24, 1) var(--burst-delay) both,
+    sipBurstDrift var(--burst-duration) ease-in-out
+      calc(980ms + var(--burst-delay)) infinite alternate;
 }
 
 .sip-burst--settled .sip-burst-shard {
+  animation: sipBurstDrift var(--burst-duration) ease-in-out infinite alternate;
   opacity: 0.58;
-  transform: translate3d(var(--burst-x), var(--burst-y), 0)
-    rotate(var(--burst-rotate)) scale(var(--burst-scale));
 }
 
 .sip-burst--closing .sip-burst-shard {
@@ -966,6 +1005,21 @@
   }
 }
 
+@keyframes sipShardDrift {
+  from {
+    transform: translate3d(
+        calc(var(--sip-shard-x) * -1),
+        calc(var(--sip-shard-y) * -1),
+        0
+      )
+      rotate(calc(var(--sip-shard-rotate) * -1));
+  }
+  to {
+    transform: translate3d(var(--sip-shard-x), var(--sip-shard-y), 0)
+      rotate(var(--sip-shard-rotate));
+  }
+}
+
 @keyframes sipPanelIn {
   from {
     opacity: 0;
@@ -998,6 +1052,29 @@
     opacity: 0.58;
     transform: translate3d(var(--burst-x), var(--burst-y), 0)
       rotate(var(--burst-rotate)) scale(var(--burst-scale));
+  }
+}
+
+@keyframes sipBurstDrift {
+  from {
+    opacity: 0.48;
+    transform: translate3d(
+        calc(var(--burst-x) - var(--burst-drift-x)),
+        calc(var(--burst-y) - var(--burst-drift-y)),
+        0
+      )
+      rotate(calc(var(--burst-rotate) - var(--burst-drift-rotate)))
+      scale(var(--burst-scale));
+  }
+  to {
+    opacity: 0.68;
+    transform: translate3d(
+        calc(var(--burst-x) + var(--burst-drift-x)),
+        calc(var(--burst-y) + var(--burst-drift-y)),
+        0
+      )
+      rotate(calc(var(--burst-rotate) + var(--burst-drift-rotate)))
+      scale(var(--burst-scale));
   }
 }
 
@@ -1040,9 +1117,9 @@
 }
 
 @media (max-width: 900px) {
-  .sip-stage {
-    top: 43%;
-    width: 112vw;
+  .sip-experience {
+    --sip-stage-top: 40%;
+    --sip-stage-width: min(68vw, 640px);
   }
 
   .sip-species-title {
@@ -1070,6 +1147,8 @@
 
 @media (max-width: 620px) {
   .sip-experience {
+    --sip-stage-top: 35%;
+    --sip-stage-width: 92vw;
     min-height: 560px;
   }
 
@@ -1082,7 +1161,7 @@
   }
 
   .sip-utility {
-    top: 16px;
+    top: max(14px, env(safe-area-inset-top));
   }
 
   .sip-utility--left {
@@ -1105,27 +1184,35 @@
 
   .sip-stage {
     left: 50%;
-    top: 39%;
-    width: 118vw;
   }
 
   .sip-side-controls {
-    gap: 6px;
-    top: 45%;
+    gap: 7px;
+    top: auto;
+    transform: none;
   }
 
   .sip-side-controls--left {
-    left: 13px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    display: flex;
+    left: 16px;
   }
 
   .sip-side-controls--right {
-    right: 13px;
+    align-items: center;
+    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 52px);
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    justify-items: stretch;
+    left: 16px;
+    right: 16px;
   }
 
   .sip-side-controls > button:not(.sip-threat-trigger) {
-    border-width: 2px;
-    height: 44px;
-    width: 44px;
+    border-width: 1px;
+    height: 40px;
+    width: 40px;
   }
 
   .sip-control-label {
@@ -1133,35 +1220,44 @@
   }
 
   .sip-threat-trigger {
-    height: 68px;
-    padding: 9px;
-    width: 68px;
+    background: color-mix(in srgb, var(--sip-paper) 74%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sip-ink) 16%, transparent);
+    border-radius: 999px;
+    box-shadow: 0 7px 20px rgba(23, 27, 24, 0.14);
+    color: var(--sip-ink);
+    height: 40px;
+    margin: 0;
+    padding: 0 14px;
+    width: auto;
   }
 
   .sip-threat-trigger span {
-    font-size: 0.66rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
   }
 
   .sip-species-title {
-    bottom: 76px;
-    gap: 10px;
+    bottom: auto;
+    gap: 8px;
     max-width: calc(100vw - 32px);
+    top: 59%;
+    transform: translate(-50%, -50%);
     width: calc(100vw - 32px);
   }
 
   .sip-species-title > span {
-    font-size: 0.7rem;
-    max-width: 36px;
+    font-size: 0.6rem;
+    max-width: 32px;
   }
 
   .sip-species-title > i {
-    height: 30px;
+    height: 26px;
     width: 2px;
   }
 
   .sip-species-title h1 {
     flex: 1;
-    font-size: clamp(1.8rem, 9.2vw, 3rem);
+    font-size: clamp(1.45rem, 7.6vw, 2.2rem);
     max-width: none;
   }
 
@@ -1172,35 +1268,38 @@
   }
 
   .sip-footer-nav {
-    bottom: 24px;
-    gap: 7px;
-  }
-
-  .sip-footer-nav button {
-    font-size: 0.57rem;
+    display: none;
   }
 
   .sip-panel-close {
-    height: 52px;
-    top: 25px;
-    width: 52px;
+    border-width: 3px;
+    height: 44px;
+    left: auto;
+    right: 18px;
+    top: max(18px, env(safe-area-inset-top));
+    transform: none;
+    width: 44px;
   }
 
   .sip-index-panel > .sip-panel-close {
-    left: 50%;
-    top: 25px;
-    transform: translateX(-50%);
+    left: auto;
+    right: 18px;
+    top: max(18px, env(safe-area-inset-top));
+    transform: none;
   }
 
   .sip-index-panel > .sip-panel-close:hover {
-    transform: translateX(-50%) rotate(8deg) scale(1.06);
+    transform: rotate(8deg) scale(1.06);
   }
 
   .sip-index-panel {
     align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 116px 20px 42px;
+    padding: max(82px, calc(env(safe-area-inset-top) + 66px)) 18px 34px;
   }
 
   .sip-index-ring {
@@ -1209,7 +1308,8 @@
     grid-template-columns: 1fr 1fr;
     height: auto;
     left: auto;
-    padding-top: 250px;
+    order: 2;
+    padding-top: 0;
     position: relative;
     top: auto;
     transform: none;
@@ -1254,20 +1354,23 @@
   }
 
   .sip-index-center {
-    left: 50%;
-    padding: 0 22px;
-    position: absolute;
-    top: 108px;
-    transform: translateX(-50%);
+    align-items: flex-start;
+    left: auto;
+    order: 1;
+    padding: 0 4px 30px;
+    position: relative;
+    text-align: left;
+    top: auto;
+    transform: none;
     width: 100%;
   }
 
   .sip-index-center h2 {
-    font-size: 1.8rem;
+    font-size: 1.65rem;
   }
 
   .sip-index-center p {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin: 10px 0 8px;
   }
 
@@ -1276,41 +1379,43 @@
   }
 
   .sip-index-center button {
-    margin-top: 14px;
+    margin-top: 12px;
   }
 
   .sip-threat-panel {
     display: block;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 116px 22px 58px;
+    padding: max(88px, calc(env(safe-area-inset-top) + 72px)) 20px 38px;
   }
 
   .sip-threat-meta {
-    align-items: stretch;
+    align-items: flex-start;
     flex-direction: column;
-    font-size: 0.7rem;
+    font-size: 0.58rem;
     gap: 7px;
   }
 
   .sip-threat-meta i {
     height: 1px;
-    margin: 4px auto;
+    margin: 4px 0;
     width: 26px;
   }
 
   .sip-threat-copy {
-    margin: 38px auto;
+    margin: 30px 0 34px;
+    text-align: left;
   }
 
   .sip-threat-copy h2 {
-    font-size: 2rem;
-    margin-bottom: 34px;
+    font-size: clamp(1.32rem, 6.2vw, 1.65rem);
+    margin-bottom: 26px;
   }
 
   .sip-threat-copy p {
-    font-size: 1rem;
-    line-height: 1.28;
+    font-size: 0.78rem;
+    line-height: 1.34;
+    margin-inline: 0;
   }
 
   .sip-threat-actions {
@@ -1319,14 +1424,20 @@
   }
 
   .sip-statistics-action {
-    font-size: 1.35rem;
+    font-size: 0.9rem;
     gap: 12px;
-    min-height: 62px;
+    min-height: 48px;
     padding-inline: 20px;
   }
 
   .sip-threat-actions > a {
+    font-size: 0.78rem;
     justify-content: center;
+    min-height: 44px;
+  }
+
+  .sip-threat-panel .sip-panel-close:hover {
+    transform: rotate(8deg) scale(1.06);
   }
 
   .sip-statistics-panel {
@@ -1334,21 +1445,21 @@
     display: block;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 94px 18px 46px;
+    padding: max(82px, calc(env(safe-area-inset-top) + 66px)) 18px 38px;
   }
 
   .sip-panel-back {
     left: 20px;
-    top: 33px;
+    top: max(30px, env(safe-area-inset-top));
   }
 
   .sip-statistics-panel .sip-panel-close--corner {
-    height: 42px;
+    height: 40px;
     left: auto;
     right: 20px;
-    top: 20px;
+    top: max(18px, env(safe-area-inset-top));
     transform: none;
-    width: 42px;
+    width: 40px;
   }
 
   .sip-statistics-panel .sip-panel-close--corner:hover {
@@ -1362,7 +1473,7 @@
   }
 
   .sip-stats-menu h2 {
-    font-size: 2.8rem;
+    font-size: 2.25rem;
     margin-block: 10px 18px;
   }
 
@@ -1397,7 +1508,7 @@
   }
 
   .sip-stats-stage {
-    margin-top: 42px;
+    margin-top: 34px;
   }
 
   .sip-stats-stage h3 {
@@ -1406,11 +1517,11 @@
   }
 
   .sip-stat-visual--headline {
-    width: min(82vw, 330px);
+    width: min(72vw, 280px);
   }
 
   .sip-stat-visual--headline strong {
-    font-size: clamp(3.3rem, 18vw, 5.5rem);
+    font-size: clamp(3rem, 15vw, 4.6rem);
   }
 
   .sip-stat-row {
@@ -1419,8 +1530,8 @@
   }
 
   .sip-burst {
-    top: 39%;
-    width: 118vw;
+    top: var(--sip-stage-top);
+    width: var(--sip-stage-width);
   }
 }
 
