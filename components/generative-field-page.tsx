@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, MousePointer2 } from "lucide-react";
+import { Activity, ArrowLeft, MousePointer2 } from "lucide-react";
 import Link from "next/link";
 import {
   useCallback,
@@ -12,20 +12,32 @@ import {
   type WheelEvent,
 } from "react";
 import { ExperimentalParticleField } from "@/components/experimental-particle-field";
-import { GENERATIVE_FIELD_CONFIG } from "@/config/space";
+import {
+  GENERATIVE_FIELD_CONFIG,
+  GENERATIVE_FIELD_STAGE_META,
+  GENERATIVE_FIELD_TELEMETRY_LABELS,
+  type FieldTelemetry,
+} from "@/config/space";
 import { useLanguage } from "@/providers/language-provider";
 
 export function GenerativeFieldPage() {
-  const { dictionary } = useLanguage();
+  const { dictionary, locale } = useLanguage();
   const [activeChapter, setActiveChapter] = useState(0);
   const [particleCount, setParticleCount] = useState<number>(
     GENERATIVE_FIELD_CONFIG.performance.initialParticles,
   );
+  const [telemetry, setTelemetry] = useState<FieldTelemetry>({
+    coherence: 86,
+    energy: 42,
+    wake: 6,
+  });
   const lastStep = useRef(0);
   const touchStartY = useRef<number | null>(null);
   const copy = dictionary.generativeField;
   const chapters = copy.chapters;
   const chapterCount = chapters.length;
+  const stageMeta = GENERATIVE_FIELD_STAGE_META[locale][activeChapter];
+  const telemetryLabels = GENERATIVE_FIELD_TELEMETRY_LABELS[locale];
 
   const changeChapter = useCallback((direction: number) => {
     setActiveChapter((current) =>
@@ -97,6 +109,7 @@ export function GenerativeFieldPage() {
         <ExperimentalParticleField
           chapter={activeChapter}
           onParticleCount={setParticleCount}
+          onTelemetry={setTelemetry}
         />
       </div>
       <div className="space-shade" aria-hidden="true" />
@@ -164,6 +177,26 @@ export function GenerativeFieldPage() {
       <aside className="space-system-note">
         <p>{copy.notesTitle}</p>
         <span>{copy.notes[activeChapter % copy.notes.length]}</span>
+      </aside>
+
+      <aside className="field-observatory">
+        <div className="field-observatory__principle">
+          <Activity aria-hidden="true" size={15} />
+          <span>{stageMeta.principle}</span>
+        </div>
+        <div className="field-observatory__readings">
+          {stageMeta.readings.map((reading) => (
+            <div key={reading.label}>
+              <span>{reading.label}</span>
+              <strong>{reading.value}</strong>
+            </div>
+          ))}
+        </div>
+        <div className="field-observatory__telemetry" aria-live="off">
+          <span>{telemetryLabels.energy} <strong>{telemetry.energy}</strong></span>
+          <span>{telemetryLabels.coherence} <strong>{telemetry.coherence}%</strong></span>
+          <span>{telemetryLabels.wake} <strong>{telemetry.wake}</strong></span>
+        </div>
       </aside>
     </section>
   );

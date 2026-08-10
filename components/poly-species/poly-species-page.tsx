@@ -11,12 +11,14 @@ import {
   Moon,
   Pause,
   Play,
+  ShieldAlert,
   Shuffle,
   Sun,
   X,
 } from "lucide-react";
 import Link from "next/link";
 import {
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -62,6 +64,7 @@ type BarStyle = CSSProperties & {
 };
 
 const DRAG_THRESHOLD = 48;
+const PANEL_CLOSE_DURATION_MS = 2100;
 const WHEEL_COOLDOWN_MS = 920;
 const WHEEL_THRESHOLD = 24;
 
@@ -91,6 +94,19 @@ function StatisticVisual({
   locale: "zh" | "en" | "fr";
   statistic: SpeciesStatistic;
 }) {
+  if (statistic.kind === "profile") {
+    return (
+      <div className="sip-stat-visual sip-stat-visual--profile">
+        {statistic.facts.map((fact) => (
+          <div key={fact.label}>
+            <span>{getStatisticLabel(fact.label, locale)}</span>
+            <strong>{getStatisticValue(fact.value, locale)}</strong>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (statistic.kind === "headline") {
     return (
       <div className="sip-stat-visual sip-stat-visual--headline">
@@ -145,7 +161,7 @@ export function PolySpeciesPage() {
     direction,
     rootClassName: sourceMotionClass,
     selectSpecies: transitionToSpecies,
-    stepSpecies: changeSpecies,
+    stepSpecies: transitionSpecies,
   } = useSourceSpeciesMotion({
     count: POLY_SPECIES.length,
     enabled: motionEnabled && view === "exhibit",
@@ -155,6 +171,14 @@ export function PolySpeciesPage() {
   const copy = POLY_SPECIES_UI[locale];
   const narrative = getSpeciesNarrative(species, locale);
   const statistic = species.statistics[activeStatistic] ?? species.statistics[0];
+
+  const changeSpecies = useCallback(
+    (step: number) => {
+      setActiveStatistic(0);
+      transitionSpecies(step);
+    },
+    [transitionSpecies],
+  );
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -208,6 +232,7 @@ export function PolySpeciesPage() {
   }
 
   function selectSpecies(index: number) {
+    setActiveStatistic(0);
     transitionToSpecies(index);
     closePanel();
   }
@@ -230,7 +255,7 @@ export function PolySpeciesPage() {
       setView("exhibit");
       setIsClosing(false);
       closeTimer.current = null;
-    }, 820);
+    }, PANEL_CLOSE_DURATION_MS);
   }
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
@@ -370,6 +395,7 @@ export function PolySpeciesPage() {
             <ChevronUp aria-hidden="true" size={22} />
           </button>
           <button className="sip-threat-trigger" onClick={() => openPanel("threat")} type="button">
+            <ShieldAlert aria-hidden="true" size={20} />
             <span>{copy.openThreat}</span>
           </button>
           <button aria-label={copy.next} onClick={() => changeSpecies(1)} title={copy.next} type="button">
@@ -500,10 +526,16 @@ export function PolySpeciesPage() {
               </div>
               <p>{copy.selectStatistic}</p>
             </aside>
-            <article className="sip-stats-stage" role="tabpanel">
+            <article className="sip-stats-stage" key={`${species.id}-${activeStatistic}`} role="tabpanel">
               <span>{String(activeStatistic + 1).padStart(2, "0")} / {String(species.statistics.length).padStart(2, "0")}</span>
               <h3>{getStatisticTitle(statistic.title, locale)}</h3>
               <StatisticVisual locale={locale} statistic={statistic} />
+              <p className="sip-stat-source">
+                <span>{copy.source}</span>
+                {statistic.source
+                  ? `${statistic.source.organization} / ${statistic.source.date}`
+                  : copy.archiveSource}
+              </p>
             </article>
           </div>
         </section>
