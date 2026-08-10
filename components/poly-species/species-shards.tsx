@@ -7,11 +7,6 @@ export type ShardPhase = "closing" | "opening";
 
 type ShardTimingStyle = CSSProperties & {
   "--sip-bg-delay": string;
-  "--sip-burst-delay": string;
-  "--sip-burst-duration": string;
-  "--sip-burst-rotate": string;
-  "--sip-burst-x": string;
-  "--sip-burst-y": string;
   "--sip-clip-delay": string;
   "--sip-clip-duration": string;
 };
@@ -23,19 +18,8 @@ function getShardTiming(
   index: number,
   direction: ShardDirection,
 ): ShardTimingStyle {
-  const angle = index * 2.399963;
-  const radius = 12 + ((index * 17) % 34);
-  const burstMotion = {
-    "--sip-burst-delay": `${-((index * 137) % 1800)}ms`,
-    "--sip-burst-duration": `${2400 + ((index * 211) % 1900)}ms`,
-    "--sip-burst-rotate": `${index % 2 ? -7 - (index % 8) : 8 + (index % 9)}deg`,
-    "--sip-burst-x": `${(Math.cos(angle) * radius).toFixed(3)}px`,
-    "--sip-burst-y": `${(Math.sin(angle) * radius).toFixed(3)}px`,
-  };
-
   if (index >= PRIMARY_SHARD_COUNT) {
     return {
-      ...burstMotion,
       "--sip-bg-delay": `${260 + (index - PRIMARY_SHARD_COUNT) * 120}ms`,
       "--sip-clip-delay": `${260 + (index - PRIMARY_SHARD_COUNT) * 120}ms`,
       "--sip-clip-duration": "600ms",
@@ -44,7 +28,6 @@ function getShardTiming(
 
   if (direction === "right-to-left") {
     return {
-      ...burstMotion,
       "--sip-bg-delay": `${600 - index * 20}ms`,
       "--sip-clip-delay": `${950 - index * 25}ms`,
       "--sip-clip-duration": `${1500 - index * 40}ms`,
@@ -52,7 +35,6 @@ function getShardTiming(
   }
 
   return {
-    ...burstMotion,
     "--sip-bg-delay": `${20 + index * 20}ms`,
     "--sip-clip-delay": `${220 + index * 20}ms`,
     "--sip-clip-duration": `${340 + index * 40}ms`,
@@ -110,12 +92,14 @@ export function SpeciesSourceBurst({
   const [exploded, setExploded] = useState(false);
 
   useEffect(() => {
+    if (phase === "closing") {
+      setExploded(false);
+      return;
+    }
+
     let secondFrame = 0;
-    setExploded(phase === "closing");
     const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        setExploded(phase === "opening");
-      });
+      secondFrame = window.requestAnimationFrame(() => setExploded(true));
     });
 
     return () => {
@@ -127,7 +111,7 @@ export function SpeciesSourceBurst({
   return (
     <div
       aria-hidden="true"
-      className={`sip-source-burst-shell is-${phase}${exploded ? " smash" : ""}`}
+      className={`sip-source-burst-shell${exploded ? " smash" : ""}`}
     >
       <SpeciesShards
         className="sip-source-burst"

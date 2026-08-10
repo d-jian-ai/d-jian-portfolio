@@ -283,7 +283,6 @@ const FR_SPECIES: Record<string, SpeciesNarrative> = {
 };
 
 const STATISTIC_TITLES: Record<string, { zh: string; fr: string }> = {
-  "Verified conservation update": { zh: "权威保护动态", fr: "Mise a jour verifiee" },
   "W. Kalimantan Killings": { zh: "西加里曼丹捕杀", fr: "Mortalité au Kalimantan occidental" },
   "Habitat Loss 00-12": { zh: "2000-2012 栖息地损失", fr: "Perte d'habitat 2000-2012" },
   "Population by Studies": { zh: "研究估算种群", fr: "Population selon les études" },
@@ -379,21 +378,6 @@ const STATISTIC_NOTES: Record<string, { zh: string; fr: string }> = {
 };
 
 const STATISTIC_LABELS: Record<string, { zh: string; fr: string }> = {
-  "Observed in 2021": { zh: "2021 年目击下限", fr: "Minimum observe en 2021" },
-  "1997 estimate": { zh: "1997 年估算", fr: "Estimation de 1997" },
-  "Primary threat": { zh: "首要威胁", fr: "Menace principale" },
-  "Managed population": { zh: "受管理种群", fr: "Population geree" },
-  "1995 baseline": { zh: "1995 年基线", fr: "Reference de 1995" },
-  "IUCN status": { zh: "IUCN 等级", fr: "Statut UICN" },
-  Reassessment: { zh: "重新评估", fr: "Reevaluation" },
-  "Population trend": { zh: "种群趋势", fr: "Tendance" },
-  "Previous status": { zh: "此前等级", fr: "Statut precedent" },
-  "Mature individuals 2022": { zh: "2022 年成熟个体", fr: "Individus matures en 2022" },
-  "Total population": { zh: "种群总数", fr: "Population totale" },
-  "Trade protection": { zh: "贸易保护", fr: "Protection commerciale" },
-  "Endemic range": { zh: "特有分布区", fr: "Aire endemique" },
-  "Population evidence": { zh: "种群证据", fr: "Donnees de population" },
-  "European status": { zh: "欧洲保护等级", fr: "Statut europeen" },
   EX: { zh: "灭绝", fr: "Éteinte" },
   TH: { zh: "受威胁", fr: "Menacée" },
   "Near-TH": { zh: "近危", fr: "Quasi menacée" },
@@ -407,20 +391,10 @@ const STATISTIC_LABELS: Record<string, { zh: string; fr: string }> = {
 };
 
 const STATISTIC_STATUS_VALUES: Record<string, { zh: string; en: string; fr: string }> = {
-  CR: { zh: "极危", en: "Critically endangered", fr: "En danger critique" },
   "CR EN": { zh: "极危 / 濒危", en: "CR / EN", fr: "CR / EN" },
-  Decreasing: { zh: "持续下降", en: "Decreasing", fr: "En diminution" },
   EIW: { zh: "野外灭绝", en: "Extinct in the wild", fr: "Éteinte à l'état sauvage" },
   EN: { zh: "濒危", en: "Endangered", fr: "En danger" },
-  "Extinct in the wild": { zh: "野外灭绝", en: "Extinct in the wild", fr: "Éteinte à l'état sauvage" },
   Fewer: { zh: "较少", en: "Fewer", fr: "Moins" },
-  Gillnets: { zh: "刺网误捕", en: "Gillnets", fr: "Filets maillants" },
-  "CITES Appendix II": { zh: "CITES 附录 II", en: "CITES Appendix II", fr: "Annexe II CITES" },
-  Europe: { zh: "欧洲", en: "Europe", fr: "Europe" },
-  "Habitat loss and poaching": { zh: "栖息地丧失与盗猎", en: "Habitat loss and poaching", fr: "Perte d'habitat et braconnage" },
-  Limited: { zh: "资料有限", en: "Limited", fr: "Limitees" },
-  "North Maluku": { zh: "北马鲁古", en: "North Maluku", fr: "Moluques du Nord" },
-  "Rainforest loss": { zh: "雨林丧失", en: "Rainforest loss", fr: "Perte de foret tropicale" },
   VU: { zh: "易危", en: "Vulnerable", fr: "Vulnérable" },
 };
 

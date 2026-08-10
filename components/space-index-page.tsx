@@ -73,7 +73,7 @@ export function SpaceIndexPage() {
 function ExperimentPreview({ kind }: { kind: SpacePreviewKind }) {
   switch (kind) {
     case "particle-field":
-      return <ExperimentalParticleField chapter={1} variant="preview" />;
+      return <ExperimentalParticleField chapter={0} />;
     case "poly-species":
       return <PolySpeciesPreview />;
   }

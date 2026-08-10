@@ -22,7 +22,6 @@ export function useSourceSpeciesMotion({
   const [primaryState, setPrimaryState] = useState<PrimaryMotionState>("");
   const [secondaryState, setSecondaryState] = useState(false);
   const [shimmer, setShimmer] = useState(false);
-  const [sparkState, setSparkState] = useState(0);
   const morphTimer = useRef<number | null>(null);
 
   const beginMorph = useCallback(() => {
@@ -60,7 +59,6 @@ export function useSourceSpeciesMotion({
       setPrimaryState("");
       setSecondaryState(false);
       setShimmer(false);
-      setSparkState(0);
       return;
     }
 
@@ -85,32 +83,21 @@ export function useSourceSpeciesMotion({
       schedule(() => setSecondaryState(false), 1500);
     };
     const runShimmer = () => {
-      schedule(() => setShimmer(true), 3300);
-      schedule(() => setShimmer(false), 5400);
-    };
-    const runSparks = () => {
-      schedule(() => setSparkState(1), 500);
-      schedule(() => setSparkState(0), 880);
-      schedule(() => setSparkState(2), 1550);
-      schedule(() => setSparkState(0), 1850);
-      schedule(() => setSparkState(3), 2550);
-      schedule(() => setSparkState(0), 2870);
+      schedule(() => setShimmer(true), 4000);
+      schedule(() => setShimmer(false), 6000);
     };
 
     runPrimary();
     runSecondary();
     runShimmer();
-    runSparks();
     const primary = window.setInterval(runPrimary, 4000);
     const secondary = window.setInterval(runSecondary, 3000);
     const shimmerCycle = window.setInterval(runShimmer, 7000);
-    const sparkCycle = window.setInterval(runSparks, 5200);
 
     return () => {
       window.clearInterval(primary);
       window.clearInterval(secondary);
       window.clearInterval(shimmerCycle);
-      window.clearInterval(sparkCycle);
       timers.forEach((timer) => window.clearTimeout(timer));
     };
   }, [sourceMotionActive]);
@@ -130,11 +117,10 @@ export function useSourceSpeciesMotion({
         sourceMotionActive ? primaryState : "",
         sourceMotionActive && secondaryState ? "two-state-two" : "",
         sourceMotionActive && shimmer ? "shimmer" : "",
-        sourceMotionActive && sparkState ? `spark-${sparkState}` : "",
       ]
         .filter(Boolean)
         .join(" "),
-    [primaryState, secondaryState, shimmer, sourceMotionActive, sparkState],
+    [primaryState, secondaryState, shimmer, sourceMotionActive],
   );
 
   return {
