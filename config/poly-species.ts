@@ -59,6 +59,7 @@ type PolySpeciesUi = {
   selectStatistic: string;
   speciesCountLabel: string;
   statistics: string;
+  stopCycle: string;
   survivalLabel: string;
   theme: string;
   threat: string;
@@ -88,6 +89,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     selectStatistic: "选择一组数据查看",
     speciesCountLabel: "个物种",
     statistics: "数据统计",
+    stopCycle: "停止巡游",
     survivalLabel: "同一个破碎的生存处境",
     theme: "切换明暗模式",
     threat: "生存威胁",
@@ -115,6 +117,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     selectStatistic: "Select a dataset to inspect",
     speciesCountLabel: "species",
     statistics: "Statistics",
+    stopCycle: "Stop",
     survivalLabel: "one fragmented survival",
     theme: "Change color mode",
     threat: "The threat",
@@ -142,6 +145,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     selectStatistic: "Selectionnez un jeu de donnees",
     speciesCountLabel: "especes",
     statistics: "Statistiques",
+    stopCycle: "Arreter",
     survivalLabel: "une survie morcelee",
     theme: "Changer le mode couleur",
     threat: "La menace",

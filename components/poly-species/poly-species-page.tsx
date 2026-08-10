@@ -6,12 +6,14 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
-  Grid3X3,
   Globe2,
+  Grip,
   Moon,
   Pause,
   Play,
+  Repeat2,
   Shuffle,
+  Square,
   Sun,
   X,
 } from "lucide-react";
@@ -58,10 +60,15 @@ type BarStyle = CSSProperties & {
   "--sip-bar": string;
 };
 
+type IndexPhase = "idle" | "opening" | "open" | "closing";
+
 const DRAG_THRESHOLD = 48;
 const SOURCE_REASSEMBLY_DELAY_MS = 120;
 const SOURCE_RESTORE_DURATION_MS = 2000;
 const SOURCE_SMASH_DELAY_MS = 10;
+const SOURCE_ALL_SPECIES_BURST_MS = 500;
+const SOURCE_ALL_SPECIES_CLOSE_MS = 1500;
+const SOURCE_AUTOPLAY_INTERVAL_MS = 2900;
 const WHEEL_COOLDOWN_MS = 920;
 const WHEEL_THRESHOLD = 24;
 
@@ -133,12 +140,16 @@ export function PolySpeciesPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isSmashed, setIsSmashed] = useState(false);
+  const [indexPhase, setIndexPhase] = useState<IndexPhase>("idle");
+  const [hoveredSpecies, setHoveredSpecies] = useState<number | null>(null);
   const [activeStatistic, setActiveStatistic] = useState(0);
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
   const closeTimer = useRef<number | null>(null);
   const reassemblyTimer = useRef<number | null>(null);
   const smashTimer = useRef<number | null>(null);
+  const indexBurstTimer = useRef<number | null>(null);
+  const indexCloseTimer = useRef<number | null>(null);
   const {
     activeIndex,
     direction,
@@ -165,9 +176,11 @@ export function PolySpeciesPage() {
 
   useEffect(() => {
     if (!autoCycle || view !== "exhibit") return;
-    const cycle = window.setInterval(() => changeSpecies(1), 4600);
+    const cycle = window.setInterval(() => {
+      transitionToSpecies(Math.floor(Math.random() * POLY_SPECIES.length));
+    }, SOURCE_AUTOPLAY_INTERVAL_MS);
     return () => window.clearInterval(cycle);
-  }, [autoCycle, changeSpecies, view]);
+  }, [autoCycle, transitionToSpecies, view]);
 
   useEffect(() => {
     setActiveStatistic(0);
@@ -178,6 +191,8 @@ export function PolySpeciesPage() {
       if (closeTimer.current) window.clearTimeout(closeTimer.current);
       if (reassemblyTimer.current) window.clearTimeout(reassemblyTimer.current);
       if (smashTimer.current) window.clearTimeout(smashTimer.current);
+      if (indexBurstTimer.current) window.clearTimeout(indexBurstTimer.current);
+      if (indexCloseTimer.current) window.clearTimeout(indexCloseTimer.current);
     },
     [],
   );
@@ -187,17 +202,53 @@ export function PolySpeciesPage() {
     setLocale(LOCALE_OPTIONS[(current + 1) % LOCALE_OPTIONS.length].value);
   }
 
-  function selectSpecies(index: number) {
-    transitionToSpecies(index);
-    closePanel();
+  function stopAutoCycle() {
+    setAutoCycle(false);
+  }
+
+  function navigateSpecies(step: number) {
+    stopAutoCycle();
+    changeSpecies(step);
+  }
+
+  function openSpeciesIndex() {
+    stopAutoCycle();
+    if (indexBurstTimer.current) window.clearTimeout(indexBurstTimer.current);
+    if (indexCloseTimer.current) window.clearTimeout(indexCloseTimer.current);
+    setHoveredSpecies(null);
+    setIsClosing(false);
+    setIsSmashed(false);
+    setIndexPhase("opening");
+    setView("index");
+    indexBurstTimer.current = window.setTimeout(() => {
+      setIndexPhase("open");
+      indexBurstTimer.current = null;
+    }, SOURCE_ALL_SPECIES_BURST_MS);
+  }
+
+  function closeSpeciesIndex(nextIndex?: number) {
+    if (indexPhase === "closing") return;
+    if (indexBurstTimer.current) window.clearTimeout(indexBurstTimer.current);
+    if (typeof nextIndex === "number") transitionToSpecies(nextIndex);
+    setHoveredSpecies(null);
+    setIndexPhase("closing");
+    indexCloseTimer.current = window.setTimeout(() => {
+      setView("exhibit");
+      setIndexPhase("idle");
+      indexCloseTimer.current = null;
+    }, SOURCE_ALL_SPECIES_CLOSE_MS);
   }
 
   function selectRandomSpecies() {
-    const offset = 1 + Math.floor(Math.random() * (POLY_SPECIES.length - 1));
-    selectSpecies((activeIndex + offset) % POLY_SPECIES.length);
+    closeSpeciesIndex(Math.floor(Math.random() * POLY_SPECIES.length));
   }
 
   function openPanel(nextView: Exclude<SpeciesView, "exhibit">) {
+    if (nextView === "index") {
+      openSpeciesIndex();
+      return;
+    }
+    stopAutoCycle();
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     if (reassemblyTimer.current) window.clearTimeout(reassemblyTimer.current);
     if (smashTimer.current) window.clearTimeout(smashTimer.current);
@@ -252,7 +303,7 @@ export function PolySpeciesPage() {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     if (Math.abs(distance) >= DRAG_THRESHOLD) {
-      changeSpecies(distance < 0 ? 1 : -1);
+      navigateSpecies(distance < 0 ? 1 : -1);
     }
   }
 
@@ -263,23 +314,24 @@ export function PolySpeciesPage() {
     const now = performance.now();
     if (now - lastWheelStep.current < WHEEL_COOLDOWN_MS) return;
     lastWheelStep.current = now;
-    changeSpecies(event.deltaY > 0 ? 1 : -1);
+    navigateSpecies(event.deltaY > 0 ? 1 : -1);
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.key === "Escape" && view !== "exhibit") {
-      closePanel();
+      if (view === "index") closeSpeciesIndex();
+      else closePanel();
       return;
     }
     if (view !== "exhibit") return;
 
     if (["ArrowDown", "ArrowRight", "PageDown"].includes(event.key)) {
       event.preventDefault();
-      changeSpecies(1);
+      navigateSpecies(1);
     }
     if (["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key)) {
       event.preventDefault();
-      changeSpecies(-1);
+      navigateSpecies(-1);
     }
   }
 
@@ -289,7 +341,7 @@ export function PolySpeciesPage() {
   };
   return (
     <main
-      className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}`}
+      className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}${view === "index" && indexPhase !== "closing" ? " all-animals" : ""}${indexPhase === "opening" ? " earlyburst" : ""}${indexPhase === "closing" ? " slow-polygons" : ""}${autoCycle ? " slideshow-on" : ""}`}
       data-view={view}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerUp}
@@ -318,8 +370,8 @@ export function PolySpeciesPage() {
         </div>
 
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--left">
-          <button aria-label={copy.allPieces} onClick={() => openPanel("index")} type="button">
-            <Grid3X3 aria-hidden="true" size={20} />
+          <button aria-label={copy.allPieces} onClick={openSpeciesIndex} type="button">
+            <Grip aria-hidden="true" size={20} />
             <span className="sip-control-label">{copy.allPieces}</span>
           </button>
           <button
@@ -329,8 +381,8 @@ export function PolySpeciesPage() {
             onClick={() => setAutoCycle((current) => !current)}
             type="button"
           >
-            <Shuffle aria-hidden="true" size={20} />
-            <span className="sip-control-label">{copy.autoCycle}</span>
+            {autoCycle ? <Square aria-hidden="true" size={16} /> : <Repeat2 aria-hidden="true" size={20} />}
+            <span className="sip-control-label">{autoCycle ? copy.stopCycle : copy.autoCycle}</span>
           </button>
           <button
             aria-label={copy.motion}
@@ -344,17 +396,22 @@ export function PolySpeciesPage() {
         </nav>
 
         <div className="sip-stage">
-          <SpeciesShards direction={direction} speciesId={species.id} />
+          <SpeciesShards
+            direction={direction}
+            highlightedShard={hoveredSpecies}
+            highlightColor={hoveredSpecies === null ? undefined : POLY_SPECIES[hoveredSpecies].theme.accent}
+            speciesId={species.id}
+          />
         </div>
 
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--right">
-          <button aria-label={copy.previous} onClick={() => changeSpecies(-1)} title={copy.previous} type="button">
+          <button aria-label={copy.previous} onClick={() => navigateSpecies(-1)} title={copy.previous} type="button">
             <ChevronUp aria-hidden="true" size={22} />
           </button>
           <button className="sip-threat-trigger" onClick={() => openPanel("threat")} type="button">
             <span>{copy.openThreat}</span>
           </button>
-          <button aria-label={copy.next} onClick={() => changeSpecies(1)} title={copy.next} type="button">
+          <button aria-label={copy.next} onClick={() => navigateSpecies(1)} title={copy.next} type="button">
             <ChevronDown aria-hidden="true" size={22} />
           </button>
         </nav>
@@ -369,7 +426,7 @@ export function PolySpeciesPage() {
         </div>
 
         <footer className="sip-footer-nav">
-          <button onClick={() => openPanel("index")} type="button">{copy.allPieces}</button>
+          <button onClick={openSpeciesIndex} type="button">{copy.allPieces}</button>
           <i aria-hidden="true" />
           <button onClick={() => openPanel("threat")} type="button">{copy.threat}</button>
           <i aria-hidden="true" />
@@ -379,8 +436,8 @@ export function PolySpeciesPage() {
       </div>
 
       {view === "index" ? (
-        <section aria-label={copy.allPieces} className={`sip-overlay sip-index-panel${isClosing ? " is-closing" : ""}`}>
-          <button className="sip-panel-close" aria-label={copy.close} onClick={closePanel} title={copy.close} type="button">
+        <section aria-label={copy.allPieces} className={`sip-overlay sip-index-panel${indexPhase === "closing" ? " is-closing" : ""}`}>
+          <button className="sip-panel-close" aria-label={copy.close} onClick={() => closeSpeciesIndex()} title={copy.close} type="button">
             <X aria-hidden="true" size={24} />
           </button>
           <div className="sip-index-ring" role="list">
@@ -391,30 +448,50 @@ export function PolySpeciesPage() {
                   aria-label={`${String(item.index).padStart(2, "0")} ${itemName}`}
                   className={index === activeIndex ? "is-active" : ""}
                   key={item.id}
-                  onClick={() => selectSpecies(index)}
+                  onBlur={() => setHoveredSpecies(null)}
+                  onClick={() => closeSpeciesIndex(index)}
+                  onFocus={() => setHoveredSpecies(index)}
+                  onPointerEnter={() => setHoveredSpecies(index)}
+                  onPointerLeave={() => setHoveredSpecies(null)}
                   role="listitem"
                   style={{ "--sip-index": index } as RingStyle}
                   title={itemName}
                   type="button"
                 >
                   <i aria-hidden="true" />
-                  <span>{String(item.index).padStart(2, "0")} {itemName}</span>
+                  <span>
+                    <small className="sip-index-piece">{copy.piece} {String(item.index).padStart(2, "0")}</small>
+                    <strong>{itemName}</strong>
+                    <small>{item.scientificName}</small>
+                  </span>
                 </button>
               );
             })}
           </div>
           <div className="sip-index-center">
-            <span className="sip-index-eyebrow">{copy.indexEyebrow}</span>
-            <h2>
-              <strong>30</strong> {copy.speciesCountLabel}<br />
-              <strong>30</strong> {copy.piecesCountLabel}
-            </h2>
-            <p>{copy.survivalLabel}</p>
-            <span className="sip-index-caption">{copy.indexCaption}</span>
-            <button onClick={selectRandomSpecies} type="button">
-              <Shuffle aria-hidden="true" size={16} />
-              {copy.random}
-            </button>
+            {hoveredSpecies === null ? (
+              <div className="sip-index-summary">
+                <span className="sip-index-eyebrow">{copy.indexEyebrow}</span>
+                <h2>
+                  <strong>30</strong> {copy.speciesCountLabel}<br />
+                  <strong>30</strong> {copy.piecesCountLabel}
+                </h2>
+                <p>{copy.survivalLabel}</p>
+                <p className="sip-index-caption">
+                  {copy.indexCaption}
+                  <button onClick={selectRandomSpecies} type="button">
+                    <Shuffle aria-hidden="true" size={14} />
+                    {copy.random}
+                  </button>
+                </p>
+              </div>
+            ) : (
+              <div className="sip-index-detail" key={POLY_SPECIES[hoveredSpecies].id}>
+                <span>{copy.piece} {String(POLY_SPECIES[hoveredSpecies].index).padStart(2, "0")}</span>
+                <h2>{getSpeciesNarrative(POLY_SPECIES[hoveredSpecies], locale).name}</h2>
+                <small>{POLY_SPECIES[hoveredSpecies].scientificName}</small>
+              </div>
+            )}
           </div>
         </section>
       ) : null}
