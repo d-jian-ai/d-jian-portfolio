@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 export type ShardDirection = "left-to-right" | "right-to-left";
-export type ShardPhase = "closing" | "opening";
-
 type ShardTimingStyle = CSSProperties & {
   "--sip-bg-delay": string;
   "--sip-clip-delay": string;
@@ -76,49 +74,6 @@ export function SpeciesShards({
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-export function SpeciesSourceBurst({
-  direction,
-  phase,
-  speciesId,
-}: {
-  direction: ShardDirection;
-  phase: ShardPhase;
-  speciesId: string;
-}) {
-  const [exploded, setExploded] = useState(false);
-
-  useEffect(() => {
-    if (phase === "closing") {
-      setExploded(false);
-      return;
-    }
-
-    let secondFrame = 0;
-    const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => setExploded(true));
-    });
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      if (secondFrame) window.cancelAnimationFrame(secondFrame);
-    };
-  }, [phase]);
-
-  return (
-    <div
-      aria-hidden="true"
-      className={`sip-source-burst-shell${exploded ? " smash" : ""}`}
-    >
-      <SpeciesShards
-        className="sip-source-burst"
-        direction={direction}
-        speciesId={speciesId}
-        withShadow={false}
-      />
     </div>
   );
 }

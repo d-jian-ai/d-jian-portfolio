@@ -25,10 +25,7 @@ import {
   type PointerEvent,
   type WheelEvent,
 } from "react";
-import {
-  SpeciesShards,
-  SpeciesSourceBurst,
-} from "@/components/poly-species/species-shards";
+import { SpeciesShards } from "@/components/poly-species/species-shards";
 import { useSourceSpeciesMotion } from "@/components/poly-species/use-source-species-motion";
 import {
   POLY_SPECIES,
@@ -62,6 +59,9 @@ type BarStyle = CSSProperties & {
 };
 
 const DRAG_THRESHOLD = 48;
+const SOURCE_REASSEMBLY_DELAY_MS = 120;
+const SOURCE_RESTORE_DURATION_MS = 2000;
+const SOURCE_SMASH_DELAY_MS = 10;
 const WHEEL_COOLDOWN_MS = 920;
 const WHEEL_THRESHOLD = 24;
 
@@ -132,14 +132,13 @@ export function PolySpeciesPage() {
   const [motionEnabled, setMotionEnabled] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isSmashed, setIsSmashed] = useState(false);
   const [activeStatistic, setActiveStatistic] = useState(0);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const pointerTarget = useRef({ x: 0, y: 0 });
-  const pointerCurrent = useRef({ x: 0, y: 0 });
-  const pointerVelocity = useRef({ x: 0, y: 0 });
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
   const closeTimer = useRef<number | null>(null);
+  const reassemblyTimer = useRef<number | null>(null);
+  const smashTimer = useRef<number | null>(null);
   const {
     activeIndex,
     direction,
@@ -147,8 +146,9 @@ export function PolySpeciesPage() {
     selectSpecies: transitionToSpecies,
     stepSpecies: changeSpecies,
   } = useSourceSpeciesMotion({
+    active: view === "exhibit",
     count: POLY_SPECIES.length,
-    enabled: motionEnabled && view === "exhibit",
+    enabled: motionEnabled,
     initialIndex: 21,
   });
   const species = POLY_SPECIES[activeIndex];
@@ -176,31 +176,11 @@ export function PolySpeciesPage() {
   useEffect(
     () => () => {
       if (closeTimer.current) window.clearTimeout(closeTimer.current);
+      if (reassemblyTimer.current) window.clearTimeout(reassemblyTimer.current);
+      if (smashTimer.current) window.clearTimeout(smashTimer.current);
     },
     [],
   );
-
-  useEffect(() => {
-    let frame = 0;
-
-    const tick = () => {
-      const target = motionEnabled ? pointerTarget.current : { x: 0, y: 0 };
-      const current = pointerCurrent.current;
-      const velocity = pointerVelocity.current;
-
-      velocity.x = (velocity.x + (target.x - current.x) * 0.055) * 0.78;
-      velocity.y = (velocity.y + (target.y - current.y) * 0.055) * 0.78;
-      current.x += velocity.x;
-      current.y += velocity.y;
-
-      stageRef.current?.style.setProperty("--sip-x", current.x.toFixed(4));
-      stageRef.current?.style.setProperty("--sip-y", current.y.toFixed(4));
-      frame = window.requestAnimationFrame(tick);
-    };
-
-    frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
-  }, [motionEnabled]);
 
   function cycleLocale() {
     const current = LOCALE_OPTIONS.findIndex((option) => option.value === locale);
@@ -219,27 +199,33 @@ export function PolySpeciesPage() {
 
   function openPanel(nextView: Exclude<SpeciesView, "exhibit">) {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    if (reassemblyTimer.current) window.clearTimeout(reassemblyTimer.current);
+    if (smashTimer.current) window.clearTimeout(smashTimer.current);
     setIsClosing(false);
     setView(nextView);
+
+    if (view === "exhibit") {
+      setIsSmashed(false);
+      smashTimer.current = window.setTimeout(() => {
+        setIsSmashed(true);
+        smashTimer.current = null;
+      }, SOURCE_SMASH_DELAY_MS);
+    }
   }
 
   function closePanel() {
     if (isClosing) return;
+    if (smashTimer.current) window.clearTimeout(smashTimer.current);
     setIsClosing(true);
+    reassemblyTimer.current = window.setTimeout(() => {
+      setIsSmashed(false);
+      reassemblyTimer.current = null;
+    }, SOURCE_REASSEMBLY_DELAY_MS);
     closeTimer.current = window.setTimeout(() => {
       setView("exhibit");
       setIsClosing(false);
       closeTimer.current = null;
-    }, 820);
-  }
-
-  function handlePointerMove(event: PointerEvent<HTMLElement>) {
-    if (view !== "exhibit") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    pointerTarget.current = {
-      x: ((event.clientX - rect.left) / rect.width - 0.5) * 2,
-      y: ((event.clientY - rect.top) / rect.height - 0.5) * 2,
-    };
+    }, SOURCE_RESTORE_DURATION_MS);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLElement>) {
@@ -303,21 +289,17 @@ export function PolySpeciesPage() {
   };
   return (
     <main
-      className={`sip-experience chromebrowser sip-mode-${theme}${isDragging ? " is-dragging" : ""}`}
+      className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}`}
       data-view={view}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerUp}
       onPointerDown={handlePointerDown}
-      onPointerLeave={() => {
-        pointerTarget.current = { x: 0, y: 0 };
-      }}
-      onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onWheel={handleWheel}
       style={pageStyle}
       tabIndex={0}
     >
-      <div className={sourceMotionClass}>
+      <div className="sip-motion-root">
         <section aria-label={copy.collection} className="sip-frame">
         <div className="sip-utility sip-utility--left">
           <Link aria-label={copy.back} href="/space" title={copy.back}>
@@ -361,7 +343,7 @@ export function PolySpeciesPage() {
           </button>
         </nav>
 
-        <div className="sip-stage" ref={stageRef}>
+        <div className="sip-stage">
           <SpeciesShards direction={direction} speciesId={species.id} />
         </div>
 
@@ -395,14 +377,6 @@ export function PolySpeciesPage() {
         </footer>
         </section>
       </div>
-
-      {view !== "exhibit" ? (
-        <SpeciesSourceBurst
-          direction={direction}
-          phase={isClosing ? "closing" : "opening"}
-          speciesId={species.id}
-        />
-      ) : null}
 
       {view === "index" ? (
         <section aria-label={copy.allPieces} className={`sip-overlay sip-index-panel${isClosing ? " is-closing" : ""}`}>

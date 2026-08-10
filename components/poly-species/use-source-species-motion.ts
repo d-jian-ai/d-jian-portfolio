@@ -8,10 +8,12 @@ type PrimaryMotionState = "" | "state-two" | "state-three" | "state-four";
 const MORPH_DURATION_MS = 2050;
 
 export function useSourceSpeciesMotion({
+  active,
   count,
   enabled,
   initialIndex,
 }: {
+  active: boolean;
   count: number;
   enabled: boolean;
   initialIndex: number;
@@ -52,16 +54,9 @@ export function useSourceSpeciesMotion({
     [activeIndex, beginMorph],
   );
 
-  const sourceMotionActive = enabled && !isMorphing;
+  const sourceMotionActive = enabled && active && !isMorphing;
 
   useEffect(() => {
-    if (!sourceMotionActive) {
-      setPrimaryState("");
-      setSecondaryState(false);
-      setShimmer(false);
-      return;
-    }
-
     const timers = new Set<number>();
     const schedule = (callback: () => void, delay: number) => {
       const timer = window.setTimeout(() => {
@@ -100,7 +95,7 @@ export function useSourceSpeciesMotion({
       window.clearInterval(shimmerCycle);
       timers.forEach((timer) => window.clearTimeout(timer));
     };
-  }, [sourceMotionActive]);
+  }, []);
 
   useEffect(
     () => () => {
@@ -112,15 +107,14 @@ export function useSourceSpeciesMotion({
   const rootClassName = useMemo(
     () =>
       [
-        "sip-motion-root",
         sourceMotionActive ? "animal-animations-on" : "",
-        sourceMotionActive ? primaryState : "",
-        sourceMotionActive && secondaryState ? "two-state-two" : "",
-        sourceMotionActive && shimmer ? "shimmer" : "",
+        enabled ? primaryState : "",
+        enabled && secondaryState ? "two-state-two" : "",
+        enabled && shimmer ? "shimmer" : "",
       ]
         .filter(Boolean)
         .join(" "),
-    [primaryState, secondaryState, shimmer, sourceMotionActive],
+    [enabled, primaryState, secondaryState, shimmer, sourceMotionActive],
   );
 
   return {
