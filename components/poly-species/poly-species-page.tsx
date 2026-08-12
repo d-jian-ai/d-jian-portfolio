@@ -27,21 +27,17 @@ import {
   type PointerEvent,
   type WheelEvent,
 } from "react";
+import { SpeciesStatisticVisual } from "@/components/poly-species/species-statistic-visual";
 import { SpeciesShards } from "@/components/poly-species/species-shards";
 import { useSourceSpeciesMotion } from "@/components/poly-species/use-source-species-motion";
 import {
   POLY_SPECIES,
   POLY_SPECIES_UI,
-  type SpeciesSeriesPoint,
-  type SpeciesStatistic,
   type SpeciesView,
 } from "@/config/poly-species";
 import {
-  getStatisticLabel,
-  getStatisticNote,
   getSpeciesNarrative,
   getStatisticTitle,
-  getStatisticValue,
 } from "@/config/poly-species-copy";
 import { LOCALE_OPTIONS } from "@/config/site";
 import { useLanguage } from "@/providers/language-provider";
@@ -56,10 +52,6 @@ type RingStyle = CSSProperties & {
   "--sip-index": number;
 };
 
-type BarStyle = CSSProperties & {
-  "--sip-bar": string;
-};
-
 type IndexPhase = "idle" | "opening" | "open" | "closing";
 
 const DRAG_THRESHOLD = 48;
@@ -71,65 +63,6 @@ const SOURCE_ALL_SPECIES_CLOSE_MS = 1500;
 const SOURCE_AUTOPLAY_INTERVAL_MS = 2900;
 const WHEEL_COOLDOWN_MS = 920;
 const WHEEL_THRESHOLD = 24;
-
-function getMetricValue(value: string) {
-  const values = value
-    .replaceAll(",", "")
-    .match(/\d+(?:\.\d+)?/g)
-    ?.map(Number);
-
-  return values?.length ? Math.max(...values) : 0;
-}
-
-function getBarWidths(points: SpeciesSeriesPoint[]) {
-  const values = points.map((point) => getMetricValue(point.value));
-  const maximum = Math.max(...values, 0);
-
-  return values.map((value, index) => {
-    if (!maximum) return 42 + ((index * 13) % 46);
-    return Math.max(7, (value / maximum) * 100);
-  });
-}
-
-function StatisticVisual({
-  locale,
-  statistic,
-}: {
-  locale: "zh" | "en" | "fr";
-  statistic: SpeciesStatistic;
-}) {
-  if (statistic.kind === "headline") {
-    return (
-      <div className="sip-stat-visual sip-stat-visual--headline">
-        <i aria-hidden="true" />
-        <i aria-hidden="true" />
-        <div>
-          <strong>{getStatisticValue(statistic.value, locale)}</strong>
-          <span>{getStatisticNote(statistic.note, locale)}</span>
-        </div>
-      </div>
-    );
-  }
-
-  const widths = getBarWidths(statistic.points);
-
-  return (
-    <div className="sip-stat-visual sip-stat-visual--series">
-      <div className="sip-stat-series">
-        {statistic.points.map((point, index) => (
-          <div className="sip-stat-row" key={`${point.label}-${index}`}>
-            <span>{getStatisticLabel(point.label, locale)}</span>
-            <i
-              aria-hidden="true"
-              style={{ "--sip-bar": `${widths[index]}%` } as BarStyle}
-            />
-            <strong>{getStatisticValue(point.value, locale)}</strong>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export function PolySpeciesPage() {
   const { locale, setLocale } = useLanguage();
@@ -157,7 +90,7 @@ export function PolySpeciesPage() {
     selectSpecies: transitionToSpecies,
     stepSpecies: changeSpecies,
   } = useSourceSpeciesMotion({
-    active: view === "exhibit",
+    active: view === "exhibit" || isClosing || indexPhase === "closing",
     count: POLY_SPECIES.length,
     enabled: motionEnabled,
     initialIndex: 21,
@@ -166,6 +99,7 @@ export function PolySpeciesPage() {
   const copy = POLY_SPECIES_UI[locale];
   const narrative = getSpeciesNarrative(species, locale);
   const statistic = species.statistics[activeStatistic] ?? species.statistics[0];
+  const displayView = isClosing || indexPhase === "closing" ? "exhibit" : view;
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -342,7 +276,7 @@ export function PolySpeciesPage() {
   return (
     <main
       className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}${view === "index" && indexPhase !== "closing" ? " all-animals" : ""}${indexPhase === "opening" ? " earlyburst" : ""}${indexPhase === "closing" ? " slow-polygons" : ""}${autoCycle ? " slideshow-on" : ""}`}
-      data-view={view}
+      data-view={displayView}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerUp}
       onPointerDown={handlePointerDown}
@@ -554,7 +488,11 @@ export function PolySpeciesPage() {
             <article className="sip-stats-stage" role="tabpanel">
               <span>{String(activeStatistic + 1).padStart(2, "0")} / {String(species.statistics.length).padStart(2, "0")}</span>
               <h3>{getStatisticTitle(statistic.title, locale)}</h3>
-              <StatisticVisual locale={locale} statistic={statistic} />
+              <SpeciesStatisticVisual
+                locale={locale}
+                sourceLabel={copy.source}
+                statistic={statistic}
+              />
             </article>
           </div>
         </section>

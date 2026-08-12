@@ -230,32 +230,18 @@
                    ],
         "statistics":  [
                            {
-                               "kind":  "series",
-                               "title":  "(all) frogs status intensity",
-                               "points":  [
-                                              {
-                                                  "label":  "EX",
-                                                  "value":  "1%"
-                                              },
-                                              {
-                                                  "label":  "TH",
-                                                  "value":  "29%"
-                                              },
-                                              {
-                                                  "label":  "Near-TH",
-                                                  "value":  "6%"
-                                              },
-                                              {
-                                                  "label":  "other",
-                                                  "value":  "65%"
-                                              }
-                                          ]
+                               "kind":  "headline",
+                               "title":  "IUCN Red List status",
+                               "value":  "EN",
+                               "note":  "Current global assessment category",
+                               "source":  "IUCN Red List (2017)"
                            },
                            {
                                "kind":  "headline",
-                               "title":  "Size",
-                               "value":  "1\"",
-                               "note":  "length of frog (inches)"
+                               "title":  "Known localities",
+                               "value":  "less than 5",
+                               "note":  "Known population localities",
+                               "source":  "IUCN Amphibian Specialist Group"
                            }
                        ]
     },
@@ -469,15 +455,17 @@
         "statistics":  [
                            {
                                "kind":  "headline",
-                               "title":  "First discovered",
-                               "value":  "1979",
-                               "note":  "Date first discovered"
+                               "title":  "IUCN Red List status",
+                               "value":  "CR",
+                               "note":  "Current global assessment category",
+                               "source":  "IUCN Fiji Crested Iguana Recovery Plan"
                            },
                            {
                                "kind":  "headline",
-                               "title":  "Population in Yadua Taba",
-                               "value":  "6,000",
-                               "note":  "Highest Area Population (Yadua Taba)"
+                               "title":  "Surviving range",
+                               "value":  "Few islands",
+                               "note":  "Wild populations survive on only a few western Fiji islands",
+                               "source":  "IUCN / National Trust of Fiji"
                            }
                        ]
     },
@@ -803,15 +791,17 @@
         "statistics":  [
                            {
                                "kind":  "headline",
-                               "title":  "Projected Decline",
-                               "value":  "30-50%",
-                               "note":  "Projected decline in next decade"
+                               "title":  "IUCN Red List status",
+                               "value":  "CR",
+                               "note":  "Current global assessment category",
+                               "source":  "IUCN European Red List (2024)"
                            },
                            {
                                "kind":  "headline",
-                               "title":  "Length",
-                               "value":  "36-38mm",
-                               "note":  "Average length of body"
+                               "title":  "Population trend",
+                               "value":  "Decreasing",
+                               "note":  "Current population direction",
+                               "source":  "IUCN European Red List (2024)"
                            }
                        ]
     },
@@ -834,14 +824,16 @@
                            {
                                "kind":  "headline",
                                "title":  "Population Decline",
-                               "value":  "30%",
-                               "note":  "decline over last 3 decades"
+                               "value":  "more than 30%",
+                               "note":  "Estimated range-wide decline over the last 30 years",
+                               "source":  "IUCN / Bear Specialist Group"
                            },
                            {
                                "kind":  "headline",
-                               "title":  "Length of Tongue",
-                               "value":  "20-25cm",
-                               "note":  "Average length of tongue"
+                               "title":  "IUCN Red List status",
+                               "value":  "VU",
+                               "note":  "Current global assessment category",
+                               "source":  "IUCN Red List"
                            }
                        ]
     },
@@ -973,9 +965,38 @@
         "statistics":  [
                            {
                                "kind":  "headline",
-                               "title":  "Wingspan",
-                               "value":  "17-20cm",
-                               "note":  "Average wingspan"
+                               "title":  "Trade protection",
+                               "value":  "Appendix II",
+                               "note":  "International trade is regulated under CITES",
+                               "source":  "CITES Animals Committee (AC29)"
+                           },
+                           {
+                               "kind":  "series",
+                               "title":  "Reported body exports",
+                               "visual":  "trend",
+                               "source":  "CITES Animals Committee (AC29)",
+                               "points":  [
+                                              {
+                                                  "label":  "2011",
+                                                  "value":  "6,113"
+                                              },
+                                              {
+                                                  "label":  "2012",
+                                                  "value":  "3,355"
+                                              },
+                                              {
+                                                  "label":  "2013",
+                                                  "value":  "1,140"
+                                              },
+                                              {
+                                                  "label":  "2014",
+                                                  "value":  "893"
+                                              },
+                                              {
+                                                  "label":  "2015",
+                                                  "value":  "0"
+                                              }
+                                          ]
                            }
                        ]
     },
@@ -983,7 +1004,7 @@
         "id":  "ostrich",
         "index":  20,
         "name":  "Somali Ostrich",
-        "scientificName":  "Struthio camelus molybdophanes",
+        "scientificName":  "Struthio molybdophanes",
         "range":  "Horn of Africa",
         "theme":  {
                       "background":  "#de89ac",
@@ -997,9 +1018,17 @@
         "statistics":  [
                            {
                                "kind":  "headline",
-                               "title":  "Species Distinction",
-                               "value":  "2014",
-                               "note":  "Year declared distinct species"
+                               "title":  "IUCN Red List status",
+                               "value":  "VU",
+                               "note":  "Current global assessment category",
+                               "source":  "IUCN / BirdLife International"
+                           },
+                           {
+                               "kind":  "headline",
+                               "title":  "Population trend",
+                               "value":  "Rapid decline",
+                               "note":  "Population is thought to be in rapid decline",
+                               "source":  "IUCN / BirdLife International"
                            }
                        ]
     },

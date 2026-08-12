@@ -338,6 +338,24 @@
   width: 100%;
 }
 
+@keyframes bubbles {
+  0% {
+    background: rgba(255, 255, 255, 0);
+    top: 5%;
+  }
+  49% {
+    background: #fff;
+  }
+  98% {
+    background: rgba(255, 255, 255, 0);
+    top: -5%;
+  }
+  100% {
+    background: rgba(255, 255, 255, 0);
+    top: 5%;
+  }
+}
+
 .sip-animal-shadow {
   background-image: radial-gradient(
     closest-side,
@@ -667,6 +685,11 @@
   top: 50%;
   width: 0;
   z-index: 3;
+}
+
+.sip-experience.all-animals .sip-index-ring {
+  animation: sipIndexOrbit 200s cubic-bezier(0.11, 0.01, 0.45, 0.74) both;
+  will-change: transform;
 }
 
 .sip-index-ring > button {
@@ -1135,6 +1158,11 @@
   overflow-wrap: anywhere;
 }
 
+.sip-stat-visual--headline.is-compact strong {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
 .sip-stat-visual--headline span {
   color: #b6b7b2;
   display: block;
@@ -1147,6 +1175,84 @@
 .sip-stat-visual--series {
   margin: 0 auto;
   max-width: 570px;
+}
+
+.sip-stat-composition {
+  margin: 0 auto;
+  max-width: 620px;
+}
+
+.sip-stat-source {
+  color: #858682;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: clamp(0.72rem, 0.78vw, 0.82rem);
+  line-height: 1.4;
+  margin: 22px auto 0;
+  text-align: center;
+}
+
+.sip-stat-source span {
+  color: var(--sip-accent-red);
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+
+.sip-stat-trend svg {
+  display: block;
+  height: 250px;
+  overflow: visible;
+  width: 100%;
+}
+
+.sip-stat-trend-grid {
+  fill: none;
+  opacity: 0.14;
+  stroke: #f7f3eb;
+  stroke-width: 0.22;
+}
+
+.sip-stat-trend-line {
+  animation: sipTrendIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  fill: none;
+  stroke: var(--sip-accent-red);
+  stroke-dasharray: 160;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+}
+
+.sip-stat-trend circle {
+  fill: #232323;
+  stroke: var(--sip-accent-red);
+  stroke-width: 0.55;
+}
+
+.sip-stat-trend-labels {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  margin-top: 8px;
+}
+
+.sip-stat-trend-labels span {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.sip-stat-trend-labels small,
+.sip-stat-trend-labels strong {
+  font-family: Consolas, "SFMono-Regular", monospace;
+}
+
+.sip-stat-trend-labels small {
+  color: #999a96;
+  font-size: 0.72rem;
+}
+
+.sip-stat-trend-labels strong {
+  color: #f7f3eb;
+  font-size: 0.88rem;
 }
 
 .sip-stat-series {
@@ -1213,6 +1319,24 @@
   to {
     opacity: 1;
     transform: rotate(var(--sip-angle-to)) translateY(-230px);
+  }
+}
+
+@keyframes sipIndexOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1000deg);
+  }
+}
+
+@keyframes sipTrendIn {
+  from {
+    stroke-dashoffset: 160;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
 
@@ -1449,6 +1573,7 @@
   }
 
   .sip-index-ring {
+    animation: none !important;
     display: block;
     height: auto;
     left: auto;
@@ -1457,6 +1582,10 @@
     top: auto;
     transform: none;
     width: 100%;
+  }
+
+  .sip-stat-trend svg {
+    height: 180px;
   }
 
   .sip-index-ring > button {
@@ -1632,24 +1761,18 @@
   }
 
   .sip-stats-menu > div {
-    display: flex;
+    display: grid;
     gap: 8px;
-    margin-inline: -18px;
-    overflow-x: auto;
-    padding: 2px 18px 12px;
-    scrollbar-width: none;
-  }
-
-  .sip-stats-menu > div::-webkit-scrollbar {
-    display: none;
+    grid-template-columns: 1fr;
+    padding-bottom: 8px;
   }
 
   .sip-stats-menu > div > button {
     border: 1px solid #4d4f4b;
-    flex: 0 0 min(66vw, 230px);
     font-size: 0.88rem;
     min-height: 54px;
     padding: 8px 12px;
+    width: 100%;
   }
 
   .sip-stats-menu > div > button:hover,

@@ -6,18 +6,22 @@ export type SpeciesSeriesPoint = {
   value: string;
 };
 
+type SpeciesStatisticBase = {
+  source?: string;
+  title: string;
+};
+
 export type SpeciesStatistic =
-  | {
+  | (SpeciesStatisticBase & {
       kind: "headline";
       note: string;
-      title: string;
       value: string;
-    }
-  | {
+    })
+  | (SpeciesStatisticBase & {
       kind: "series";
       points: SpeciesSeriesPoint[];
-      title: string;
-    };
+      visual?: "bars" | "trend";
+    });
 
 export type SpeciesRecord = {
   id: string;
@@ -57,6 +61,7 @@ type PolySpeciesUi = {
   range: string;
   scientificName: string;
   selectStatistic: string;
+  source: string;
   speciesCountLabel: string;
   statistics: string;
   stopCycle: string;
@@ -87,6 +92,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     range: "分布区域",
     scientificName: "学名",
     selectStatistic: "选择一组数据查看",
+    source: "数据来源",
     speciesCountLabel: "个物种",
     statistics: "数据统计",
     stopCycle: "停止巡游",
@@ -115,6 +121,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     range: "Range",
     scientificName: "Scientific name",
     selectStatistic: "Select a dataset to inspect",
+    source: "Source",
     speciesCountLabel: "species",
     statistics: "Statistics",
     stopCycle: "Stop",
@@ -143,6 +150,7 @@ export const POLY_SPECIES_UI: Record<Locale, PolySpeciesUi> = {
     range: "Aire de repartition",
     scientificName: "Nom scientifique",
     selectStatistic: "Selectionnez un jeu de donnees",
+    source: "Source",
     speciesCountLabel: "especes",
     statistics: "Statistiques",
     stopCycle: "Arreter",
