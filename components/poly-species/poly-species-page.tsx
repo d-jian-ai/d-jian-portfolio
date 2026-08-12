@@ -426,13 +426,6 @@ export function PolySpeciesPage() {
           </button>
         </div>
 
-        <footer className="sip-footer-nav">
-          <button onClick={openSpeciesIndex} type="button">{copy.allPieces}</button>
-          <i aria-hidden="true" />
-          <button onClick={() => openPanel("threat")} type="button">{copy.threat}</button>
-          <i aria-hidden="true" />
-          <button onClick={() => openPanel("statistics")} type="button">{copy.statistics}</button>
-        </footer>
         </section>
       </div>
 
@@ -478,13 +471,11 @@ export function PolySpeciesPage() {
                   <strong>30</strong> {copy.piecesCountLabel}
                 </h2>
                 <p>{copy.survivalLabel}</p>
-                <p className="sip-index-caption">
-                  {copy.indexCaption}
-                  <button onClick={selectRandomSpecies} type="button">
-                    <Shuffle aria-hidden="true" size={14} />
-                    {copy.random}
-                  </button>
-                </p>
+                <p className="sip-index-caption">{copy.indexCaption}</p>
+                <button className="sip-index-random" onClick={selectRandomSpecies} type="button">
+                  <Shuffle aria-hidden="true" size={15} />
+                  <span>{copy.random}</span>
+                </button>
               </div>
             ) : (
               <div className="sip-index-detail" key={POLY_SPECIES[hoveredSpecies].id}>

@@ -7,6 +7,8 @@
 .sip-experience {
   --sip-accent-red: #dd4052;
   --sip-dark: #252525;
+  --sip-exhibit-offset-y: -2%;
+  --sip-exhibit-scale: 0.46;
   --sip-ink: #293432;
   --sip-paper: #f7f4ed;
   background: var(--sip-paper);
@@ -179,7 +181,7 @@
 
 .sip-shard-field .level-one {
   opacity: 1;
-  transform: scale(0.5) translateY(-14%);
+  transform: scale(var(--sip-exhibit-scale)) translateY(var(--sip-exhibit-offset-y));
   transition: 800ms cubic-bezier(0.88, 0.005, 0, 1);
   z-index: 3;
 }
@@ -289,15 +291,13 @@
 
 .sip-utility,
 .sip-side-controls,
-.sip-species-title,
-.sip-footer-nav {
+.sip-species-title {
   transition: opacity 130ms linear;
 }
 
 .sip-experience:not([data-view="exhibit"]) .sip-utility,
 .sip-experience:not([data-view="exhibit"]) .sip-side-controls,
-.sip-experience:not([data-view="exhibit"]) .sip-species-title,
-.sip-experience:not([data-view="exhibit"]) .sip-footer-nav {
+.sip-experience:not([data-view="exhibit"]) .sip-species-title {
   opacity: 0;
   pointer-events: none;
 }
@@ -519,7 +519,7 @@
 
 .sip-species-title {
   align-items: center;
-  bottom: clamp(110px, 18vh, 150px);
+  bottom: clamp(58px, 8vh, 92px);
   display: flex;
   gap: 18px;
   left: 50%;
@@ -561,41 +561,6 @@
   height: 38px;
   margin-left: 2px;
   width: 38px;
-}
-
-.sip-footer-nav {
-  align-items: center;
-  bottom: clamp(24px, 3.4vh, 44px);
-  display: flex;
-  gap: 14px;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  z-index: 9;
-}
-
-.sip-footer-nav button {
-  background: transparent;
-  border: 0;
-  color: currentColor;
-  cursor: pointer;
-  font-family: "SIP Block", Impact, sans-serif;
-  font-size: 0.78rem;
-  padding: 4px;
-  text-transform: uppercase;
-  transition: color 180ms ease;
-}
-
-.sip-footer-nav button:hover {
-  color: var(--sip-paper);
-}
-
-.sip-footer-nav i {
-  background: currentColor;
-  border-radius: 50%;
-  height: 3px;
-  opacity: 0.6;
-  width: 3px;
 }
 
 .sip-overlay {
@@ -811,12 +776,6 @@
   text-transform: uppercase;
 }
 
-.sip-index-caption button {
-  display: inline-flex;
-  margin: 0 0 0 6px;
-  vertical-align: middle;
-}
-
 .sip-index-center button {
   align-items: center;
   background: transparent;
@@ -831,6 +790,29 @@
   min-height: 30px;
   padding: 0 5px;
   text-transform: uppercase;
+}
+
+.sip-index-center .sip-index-random {
+  border: 1px solid color-mix(in srgb, var(--sip-accent-red) 78%, #fff);
+  border-radius: 2px;
+  justify-content: center;
+  margin-top: 2px;
+  min-height: 38px;
+  padding: 0 18px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sip-index-center .sip-index-random:hover,
+.sip-index-center .sip-index-random:focus-visible {
+  background: var(--sip-accent-red);
+  border-color: var(--sip-accent-red);
+  color: #fff;
+  outline: 0;
+  transform: translateY(-2px);
 }
 
 .sip-index-summary > * {
@@ -1419,6 +1401,8 @@
 
 @media (max-width: 620px) {
   .sip-experience {
+    --sip-exhibit-offset-y: -14%;
+    --sip-exhibit-scale: 0.5;
     min-height: 560px;
   }
 
@@ -1584,10 +1568,6 @@
     flex: 0 0 34px;
     height: 34px;
     width: 34px;
-  }
-
-  .sip-footer-nav {
-    display: none;
   }
 
   .sip-panel-close {
