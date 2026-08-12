@@ -964,15 +964,8 @@
                    ],
         "statistics":  [
                            {
-                               "kind":  "headline",
-                               "title":  "Trade protection",
-                               "value":  "Appendix II",
-                               "note":  "International trade is regulated under CITES",
-                               "source":  "CITES Animals Committee (AC29)"
-                           },
-                           {
                                "kind":  "series",
-                               "title":  "Reported body exports",
+                               "title":  "CITES-reported specimen exports",
                                "visual":  "trend",
                                "source":  "CITES Animals Committee (AC29)",
                                "points":  [

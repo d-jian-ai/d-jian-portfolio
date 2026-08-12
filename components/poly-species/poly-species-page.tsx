@@ -53,10 +53,11 @@ type RingStyle = CSSProperties & {
 };
 
 type IndexPhase = "idle" | "opening" | "open" | "closing";
+type PanelPhase = "exhibit" | "threat" | "statistics" | "closing";
 
 const DRAG_THRESHOLD = 48;
 const SOURCE_REASSEMBLY_DELAY_MS = 120;
-const SOURCE_RESTORE_DURATION_MS = 2000;
+const SOURCE_PANEL_CLOSE_MS = 300;
 const SOURCE_SMASH_DELAY_MS = 10;
 const SOURCE_ALL_SPECIES_BURST_MS = 500;
 const SOURCE_ALL_SPECIES_CLOSE_MS = 1500;
@@ -78,6 +79,8 @@ export function PolySpeciesPage() {
   const [activeStatistic, setActiveStatistic] = useState(0);
   const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
   const lastWheelStep = useRef(0);
+  const panelPhase = useRef<PanelPhase>("exhibit");
+  const indexPhaseRef = useRef<IndexPhase>("idle");
   const closeTimer = useRef<number | null>(null);
   const reassemblyTimer = useRef<number | null>(null);
   const smashTimer = useRef<number | null>(null);
@@ -87,8 +90,10 @@ export function PolySpeciesPage() {
     activeIndex,
     direction,
     rootClassName: sourceMotionClass,
+    restoreIdleMotion,
     selectSpecies: transitionToSpecies,
     stepSpecies: changeSpecies,
+    suspendIdleMotion,
   } = useSourceSpeciesMotion({
     active: view === "exhibit" || isClosing || indexPhase === "closing",
     count: POLY_SPECIES.length,
@@ -140,34 +145,65 @@ export function PolySpeciesPage() {
     setAutoCycle(false);
   }
 
+  function toggleAutoCycle() {
+    if (autoCycle) {
+      setAutoCycle(false);
+      restoreIdleMotion();
+      return;
+    }
+
+    setAutoCycle(true);
+    transitionToSpecies(Math.floor(Math.random() * POLY_SPECIES.length));
+  }
+
   function navigateSpecies(step: number) {
     stopAutoCycle();
     changeSpecies(step);
   }
 
   function openSpeciesIndex() {
+    if (
+      view !== "exhibit" ||
+      panelPhase.current !== "exhibit" ||
+      indexPhaseRef.current !== "idle"
+    ) {
+      return;
+    }
+
     stopAutoCycle();
+    suspendIdleMotion();
     if (indexBurstTimer.current) window.clearTimeout(indexBurstTimer.current);
     if (indexCloseTimer.current) window.clearTimeout(indexCloseTimer.current);
     setHoveredSpecies(null);
     setIsClosing(false);
     setIsSmashed(false);
+    indexPhaseRef.current = "opening";
     setIndexPhase("opening");
     setView("index");
     indexBurstTimer.current = window.setTimeout(() => {
+      indexPhaseRef.current = "open";
       setIndexPhase("open");
       indexBurstTimer.current = null;
     }, SOURCE_ALL_SPECIES_BURST_MS);
   }
 
   function closeSpeciesIndex(nextIndex?: number) {
-    if (indexPhase === "closing") return;
+    if (
+      indexPhaseRef.current === "idle" ||
+      indexPhaseRef.current === "closing"
+    ) {
+      return;
+    }
+
     if (indexBurstTimer.current) window.clearTimeout(indexBurstTimer.current);
     if (typeof nextIndex === "number") transitionToSpecies(nextIndex);
+    restoreIdleMotion();
     setHoveredSpecies(null);
+    indexPhaseRef.current = "closing";
     setIndexPhase("closing");
     indexCloseTimer.current = window.setTimeout(() => {
       setView("exhibit");
+      indexPhaseRef.current = "idle";
       setIndexPhase("idle");
       indexCloseTimer.current = null;
     }, SOURCE_ALL_SPECIES_CLOSE_MS);
@@ -182,26 +218,56 @@ export function PolySpeciesPage() {
       openSpeciesIndex();
       return;
     }
+
+    if (
+      view !== "exhibit" ||
+      panelPhase.current !== "exhibit" ||
+      indexPhaseRef.current !== "idle"
+    ) {
+      return;
+    }
+
+    panelPhase.current = nextView;
     stopAutoCycle();
+    suspendIdleMotion();
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     if (reassemblyTimer.current) window.clearTimeout(reassemblyTimer.current);
     if (smashTimer.current) window.clearTimeout(smashTimer.current);
     setIsClosing(false);
     setView(nextView);
 
-    if (view === "exhibit") {
-      setIsSmashed(false);
-      smashTimer.current = window.setTimeout(() => {
-        setIsSmashed(true);
-        smashTimer.current = null;
-      }, SOURCE_SMASH_DELAY_MS);
+    setIsSmashed(false);
+    smashTimer.current = window.setTimeout(() => {
+      setIsSmashed(true);
+      smashTimer.current = null;
+    }, SOURCE_SMASH_DELAY_MS);
+  }
+
+  function switchPanel(nextView: "threat" | "statistics") {
+    if (
+      panelPhase.current === "exhibit" ||
+      panelPhase.current === "closing" ||
+      panelPhase.current === nextView
+    ) {
+      return;
     }
+
+    panelPhase.current = nextView;
+    setView(nextView);
   }
 
   function closePanel() {
-    if (isClosing) return;
+    if (
+      panelPhase.current === "exhibit" ||
+      panelPhase.current === "closing"
+    ) {
+      return;
+    }
+
+    panelPhase.current = "closing";
     if (smashTimer.current) window.clearTimeout(smashTimer.current);
     setIsClosing(true);
+    restoreIdleMotion();
     reassemblyTimer.current = window.setTimeout(() => {
       setIsSmashed(false);
       reassemblyTimer.current = null;
@@ -209,8 +275,9 @@ export function PolySpeciesPage() {
     closeTimer.current = window.setTimeout(() => {
       setView("exhibit");
       setIsClosing(false);
+      panelPhase.current = "exhibit";
       closeTimer.current = null;
-    }, SOURCE_RESTORE_DURATION_MS);
+    }, SOURCE_PANEL_CLOSE_MS);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLElement>) {
@@ -309,10 +376,10 @@ export function PolySpeciesPage() {
             <span className="sip-control-label">{copy.allPieces}</span>
           </button>
           <button
-            aria-label={copy.autoCycle}
+            aria-label={autoCycle ? copy.stopCycle : copy.autoCycle}
             aria-pressed={autoCycle}
             className={autoCycle ? "is-active" : ""}
-            onClick={() => setAutoCycle((current) => !current)}
+            onClick={toggleAutoCycle}
             type="button"
           >
             {autoCycle ? <Square aria-hidden="true" size={16} /> : <Repeat2 aria-hidden="true" size={20} />}
@@ -446,7 +513,7 @@ export function PolySpeciesPage() {
             <p>{narrative.threat[2]}</p>
           </div>
           <div className="sip-threat-actions">
-            <button className="sip-statistics-action" onClick={() => openPanel("statistics")} type="button">
+            <button className="sip-statistics-action" onClick={() => switchPanel("statistics")} type="button">
               <BarChart3 aria-hidden="true" size={22} />
               {copy.viewStatistics}
               <ChevronRight aria-hidden="true" size={22} />
@@ -457,7 +524,7 @@ export function PolySpeciesPage() {
 
       {view === "statistics" ? (
         <section aria-label={copy.statistics} className={`sip-overlay sip-statistics-panel${isClosing ? " is-closing" : ""}`}>
-          <button className="sip-panel-back" onClick={() => openPanel("threat")} type="button">
+          <button className="sip-panel-back" onClick={() => switchPanel("threat")} type="button">
             <ArrowLeft aria-hidden="true" size={16} />
             {copy.backToThreat}
           </button>

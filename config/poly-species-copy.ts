@@ -313,8 +313,7 @@ const STATISTIC_TITLES: Record<string, { zh: string; fr: string }> = {
   "Population trend": { zh: "种群趋势", fr: "Tendance de population" },
   "Habitat Decline": { zh: "栖息地下降", fr: "Déclin de l'habitat" },
   "Catching Trend": { zh: "捕捞趋势", fr: "Tendance des captures" },
-  "Trade protection": { zh: "贸易保护级别", fr: "Protection commerciale" },
-  "Reported body exports": { zh: "记录的标本出口量", fr: "Exportations de spécimens déclarées" },
+  "CITES-reported specimen exports": { zh: "CITES 申报标本出口记录", fr: "Exportations de spécimens déclarées à la CITES" },
   "Estimated Population": { zh: "估算种群", fr: "Population estimée" },
   "Decline in last 50 years": { zh: "过去 50 年下降", fr: "Déclin sur 50 ans" },
   "Population in Malaysia": { zh: "马来西亚种群", fr: "Population en Malaisie" },
@@ -360,7 +359,6 @@ const STATISTIC_NOTES: Record<string, { zh: string; fr: string }> = {
   "killed in 2015 in West Kalimantan": { zh: "2015 年在西加里曼丹被捕杀的数量", fr: "Tués en 2015 au Kalimantan occidental" },
   "Current population direction": { zh: "当前种群变化方向", fr: "Orientation actuelle de la population" },
   "Estimated range-wide decline over the last 30 years": { zh: "过去 30 年全分布区估计下降幅度", fr: "Déclin estimé sur l'ensemble de l'aire au cours des 30 dernières années" },
-  "International trade is regulated under CITES": { zh: "国际贸易受 CITES 管制", fr: "Le commerce international est réglementé par la CITES" },
   "Population is thought to be in rapid decline": { zh: "种群被认为正在快速下降", fr: "La population serait en déclin rapide" },
   "Long-beakeds - all critically endangered": { zh: "长喙针鼹类均处于极危状态", fr: "Tous les échidnés à long bec sont en danger critique" },
   "loss of forest in range '00 to '12": { zh: "2000 至 2012 年分布区森林损失", fr: "Perte de forêt dans l'aire entre 2000 et 2012" },
@@ -387,7 +385,6 @@ const STATISTIC_LABELS: Record<string, { zh: string; fr: string }> = {
 };
 
 const STATISTIC_STATUS_VALUES: Record<string, { zh: string; en: string; fr: string }> = {
-  "Appendix II": { zh: "附录 II", en: "Appendix II", fr: "Annexe II" },
   CR: { zh: "极危", en: "Critically endangered", fr: "En danger critique" },
   "CR EN": { zh: "极危 / 濒危", en: "CR / EN", fr: "CR / EN" },
   Decreasing: { zh: "下降中", en: "Decreasing", fr: "En diminution" },

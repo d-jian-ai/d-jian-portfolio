@@ -1457,36 +1457,85 @@
   }
 
   .sip-side-controls {
-    gap: 7px;
+    gap: 6px;
     top: auto;
     transform: none;
   }
 
   .sip-side-controls--left {
-    bottom: max(16px, env(safe-area-inset-bottom));
-    display: flex;
+    backdrop-filter: blur(18px) saturate(1.12);
+    background: color-mix(in srgb, var(--sip-paper) 66%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sip-ink) 14%, transparent);
+    border-radius: 8px;
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + 52px);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, #fff 64%, transparent),
+      0 8px 24px rgba(23, 27, 24, 0.14);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     left: 16px;
+    padding: 4px;
+    right: 16px;
   }
 
   .sip-side-controls--right {
     align-items: center;
-    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 52px);
+    bottom: max(12px, env(safe-area-inset-bottom));
     display: grid;
     gap: 8px;
-    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
     justify-items: stretch;
     left: 16px;
     right: 16px;
   }
 
-  .sip-side-controls > button:not(.sip-threat-trigger) {
+  .sip-side-controls--right > button:not(.sip-threat-trigger) {
     border-width: 1px;
-    height: 40px;
-    width: 40px;
+    height: 42px;
+    width: 42px;
   }
 
-  .sip-control-label {
-    display: none;
+  .sip-side-controls--left > button:not(.sip-threat-trigger) {
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: none;
+    color: var(--sip-ink);
+    gap: 7px;
+    height: 40px;
+    width: 100%;
+  }
+
+  .sip-side-controls--left > button:not(.sip-threat-trigger):hover,
+  .sip-side-controls--left > button:not(.sip-threat-trigger):focus-visible {
+    background: color-mix(in srgb, var(--sip-ink) 9%, transparent);
+    border: 0;
+    transform: none;
+  }
+
+  .sip-side-controls--left > button.is-active {
+    background: var(--sip-accent-red);
+    color: #fff;
+  }
+
+  .sip-side-controls--left .sip-control-label {
+    background: transparent;
+    color: inherit;
+    display: block;
+    font-size: 0.58rem;
+    left: auto;
+    opacity: 1;
+    padding: 0;
+    position: static;
+    transform: none;
+  }
+
+  .sip-mode-dark .sip-side-controls--left {
+    background: rgba(30, 31, 30, 0.64);
+    border-color: rgba(244, 240, 232, 0.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 10px 28px rgba(0, 0, 0, 0.22);
   }
 
   .sip-threat-trigger {
@@ -1495,7 +1544,7 @@
     border-radius: 999px;
     box-shadow: 0 7px 20px rgba(23, 27, 24, 0.14);
     color: var(--sip-ink);
-    height: 40px;
+    height: 42px;
     margin: 0;
     padding: 0 14px;
     width: auto;
