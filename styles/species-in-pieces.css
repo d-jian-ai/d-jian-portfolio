@@ -507,7 +507,19 @@
   line-height: 1.02;
   position: relative;
   text-align: center;
+  text-wrap: balance;
   text-transform: uppercase;
+}
+
+.sip-experience[data-locale="zh"] .sip-threat-trigger span {
+  font-size: 0.68rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sip-experience[data-locale="fr"] .sip-threat-trigger span {
+  font-size: 0.72rem;
+  line-height: 0.98;
 }
 
 .sip-threat-trigger:hover {
@@ -1136,8 +1148,9 @@
 }
 
 .sip-stat-visual--headline > div {
-  max-width: 70%;
+  max-width: 78%;
   position: absolute;
+  width: 78%;
   z-index: 1;
 }
 
@@ -1148,12 +1161,25 @@
   font-size: clamp(3.4rem, 7vw, 7rem);
   font-weight: 400;
   line-height: 0.84;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  text-wrap: balance;
+  word-break: normal;
 }
 
 .sip-stat-visual--headline.is-compact strong {
   font-size: clamp(2rem, 4vw, 4rem);
   line-height: 0.95;
+}
+
+.sip-stat-visual--headline.is-word-value strong {
+  font-size: clamp(2.4rem, 4.4vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.sip-experience[data-locale="zh"] .sip-stat-visual--headline.is-word-value strong {
+  font-size: clamp(2.5rem, 4.8vw, 4.8rem);
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .sip-stat-visual--headline span {
@@ -1951,6 +1977,14 @@
 
   .sip-stat-visual--headline strong {
     font-size: clamp(3rem, 15vw, 4.6rem);
+  }
+
+  .sip-stat-visual--headline.is-word-value strong {
+    font-size: clamp(2rem, 11vw, 3.4rem);
+  }
+
+  .sip-experience[data-locale="zh"] .sip-stat-visual--headline.is-word-value strong {
+    font-size: clamp(2rem, 10.5vw, 3.2rem);
   }
 
   .sip-stat-row {

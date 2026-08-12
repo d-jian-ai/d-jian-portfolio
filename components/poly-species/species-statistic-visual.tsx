@@ -83,9 +83,12 @@ export function SpeciesStatisticVisual({
 
   if (statistic.kind === "headline") {
     const value = getStatisticValue(statistic.value, locale);
-    const compactValue = value.length > 11;
+    const wordValue = !/\d/.test(value);
+    const compactValue = value.length > 11 || wordValue;
     visual = (
-      <div className={`sip-stat-visual sip-stat-visual--headline${compactValue ? " is-compact" : ""}`}>
+      <div
+        className={`sip-stat-visual sip-stat-visual--headline${compactValue ? " is-compact" : ""}${wordValue ? " is-word-value" : ""}`}
+      >
         <i aria-hidden="true" />
         <i aria-hidden="true" />
         <div>
