@@ -7,8 +7,8 @@
 .sip-experience {
   --sip-accent-red: #dd4052;
   --sip-dark: #252525;
-  --sip-exhibit-offset-y: -2%;
-  --sip-exhibit-scale: 0.46;
+  --sip-exhibit-offset-y: -27%;
+  --sip-exhibit-scale: 0.6;
   --sip-ink: #293432;
   --sip-paper: #f7f4ed;
   background: var(--sip-paper);
@@ -582,7 +582,11 @@
   pointer-events: none;
 }
 
-.sip-mobile-threat,
+.sip-title-copy {
+  display: contents;
+}
+
+.sip-species-title .sip-mobile-threat,
 .sip-swipe-hints {
   display: none;
 }
@@ -1373,35 +1377,33 @@
 
 @keyframes sipSwipeHintLeft {
   0%,
-  70%,
   100% {
     opacity: 0;
-    transform: translateX(5px);
+    transform: translateX(7px);
   }
-  77% {
-    opacity: 0.2;
+  7% {
+    opacity: 0.24;
     transform: translateX(0);
   }
-  87% {
+  16% {
     opacity: 0;
-    transform: translateX(-5px);
+    transform: translateX(-7px);
   }
 }
 
 @keyframes sipSwipeHintRight {
   0%,
-  72%,
   100% {
     opacity: 0;
-    transform: translateX(-5px);
+    transform: translateX(-7px);
   }
-  79% {
-    opacity: 0.2;
+  8% {
+    opacity: 0.24;
     transform: translateX(0);
   }
-  89% {
+  17% {
     opacity: 0;
-    transform: translateX(5px);
+    transform: translateX(7px);
   }
 }
 
@@ -1442,8 +1444,8 @@
 
 @media (max-width: 620px) {
   .sip-experience {
-    --sip-exhibit-offset-y: -27%;
-    --sip-exhibit-scale: 0.56;
+    --sip-exhibit-offset-y: -32%;
+    --sip-exhibit-scale: 0.78;
     min-height: 560px;
   }
 
@@ -1489,8 +1491,8 @@
 
   .sip-side-controls--left {
     backdrop-filter: blur(18px) saturate(1.12);
-    background: color-mix(in srgb, var(--sip-paper) 66%, transparent);
-    border: 1px solid color-mix(in srgb, var(--sip-ink) 14%, transparent);
+    background: color-mix(in srgb, #26231d 82%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 8px;
     bottom: max(14px, env(safe-area-inset-bottom));
     box-shadow:
@@ -1512,9 +1514,11 @@
     border: 0;
     border-radius: 4px;
     box-shadow: none;
-    color: var(--sip-ink);
-    gap: 7px;
-    height: 40px;
+    color: #f7f2e8;
+    gap: 5px;
+    height: 44px;
+    min-width: 0;
+    padding-inline: 4px;
     width: 100%;
   }
 
@@ -1534,16 +1538,34 @@
     background: transparent;
     color: inherit;
     display: block;
-    font-size: 0.58rem;
+    font-size: 0.56rem;
     left: auto;
+    line-height: 1;
+    min-width: 0;
     opacity: 1;
+    overflow: hidden;
     padding: 0;
     position: static;
+    text-overflow: ellipsis;
     transform: none;
+    white-space: nowrap;
+  }
+
+  .sip-side-controls--left svg {
+    flex: 0 0 auto;
+  }
+
+  .sip-experience[data-locale="fr"] .sip-side-controls--left .sip-control-label {
+    font-size: 0.5rem;
+  }
+
+  .sip-experience[data-locale="fr"] .sip-side-controls--left > button:not(.sip-threat-trigger) {
+    gap: 4px;
+    padding-inline: 3px;
   }
 
   .sip-mode-dark .sip-side-controls--left {
-    background: rgba(30, 31, 30, 0.64);
+    background: rgba(22, 22, 20, 0.82);
     border-color: rgba(244, 240, 232, 0.18);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -1569,12 +1591,14 @@
 
   .sip-species-title {
     bottom: auto;
-    gap: 12px;
-    justify-content: center;
-    max-width: calc(100vw - 64px);
-    top: 67%;
+    column-gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    justify-content: stretch;
+    max-width: calc(100vw - 40px);
+    top: 69%;
     transform: translate(-50%, -50%);
-    width: auto;
+    width: max-content;
   }
 
   .sip-species-title > span,
@@ -1583,35 +1607,65 @@
   }
 
   .sip-species-title h1 {
-    flex: 0 1 auto;
+    color: color-mix(in srgb, #fff 90%, var(--sip-background));
     font-size: 2rem;
-    max-width: calc(100vw - 120px);
+    line-height: 0.9;
+    max-width: 100%;
+    overflow-wrap: normal;
+    text-shadow: 0 2px 14px rgba(28, 27, 24, 0.2);
+    white-space: nowrap;
   }
 
-  .sip-species-title button {
+  .sip-species-title[data-name-length="medium"] h1 {
+    font-size: 1.56rem;
+  }
+
+  .sip-species-title[data-name-length="long"] h1 {
+    font-size: 1.2rem;
+    line-height: 0.95;
+    text-wrap: balance;
+    white-space: normal;
+  }
+
+  .sip-species-title > button {
+    align-self: center;
     flex: 0 0 38px;
-    height: 38px;
-    width: 38px;
+    height: 42px;
+    margin-left: 0;
+    width: 42px;
   }
 
-  .sip-mobile-threat {
+  .sip-title-copy {
+    align-items: center;
+    display: grid;
+    justify-items: center;
+    max-width: calc(100vw - 94px);
+    min-width: 0;
+    row-gap: 7px;
+    width: max-content;
+  }
+
+  .sip-species-title .sip-mobile-threat {
     background: transparent;
     border: 0;
     border-bottom: 1px solid color-mix(in srgb, currentColor 46%, transparent);
-    color: var(--sip-ink);
+    border-radius: 0;
+    color: color-mix(in srgb, #fff 88%, var(--sip-background));
     cursor: pointer;
-    display: block;
+    display: flex;
     font-family: "SIP Block", Impact, sans-serif;
-    font-size: 0.82rem;
-    left: 50%;
+    font-size: 0.72rem;
+    height: auto;
     letter-spacing: 0;
     line-height: 1.1;
+    margin: 0;
+    max-width: 100%;
     padding: 5px 2px 4px;
-    position: absolute;
+    position: static;
     text-transform: uppercase;
-    top: calc(67% + 34px);
-    transform: translateX(-50%);
-    z-index: 9;
+    text-shadow: 0 1px 10px rgba(28, 27, 24, 0.18);
+    white-space: nowrap;
+    width: auto;
   }
 
   .sip-mobile-threat:focus-visible {
@@ -1620,14 +1674,14 @@
   }
 
   .sip-swipe-hints {
-    color: var(--sip-ink);
+    color: color-mix(in srgb, #fff 66%, var(--sip-background));
     display: flex;
     justify-content: space-between;
-    left: 17px;
+    left: 0;
     pointer-events: none;
     position: absolute;
-    right: 17px;
-    top: 43%;
+    right: 0;
+    top: 49%;
     z-index: 7;
   }
 
@@ -1636,11 +1690,11 @@
   }
 
   .sip-experience.animal-animations-on .sip-swipe-hints svg:first-child {
-    animation: sipSwipeHintLeft 15s ease-in-out 2s infinite;
+    animation: sipSwipeHintLeft 18s ease-in-out 0.8s infinite;
   }
 
   .sip-experience.animal-animations-on .sip-swipe-hints svg:last-child {
-    animation: sipSwipeHintRight 15s ease-in-out 2s infinite;
+    animation: sipSwipeHintRight 18s ease-in-out 0.8s infinite;
   }
 
   .sip-panel-close {

@@ -104,6 +104,8 @@ export function PolySpeciesPage() {
   const species = POLY_SPECIES[activeIndex];
   const copy = POLY_SPECIES_UI[locale];
   const narrative = getSpeciesNarrative(species, locale);
+  const compactNameLength = Array.from(narrative.name.replace(/\s/g, "")).length;
+  const nameLength = compactNameLength <= 12 ? "short" : compactNameLength <= 21 ? "medium" : "long";
   const statistic = species.statistics[activeStatistic] ?? species.statistics[0];
   const displayView = isClosing || indexPhase === "closing" ? "exhibit" : view;
 
@@ -364,6 +366,7 @@ export function PolySpeciesPage() {
   return (
     <main
       className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}${view === "index" && indexPhase !== "closing" ? " all-animals" : ""}${indexPhase === "opening" ? " earlyburst" : ""}${indexPhase === "closing" ? " slow-polygons" : ""}${autoCycle ? " slideshow-on" : ""}`}
+      data-locale={locale}
       data-view={displayView}
       onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerCancel}
@@ -427,8 +430,8 @@ export function PolySpeciesPage() {
         </div>
 
         <div aria-hidden="true" className="sip-swipe-hints">
-          <ChevronLeft size={27} strokeWidth={1.35} />
-          <ChevronRight size={27} strokeWidth={1.35} />
+          <ChevronLeft size={42} strokeWidth={1.15} />
+          <ChevronRight size={42} strokeWidth={1.15} />
         </div>
 
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--right">
@@ -443,18 +446,19 @@ export function PolySpeciesPage() {
           </button>
         </nav>
 
-        <div aria-live="polite" className="sip-species-title">
+        <div aria-live="polite" className="sip-species-title" data-name-length={nameLength}>
           <span>{copy.piece} {String(species.index).padStart(2, "0")}</span>
           <i aria-hidden="true" />
-          <h1>{narrative.name}</h1>
+          <div className="sip-title-copy">
+            <h1>{narrative.name}</h1>
+            <button className="sip-mobile-threat" onClick={() => openPanel("threat")} type="button">
+              {copy.openThreat}
+            </button>
+          </div>
           <button aria-label={copy.statistics} onClick={() => openPanel("statistics")} title={copy.statistics} type="button">
             <BarChart3 aria-hidden="true" size={18} />
           </button>
         </div>
-
-        <button className="sip-mobile-threat" onClick={() => openPanel("threat")} type="button">
-          {copy.openThreat}
-        </button>
 
         </section>
       </div>
