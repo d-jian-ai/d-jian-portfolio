@@ -7,7 +7,7 @@
 .sip-experience {
   --sip-accent-red: #dd4052;
   --sip-dark: #252525;
-  --sip-exhibit-offset-y: -27%;
+  --sip-exhibit-offset-y: -20%;
   --sip-exhibit-scale: 0.6;
   --sip-ink: #293432;
   --sip-paper: #f7f4ed;
@@ -1378,32 +1378,24 @@
 @keyframes sipSwipeHintLeft {
   0%,
   100% {
-    opacity: 0;
-    transform: translateX(7px);
+    opacity: 0.07;
+    transform: translateX(4px);
   }
-  7% {
+  50% {
     opacity: 0.24;
     transform: translateX(0);
-  }
-  16% {
-    opacity: 0;
-    transform: translateX(-7px);
   }
 }
 
 @keyframes sipSwipeHintRight {
   0%,
   100% {
-    opacity: 0;
-    transform: translateX(-7px);
+    opacity: 0.07;
+    transform: translateX(-4px);
   }
-  8% {
+  50% {
     opacity: 0.24;
     transform: translateX(0);
-  }
-  17% {
-    opacity: 0;
-    transform: translateX(7px);
   }
 }
 
@@ -1444,7 +1436,7 @@
 
 @media (max-width: 620px) {
   .sip-experience {
-    --sip-exhibit-offset-y: -32%;
+    --sip-exhibit-offset-y: -24%;
     --sip-exhibit-scale: 0.78;
     min-height: 560px;
   }
@@ -1674,7 +1666,7 @@
   }
 
   .sip-swipe-hints {
-    color: color-mix(in srgb, #fff 66%, var(--sip-background));
+    color: color-mix(in srgb, var(--sip-ink) 62%, var(--sip-background));
     display: flex;
     justify-content: space-between;
     left: 0;
@@ -1686,7 +1678,9 @@
   }
 
   .sip-swipe-hints svg {
+    filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.2));
     opacity: 0;
+    stroke-width: 1.5;
   }
 
   .sip-experience.animal-animations-on .sip-swipe-hints svg:first-child {

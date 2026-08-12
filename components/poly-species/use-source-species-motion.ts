@@ -50,10 +50,9 @@ export function useSourceSpeciesMotion({
       const next = (current + step + count) % count;
       setDirection(next < current ? "right-to-left" : "left-to-right");
       activeIndexRef.current = next;
-      restoreIdleMotion();
       setActiveIndex(next);
     },
-    [count, restoreIdleMotion],
+    [count],
   );
 
   const selectSpecies = useCallback(
@@ -62,10 +61,9 @@ export function useSourceSpeciesMotion({
       if (index === current) return;
       setDirection(index < current ? "right-to-left" : "left-to-right");
       activeIndexRef.current = index;
-      restoreIdleMotion();
       setActiveIndex(index);
     },
-    [restoreIdleMotion],
+    [],
   );
 
   const sourceMotionActive = enabled && active && !idleMotionSuppressed;
