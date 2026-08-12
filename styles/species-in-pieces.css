@@ -512,7 +512,9 @@
 }
 
 .sip-experience[data-locale="zh"] .sip-threat-trigger span {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
   font-size: 0.68rem;
+  font-weight: 800;
   line-height: 1;
   white-space: nowrap;
 }
@@ -1180,6 +1182,20 @@
   font-size: clamp(2.5rem, 4.8vw, 4.8rem);
   white-space: nowrap;
   word-break: keep-all;
+}
+
+.sip-experience[data-locale="zh"] :where(
+  .sip-species-title h1,
+  .sip-index-center h2,
+  .sip-index-center h2 strong,
+  .sip-index-detail h2,
+  .sip-threat-copy h2,
+  .sip-stats-menu h2,
+  .sip-stats-stage h3,
+  .sip-stat-visual--headline strong
+) {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+  font-weight: 800;
 }
 
 .sip-stat-visual--headline span {
