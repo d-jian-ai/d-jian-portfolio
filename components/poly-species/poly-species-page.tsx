@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   BarChart3,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   ChevronUp,
   Globe2,
@@ -77,7 +78,7 @@ export function PolySpeciesPage() {
   const [indexPhase, setIndexPhase] = useState<IndexPhase>("idle");
   const [hoveredSpecies, setHoveredSpecies] = useState<number | null>(null);
   const [activeStatistic, setActiveStatistic] = useState(0);
-  const dragState = useRef({ active: false, pointerId: -1, startY: 0 });
+  const dragState = useRef({ active: false, pointerId: -1, startX: 0, startY: 0 });
   const lastWheelStep = useRef(0);
   const panelPhase = useRef<PanelPhase>("exhibit");
   const indexPhaseRef = useRef<IndexPhase>("idle");
@@ -287,6 +288,7 @@ export function PolySpeciesPage() {
     dragState.current = {
       active: true,
       pointerId: event.pointerId,
+      startX: event.clientX,
       startY: event.clientY,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -297,14 +299,33 @@ export function PolySpeciesPage() {
     const drag = dragState.current;
     if (!drag.active || drag.pointerId !== event.pointerId) return;
 
-    const distance = event.clientY - drag.startY;
+    const distanceX = event.clientX - drag.startX;
+    const distanceY = event.clientY - drag.startY;
     dragState.current.active = false;
     setIsDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    if (Math.abs(distance) >= DRAG_THRESHOLD) {
-      navigateSpecies(distance < 0 ? 1 : -1);
+    const isMobile = window.matchMedia("(max-width: 620px)").matches;
+    if (
+      isMobile &&
+      Math.abs(distanceX) >= DRAG_THRESHOLD &&
+      Math.abs(distanceX) > Math.abs(distanceY)
+    ) {
+      navigateSpecies(distanceX < 0 ? 1 : -1);
+      return;
+    }
+    if (!isMobile && Math.abs(distanceY) >= DRAG_THRESHOLD) {
+      navigateSpecies(distanceY < 0 ? 1 : -1);
+    }
+  }
+
+  function handlePointerCancel(event: PointerEvent<HTMLElement>) {
+    if (dragState.current.pointerId !== event.pointerId) return;
+    dragState.current.active = false;
+    setIsDragging(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
     }
   }
 
@@ -345,7 +366,7 @@ export function PolySpeciesPage() {
       className={`sip-experience chromebrowser sip-mode-${theme}${sourceMotionClass ? ` ${sourceMotionClass}` : ""}${isSmashed ? " smash" : ""}${isClosing ? " is-closing" : ""}${isDragging ? " is-dragging" : ""}${view === "index" && indexPhase !== "closing" ? " all-animals" : ""}${indexPhase === "opening" ? " earlyburst" : ""}${indexPhase === "closing" ? " slow-polygons" : ""}${autoCycle ? " slideshow-on" : ""}`}
       data-view={displayView}
       onKeyDown={handleKeyDown}
-      onPointerCancel={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onWheel={handleWheel}
@@ -405,6 +426,11 @@ export function PolySpeciesPage() {
           />
         </div>
 
+        <div aria-hidden="true" className="sip-swipe-hints">
+          <ChevronLeft size={27} strokeWidth={1.35} />
+          <ChevronRight size={27} strokeWidth={1.35} />
+        </div>
+
         <nav aria-label={copy.collection} className="sip-side-controls sip-side-controls--right">
           <button aria-label={copy.previous} onClick={() => navigateSpecies(-1)} title={copy.previous} type="button">
             <ChevronUp aria-hidden="true" size={22} />
@@ -425,6 +451,10 @@ export function PolySpeciesPage() {
             <BarChart3 aria-hidden="true" size={18} />
           </button>
         </div>
+
+        <button className="sip-mobile-threat" onClick={() => openPanel("threat")} type="button">
+          {copy.openThreat}
+        </button>
 
         </section>
       </div>

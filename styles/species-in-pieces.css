@@ -291,13 +291,15 @@
 
 .sip-utility,
 .sip-side-controls,
-.sip-species-title {
+.sip-species-title,
+.sip-mobile-threat {
   transition: opacity 130ms linear;
 }
 
 .sip-experience:not([data-view="exhibit"]) .sip-utility,
 .sip-experience:not([data-view="exhibit"]) .sip-side-controls,
-.sip-experience:not([data-view="exhibit"]) .sip-species-title {
+.sip-experience:not([data-view="exhibit"]) .sip-species-title,
+.sip-experience:not([data-view="exhibit"]) .sip-mobile-threat {
   opacity: 0;
   pointer-events: none;
 }
@@ -578,6 +580,11 @@
 .sip-overlay.is-closing {
   animation: sipPanelOut 300ms cubic-bezier(0.55, 0, 0.75, 0) both;
   pointer-events: none;
+}
+
+.sip-mobile-threat,
+.sip-swipe-hints {
+  display: none;
 }
 
 .sip-panel-close {
@@ -1364,6 +1371,40 @@
   }
 }
 
+@keyframes sipSwipeHintLeft {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+  77% {
+    opacity: 0.2;
+    transform: translateX(0);
+  }
+  87% {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+}
+
+@keyframes sipSwipeHintRight {
+  0%,
+  72%,
+  100% {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  79% {
+    opacity: 0.2;
+    transform: translateX(0);
+  }
+  89% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+}
+
 @keyframes sipBarIn {
   from {
     transform: scaleX(0);
@@ -1401,8 +1442,8 @@
 
 @media (max-width: 620px) {
   .sip-experience {
-    --sip-exhibit-offset-y: -14%;
-    --sip-exhibit-scale: 0.5;
+    --sip-exhibit-offset-y: -27%;
+    --sip-exhibit-scale: 0.56;
     min-height: 560px;
   }
 
@@ -1451,7 +1492,7 @@
     background: color-mix(in srgb, var(--sip-paper) 66%, transparent);
     border: 1px solid color-mix(in srgb, var(--sip-ink) 14%, transparent);
     border-radius: 8px;
-    bottom: calc(max(12px, env(safe-area-inset-bottom)) + 52px);
+    bottom: max(14px, env(safe-area-inset-bottom));
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, #fff 64%, transparent),
       0 8px 24px rgba(23, 27, 24, 0.14);
@@ -1463,20 +1504,7 @@
   }
 
   .sip-side-controls--right {
-    align-items: center;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    display: grid;
-    gap: 8px;
-    grid-template-columns: 42px minmax(0, 1fr) 42px;
-    justify-items: stretch;
-    left: 16px;
-    right: 16px;
-  }
-
-  .sip-side-controls--right > button:not(.sip-threat-trigger) {
-    border-width: 1px;
-    height: 42px;
-    width: 42px;
+    display: none;
   }
 
   .sip-side-controls--left > button:not(.sip-threat-trigger) {
@@ -1541,33 +1569,78 @@
 
   .sip-species-title {
     bottom: auto;
-    gap: 8px;
-    max-width: calc(100vw - 32px);
-    top: 59%;
+    gap: 12px;
+    justify-content: center;
+    max-width: calc(100vw - 64px);
+    top: 67%;
     transform: translate(-50%, -50%);
-    width: calc(100vw - 32px);
+    width: auto;
   }
 
-  .sip-species-title > span {
-    font-size: 0.6rem;
-    max-width: 32px;
-  }
-
+  .sip-species-title > span,
   .sip-species-title > i {
-    height: 26px;
-    width: 2px;
+    display: none;
   }
 
   .sip-species-title h1 {
-    flex: 1;
-    font-size: clamp(1.45rem, 7.6vw, 2.2rem);
-    max-width: none;
+    flex: 0 1 auto;
+    font-size: 2rem;
+    max-width: calc(100vw - 120px);
   }
 
   .sip-species-title button {
-    flex: 0 0 34px;
-    height: 34px;
-    width: 34px;
+    flex: 0 0 38px;
+    height: 38px;
+    width: 38px;
+  }
+
+  .sip-mobile-threat {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 46%, transparent);
+    color: var(--sip-ink);
+    cursor: pointer;
+    display: block;
+    font-family: "SIP Block", Impact, sans-serif;
+    font-size: 0.82rem;
+    left: 50%;
+    letter-spacing: 0;
+    line-height: 1.1;
+    padding: 5px 2px 4px;
+    position: absolute;
+    text-transform: uppercase;
+    top: calc(67% + 34px);
+    transform: translateX(-50%);
+    z-index: 9;
+  }
+
+  .sip-mobile-threat:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 5px;
+  }
+
+  .sip-swipe-hints {
+    color: var(--sip-ink);
+    display: flex;
+    justify-content: space-between;
+    left: 17px;
+    pointer-events: none;
+    position: absolute;
+    right: 17px;
+    top: 43%;
+    z-index: 7;
+  }
+
+  .sip-swipe-hints svg {
+    opacity: 0;
+  }
+
+  .sip-experience.animal-animations-on .sip-swipe-hints svg:first-child {
+    animation: sipSwipeHintLeft 15s ease-in-out 2s infinite;
+  }
+
+  .sip-experience.animal-animations-on .sip-swipe-hints svg:last-child {
+    animation: sipSwipeHintRight 15s ease-in-out 2s infinite;
   }
 
   .sip-panel-close {
@@ -1845,6 +1918,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sip-swipe-hints svg {
+    animation: none !important;
+  }
+
   .sip-stat-row i::after {
     animation: none;
   }
