@@ -7,10 +7,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import {
-  REFERENCE_CAMERA,
+  CAMERA_PRESETS,
   SIGN_PLACEMENTS,
   TAIKOO_UNIT,
   TAIKOO_VOXELS,
+  type CameraPreset,
   type SignKind,
   type Voxel,
   type VoxelPalette,
@@ -18,6 +19,7 @@ import {
 
 type TaikooLiModelProps = {
   autoRotate: boolean;
+  cameraPreset: CameraPreset;
   resetSignal: number;
 };
 
@@ -88,7 +90,7 @@ const PALETTES: Record<VoxelPalette, { base: string; light: string }> = {
 function RoundedVoxelGroup({ cells, palette }: { cells: Voxel[]; palette: VoxelPalette }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const geometry = useMemo(
-    () => new RoundedBoxGeometry(TAIKOO_UNIT * 0.92, TAIKOO_UNIT * 0.92, TAIKOO_UNIT * 0.92, 2, 0.028),
+    () => new RoundedBoxGeometry(TAIKOO_UNIT * 0.965, TAIKOO_UNIT * 0.965, TAIKOO_UNIT * 0.965, 2, 0.018),
     [],
   );
 
@@ -268,47 +270,109 @@ function TriangleFrame({ x }: { x: number }) {
   );
 }
 
-function Portal() {
+function AnnulusBody() {
+  const shape = useMemo(() => {
+    const outer = new THREE.Shape();
+    outer.absarc(0, 0, 1.78, 0, Math.PI * 2, false);
+    const inner = new THREE.Path();
+    inner.absarc(0, 0, 1.18, 0, Math.PI * 2, true);
+    outer.holes.push(inner);
+    return outer;
+  }, []);
+
+  return (
+    <mesh position={[0, 0.03, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <extrudeGeometry
+        args={[
+          shape,
+          {
+            bevelEnabled: true,
+            bevelSegments: 3,
+            bevelSize: 0.025,
+            bevelThickness: 0.025,
+            depth: 0.16,
+          },
+        ]}
+      />
+      <meshPhysicalMaterial
+        color="#26223f"
+        clearcoat={1}
+        envMapIntensity={2.2}
+        metalness={0.42}
+        opacity={0.82}
+        roughness={0.08}
+        transparent
+      />
+    </mesh>
+  );
+}
+
+function Portal({ cameraPreset }: { cameraPreset: CameraPreset }) {
   const group = useRef<THREE.Group>(null);
   const ringTexture = useCircularTextTexture();
+  const portalY = cameraPreset === "near" ? 4.88 : 5.05;
 
   useFrame((state) => {
     if (!group.current) return;
-    group.current.position.y = 4.72 + Math.sin(state.clock.elapsedTime * 0.75) * 0.08;
-    group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.22) * 0.06;
+    group.current.position.y = portalY + Math.sin(state.clock.elapsedTime * 0.75) * 0.065;
+    group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.22) * 0.035;
   });
 
   return (
-    <group position={[0, 4.72, 1.12]} ref={group}>
-      <mesh castShadow scale={[1.82, 0.96, 1.28]}>
+    <group
+      position={[cameraPreset === "near" ? 0.35 : 0, portalY, 0.32]}
+      ref={group}
+      scale={cameraPreset === "near" ? [0.88, 1, 0.88] : 1}
+    >
+      <group rotation={[cameraPreset === "near" ? 0.34 : 0, 0, 0]}>
+        <AnnulusBody />
+        <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[1.18, 1.78, 128]} />
+          <meshPhysicalMaterial
+            color="#ffffff"
+            map={ringTexture ?? undefined}
+            opacity={0.94}
+            roughness={0.2}
+            side={THREE.DoubleSide}
+            transparent
+          />
+        </mesh>
+        <mesh position={[0, 0.08, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[1.78, 0.06, 16, 128]} />
+          <meshPhysicalMaterial color="#d7fbff" clearcoat={1} opacity={0.72} roughness={0.12} transparent />
+        </mesh>
+      </group>
+      <mesh castShadow scale={[1.18, 0.84, 0.96]}>
         <sphereGeometry args={[1, 64, 48]} />
         <meshPhysicalMaterial
-          color="#bca8e4"
+          color="#9b7fbd"
           clearcoat={1}
           envMapIntensity={2.2}
-          opacity={0.46}
+          opacity={0.5}
           roughness={0.08}
           thickness={0.8}
           transparent
-          transmission={0.66}
+          transmission={0.5}
         />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[1.52, 2.18, 128]} />
+      <mesh position={[0, -0.74, 0.02]} scale={[0.66, 0.56, 0.62]}>
+        <sphereGeometry args={[1, 56, 40]} />
         <meshPhysicalMaterial
-          color="#ffffff"
-          map={ringTexture ?? undefined}
-          opacity={0.86}
-          roughness={0.2}
-          side={THREE.DoubleSide}
+          color="#8f73b4"
+          clearcoat={1}
+          envMapIntensity={2.1}
+          opacity={0.46}
+          roughness={0.08}
+          thickness={0.65}
           transparent
+          transmission={0.5}
         />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.82, 0.055, 16, 128]} />
-        <meshPhysicalMaterial color="#d7fbff" clearcoat={1} opacity={0.72} roughness={0.12} transparent />
+      <mesh position={[0, 0.62, 0]} scale={[0.94, 0.4, 0.78]}>
+        <sphereGeometry args={[1, 56, 40]} />
+        <meshPhysicalMaterial color="#a98bc6" opacity={0.4} roughness={0.1} transparent transmission={0.5} />
       </mesh>
-      <group position={[-0.15, 0.12, 0.94]} rotation={[0.02, 0, 0]} scale={0.65}>
+      <group position={[-0.08, 0.05, 0.84]} rotation={[0.02, 0, 0]} scale={0.52}>
         <TriangleFrame x={-0.38} />
         <TriangleFrame x={0.38} />
       </group>
@@ -316,7 +380,7 @@ function Portal() {
   );
 }
 
-function ChromeSculpture() {
+function ChromeSculpture({ cameraPreset }: { cameraPreset: CameraPreset }) {
   const mesh = useRef<THREE.Mesh>(null);
   const geometry = useMemo(() => {
     const next = new THREE.SphereGeometry(1, 72, 52);
@@ -326,13 +390,17 @@ function ChromeSculpture() {
     for (let index = 0; index < position.count; index += 1) {
       point.fromBufferAttribute(position, index);
       const theta = Math.atan2(point.z, point.x);
-      const phi = Math.acos(THREE.MathUtils.clamp(point.y, -1, 1));
-      const ripple = 1 + Math.sin(theta * 5 + phi * 2.2) * 0.13 + Math.sin(phi * 7 - theta * 2) * 0.085;
-      point.multiplyScalar(ripple);
-      const twist = point.y * 0.38;
+      const vertical = point.y;
+      const lowerWeight = (1 - vertical) * 0.5;
+      const fold = 1 + Math.sin(vertical * 11 + theta * 1.6) * 0.1 + Math.sin(vertical * 19 - theta * 0.7) * 0.04;
+      point.x *= fold * (0.88 + lowerWeight * 0.22);
+      point.z *= fold * (0.68 + lowerWeight * 0.14);
+      point.y *= 1.08;
+      point.x += Math.sin((vertical + 1) * 2.4) * 0.16 + 0.08 - vertical * 0.06;
+      const twist = vertical * 0.18;
       const x = point.x * Math.cos(twist) - point.z * Math.sin(twist);
       const z = point.x * Math.sin(twist) + point.z * Math.cos(twist);
-      point.set(x * 0.82, point.y * 1.14, z * 0.78);
+      point.set(x, point.y, z);
       position.setXYZ(index, point.x, point.y, point.z);
     }
 
@@ -343,53 +411,101 @@ function ChromeSculpture() {
   useFrame((state, delta) => {
     if (!mesh.current) return;
     mesh.current.rotation.y += delta * 0.18;
-    mesh.current.position.y = 2.18 + Math.sin(state.clock.elapsedTime * 1.05) * 0.055;
+    mesh.current.position.y = 2.75 + Math.sin(state.clock.elapsedTime * 1.05) * 0.045;
   });
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
   return (
-    <mesh castShadow geometry={geometry} position={[0, 2.18, 4.15]} ref={mesh} scale={0.82}>
+    <mesh
+      castShadow
+      geometry={geometry}
+      position={[0.4, 2.75, 2.72]}
+      ref={mesh}
+      scale={cameraPreset === "near" ? [1.25, 0.75, 0.59] : [1.2, 1.02, 0.72]}
+    >
       <meshPhysicalMaterial color="#f6f4f2" envMapIntensity={2.8} metalness={1} roughness={0.065} />
     </mesh>
   );
 }
 
-function CameraRig({ autoRotate, resetSignal }: TaikooLiModelProps) {
+function CameraRig({ autoRotate, cameraPreset, resetSignal }: TaikooLiModelProps) {
   const { camera, gl, size } = useThree();
   const controls = useRef<OrbitControls | null>(null);
+  const transition = useRef<{
+    elapsed: number;
+    fromPosition: THREE.Vector3;
+    fromTarget: THREE.Vector3;
+    toPosition: THREE.Vector3;
+    toTarget: THREE.Vector3;
+  } | null>(null);
 
-  const cameraPosition = useMemo<[number, number, number]>(
-    () => (size.width / size.height < 0.7 ? [4.6, 14.4, 37] : [5.2, 11.4, 23.8]),
-    [size.height, size.width],
-  );
+  const resolvedPreset = useMemo(() => {
+    const source = CAMERA_PRESETS[cameraPreset];
+    const portrait = size.width / size.height < 0.7;
+    const position = new THREE.Vector3(...source.position);
+    const target = new THREE.Vector3(...source.target);
+
+    if (portrait && cameraPreset === "far") {
+      position.set(4.8, 13.7, 29.4);
+    }
+    if (portrait && cameraPreset === "near") {
+      position.set(2.15, 4.65, 20.5);
+      target.set(-0.2, 3.3, 0.4);
+    }
+
+    return {
+      fov: source.fov,
+      position,
+      target,
+    };
+  }, [cameraPreset, size.height, size.width]);
 
   useEffect(() => {
     const nextControls = new OrbitControls(camera, gl.domElement);
     nextControls.enableDamping = true;
     nextControls.dampingFactor = 0.055;
     nextControls.enablePan = false;
-    nextControls.minDistance = 9;
-    nextControls.maxDistance = 31;
-    nextControls.maxPolarAngle = Math.PI * 0.48;
-    nextControls.target.fromArray(REFERENCE_CAMERA.target);
+    nextControls.minDistance = 8;
+    nextControls.maxDistance = 38;
+    nextControls.maxPolarAngle = Math.PI * 0.52;
+    nextControls.target.copy(resolvedPreset.target);
+    const stopTransition = () => {
+      transition.current = null;
+    };
+    nextControls.addEventListener("start", stopTransition);
     nextControls.update();
     controls.current = nextControls;
-    return () => nextControls.dispose();
-  }, [camera, gl]);
+    return () => {
+      nextControls.removeEventListener("start", stopTransition);
+      nextControls.dispose();
+    };
+  }, [camera, gl, resolvedPreset.target]);
 
   useEffect(() => {
-    camera.position.fromArray(cameraPosition);
     if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov = REFERENCE_CAMERA.fov;
+      camera.fov = resolvedPreset.fov;
       camera.updateProjectionMatrix();
     }
-    controls.current?.target.fromArray(REFERENCE_CAMERA.target);
-    controls.current?.update();
-  }, [camera, cameraPosition, resetSignal]);
+    transition.current = {
+      elapsed: 0,
+      fromPosition: camera.position.clone(),
+      fromTarget: controls.current?.target.clone() ?? resolvedPreset.target.clone(),
+      toPosition: resolvedPreset.position.clone(),
+      toTarget: resolvedPreset.target.clone(),
+    };
+  }, [camera, resetSignal, resolvedPreset]);
 
-  useFrame(() => {
+  useFrame((_state, delta) => {
     if (!controls.current) return;
+    const activeTransition = transition.current;
+    if (activeTransition) {
+      activeTransition.elapsed = Math.min(activeTransition.elapsed + delta / 0.9, 1);
+      const t = 1 - Math.pow(1 - activeTransition.elapsed, 3);
+      camera.position.lerpVectors(activeTransition.fromPosition, activeTransition.toPosition, t);
+      controls.current.target.lerpVectors(activeTransition.fromTarget, activeTransition.toTarget, t);
+      if (activeTransition.elapsed >= 1) transition.current = null;
+    }
     controls.current.autoRotate = autoRotate;
     controls.current.autoRotateSpeed = 0.34;
     controls.current.update();
@@ -416,6 +532,25 @@ function Environment() {
 }
 
 function CityScene(props: TaikooLiModelProps) {
+  const [districtVoxels, centralVoxels] = useMemo(() => {
+    const district = Object.fromEntries(
+      (Object.keys(TAIKOO_VOXELS) as VoxelPalette[]).map((palette) => [
+        palette,
+        TAIKOO_VOXELS[palette].filter((voxel) => !voxel.cluster.startsWith("central-")),
+      ]),
+    ) as Record<VoxelPalette, Voxel[]>;
+    const central = Object.fromEntries(
+      (Object.keys(TAIKOO_VOXELS) as VoxelPalette[]).map((palette) => [
+        palette,
+        TAIKOO_VOXELS[palette].filter((voxel) => voxel.cluster.startsWith("central-")),
+      ]),
+    ) as Record<VoxelPalette, Voxel[]>;
+    return [district, central];
+  }, []);
+  const districtScale = props.cameraPreset === "near" ? 0.72 : 1;
+  const districtOffsetY = props.cameraPreset === "near" ? -0.55 : 0;
+  const districtOffsetZ = props.cameraPreset === "near" ? -3.2 : 0;
+
   return (
     <>
       <color attach="background" args={["#e9ecef"]} />
@@ -427,14 +562,52 @@ function CityScene(props: TaikooLiModelProps) {
       <CameraRig {...props} />
 
       <group position={[0, 0, -0.45]}>
-        {(Object.keys(TAIKOO_VOXELS) as VoxelPalette[]).map((palette) => (
-          <RoundedVoxelGroup cells={TAIKOO_VOXELS[palette]} key={palette} palette={palette} />
+        <group position={[0, districtOffsetY, districtOffsetZ]} scale={districtScale}>
+          {(Object.keys(TAIKOO_VOXELS) as VoxelPalette[]).map((palette) => (
+            <group
+              key={palette}
+              position-x={props.cameraPreset === "near" && (palette === "blue" || palette === "cyan") ? 0.32 : 0}
+            >
+              <RoundedVoxelGroup
+                cells={
+                  props.cameraPreset === "near" && palette === "red"
+                    ? districtVoxels[palette].filter(
+                        (voxel) => voxel.cluster !== "red-parking-plinth" && voxel.cluster !== "red-sign-spine",
+                      )
+                    : districtVoxels[palette]
+                }
+                palette={palette}
+              />
+            </group>
+          ))}
+          {SIGN_PLACEMENTS.filter(
+            (sign) => sign.kind !== "login" && !(props.cameraPreset === "near" && sign.kind === "parking"),
+          ).map((sign) => (
+            <BuildingSign {...sign} key={`${sign.kind}-${sign.position.join("-")}`} />
+          ))}
+        </group>
+        <group
+          position={[0.55, 0, props.cameraPreset === "near" ? -0.6 : 0]}
+          scale={props.cameraPreset === "near" ? 0.72 : 1}
+        >
+          {(Object.keys(TAIKOO_VOXELS) as VoxelPalette[]).map((palette) => (
+            <RoundedVoxelGroup cells={centralVoxels[palette]} key={`central-${palette}`} palette={palette} />
+          ))}
+        </group>
+        {SIGN_PLACEMENTS.filter((sign) => sign.kind === "login").map((sign) => (
+          <BuildingSign
+            {...sign}
+            key={`${sign.kind}-${sign.position.join("-")}`}
+            position={[
+              sign.position[0] + (props.cameraPreset === "near" ? 0.45 : 0.55),
+              sign.position[1] + (props.cameraPreset === "near" ? 0.35 : 0),
+              sign.position[2],
+            ]}
+            scale={props.cameraPreset === "near" ? (sign.scale ?? 1) * 0.78 : sign.scale}
+          />
         ))}
-        {SIGN_PLACEMENTS.map((sign) => (
-          <BuildingSign {...sign} key={`${sign.kind}-${sign.position.join("-")}`} />
-        ))}
-        <Portal />
-        <ChromeSculpture />
+        <Portal cameraPreset={props.cameraPreset} />
+        <ChromeSculpture cameraPreset={props.cameraPreset} />
       </group>
 
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
@@ -449,7 +622,7 @@ function CityScene(props: TaikooLiModelProps) {
 export default function TaikooLiModel(props: TaikooLiModelProps) {
   return (
     <Canvas
-      camera={{ fov: REFERENCE_CAMERA.fov, near: 0.1, far: 90, position: REFERENCE_CAMERA.position }}
+      camera={{ fov: CAMERA_PRESETS.far.fov, near: 0.1, far: 90, position: CAMERA_PRESETS.far.position }}
       dpr={[1, 1.65]}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       shadows

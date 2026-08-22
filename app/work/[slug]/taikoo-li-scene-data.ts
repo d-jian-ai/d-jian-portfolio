@@ -1,190 +1,232 @@
 export type VoxelPalette = "red" | "blue" | "cyan" | "taupe" | "bronze";
 
 export type Voxel = {
+  cluster: string;
   x: number;
   y: number;
   z: number;
   shade: number;
 };
 
-type TowerOptions = {
+type GridVoxel = {
+  cluster: string;
   x: number;
+  y: number;
   z: number;
-  width: number;
-  depth: number;
-  height: number;
-  stepBack?: (x: number, z: number, level: number) => boolean;
-  void?: (x: number, z: number, level: number) => boolean;
+};
+
+type BoxRange = {
+  x: [number, number];
+  y: [number, number];
+  z: [number, number];
 };
 
 const UNIT = 0.62;
+const grids: Record<VoxelPalette, Map<string, GridVoxel>> = {
+  red: new Map(),
+  blue: new Map(),
+  cyan: new Map(),
+  taupe: new Map(),
+  bronze: new Map(),
+};
+
+function key(x: number, y: number, z: number) {
+  return `${x}:${y}:${z}`;
+}
+
+function addBox(palette: VoxelPalette, cluster: string, range: BoxRange) {
+  for (let x = range.x[0]; x <= range.x[1]; x += 1) {
+    for (let y = range.y[0]; y <= range.y[1]; y += 1) {
+      for (let z = range.z[0]; z <= range.z[1]; z += 1) {
+        grids[palette].set(key(x, y, z), { cluster, x, y, z });
+      }
+    }
+  }
+}
+
+function removeBox(palette: VoxelPalette, range: BoxRange) {
+  for (let x = range.x[0]; x <= range.x[1]; x += 1) {
+    for (let y = range.y[0]; y <= range.y[1]; y += 1) {
+      for (let z = range.z[0]; z <= range.z[1]; z += 1) {
+        grids[palette].delete(key(x, y, z));
+      }
+    }
+  }
+}
+
+function addCells(
+  palette: VoxelPalette,
+  cluster: string,
+  cells: Array<[number, number, number]>,
+) {
+  cells.forEach(([x, y, z]) => {
+    grids[palette].set(key(x, y, z), { cluster, x, y, z });
+  });
+}
+
+/*
+ * The city is reconstructed as discrete, countable clusters. Each range is
+ * inclusive and every subtraction is an intentional opening visible in the
+ * supplied orbit frames. The central x=-2…2 corridor stays empty above the
+ * two-level plinth so the portal and sculpture float on one clear sight line.
+ */
+
+// RED / western district ----------------------------------------------------
+addBox("red", "red-rear-tower", { x: [-8, -4], y: [0, 11], z: [-7, -6] });
+removeBox("red", { x: [-6, -5], y: [1, 7], z: [-7, -6] });
+addCells("red", "red-rear-tower", [
+  [-6, 5, -7],
+  [-5, 5, -7],
+  [-4, 6, -5],
+  [-4, 7, -5],
+]);
+
+// Main hollow gate: two piers, a two-level bridge and a genuinely empty core.
+addBox("red", "red-hollow-gate-left", { x: [-8, -7], y: [0, 8], z: [-5, 0] });
+addBox("red", "red-hollow-gate-right", { x: [-4, -3], y: [0, 8], z: [-5, 0] });
+addBox("red", "red-hollow-gate-bridge", { x: [-8, -3], y: [8, 9], z: [-5, -3] });
+addBox("red", "red-hollow-gate-sill", { x: [-6, -5], y: [0, 1], z: [-4, -1] });
+addCells("red", "red-hollow-gate-floaters", [
+  [-6, 4, -4],
+  [-5, 4, -4],
+  [-6, 5, -3],
+  [-5, 5, -3],
+  [-6, 2, 0],
+  [-5, 2, 0],
+]);
+removeBox("red", { x: [-8, -8], y: [2, 4], z: [-2, -1] });
+removeBox("red", { x: [-3, -3], y: [1, 3], z: [-1, 0] });
+
+// Mid-street red stacks and their smaller openings.
+addBox("red", "red-mid-left", { x: [-10, -8], y: [0, 5], z: [1, 4] });
+removeBox("red", { x: [-9, -8], y: [2, 3], z: [3, 4] });
+addBox("red", "red-mid-right", { x: [-6, -5], y: [0, 4], z: [1, 4] });
+removeBox("red", { x: [-6, -5], y: [1, 2], z: [3, 3] });
+addCells("red", "red-mid-floaters", [
+  [-7, 4, 1],
+  [-7, 5, 1],
+  [-7, 5, 2],
+  [-4, 3, 2],
+  [-4, 4, 2],
+]);
+
+// Low near block with the parking sign.
+addBox("red", "red-parking-plinth", { x: [-9, -6], y: [0, 3], z: [9, 11] });
+removeBox("red", { x: [-8, -7], y: [0, 1], z: [10, 11] });
+addBox("red", "red-sign-spine", { x: [-7, -6], y: [0, 4], z: [6, 8] });
+
+// BLUE / eastern district ---------------------------------------------------
+addBox("blue", "blue-rear-wall", { x: [2, 6], y: [0, 10], z: [-7, -6] });
+removeBox("blue", { x: [3, 4], y: [3, 7], z: [-7, -6] });
+removeBox("blue", { x: [6, 6], y: [1, 2], z: [-7, -6] });
+addCells("blue", "blue-rear-wall", [
+  [3, 3, -5],
+  [4, 3, -5],
+  [5, 6, -5],
+  [6, 6, -5],
+]);
+
+// Main blue arcade kept to the right of the central void.
+addBox("blue", "blue-arcade-inner", { x: [4, 5], y: [0, 8], z: [-5, 1] });
+addBox("blue", "blue-arcade-outer", { x: [6, 6], y: [0, 6], z: [-5, 1] });
+addBox("blue", "blue-arcade-bridge", { x: [3, 6], y: [8, 9], z: [-4, -2] });
+removeBox("blue", { x: [4, 5], y: [1, 6], z: [-1, 1] });
+removeBox("blue", { x: [6, 6], y: [1, 2], z: [0, 1] });
+addCells("blue", "blue-arcade-floaters", [
+  [3, 4, -2],
+  [3, 5, -2],
+  [3, 3, 0],
+  [5, 5, 1],
+]);
+
+addBox("blue", "blue-profile-plinth", { x: [3, 5], y: [0, 2], z: [7, 9] });
+removeBox("blue", { x: [3, 3], y: [1, 2], z: [8, 9] });
+addBox("blue", "blue-near-spine", { x: [5, 6], y: [0, 5], z: [5, 8] });
+removeBox("blue", { x: [5, 5], y: [2, 4], z: [7, 8] });
+
+// CYAN / outer eastern arcade ----------------------------------------------
+addBox("cyan", "cyan-rear-tower", { x: [7, 9], y: [0, 10], z: [-7, -6] });
+removeBox("cyan", { x: [7, 8], y: [1, 5], z: [-7, -6] });
+
+addBox("cyan", "cyan-arcade-left", { x: [7, 7], y: [0, 8], z: [-4, 2] });
+addBox("cyan", "cyan-arcade-right", { x: [9, 9], y: [0, 8], z: [-4, 2] });
+addBox("cyan", "cyan-arcade-bridge", { x: [7, 9], y: [8, 9], z: [-4, -2] });
+addCells("cyan", "cyan-arcade-floaters", [
+  [8, 5, -1],
+  [8, 4, 0],
+  [8, 3, 2],
+]);
+
+addBox("cyan", "cyan-near-spine", { x: [7, 8], y: [0, 5], z: [8, 11] });
+removeBox("cyan", { x: [7, 7], y: [2, 4], z: [9, 11] });
+addCells("cyan", "cyan-near-cap", [
+  [9, 4, 4],
+  [9, 5, 4],
+  [9, 5, 5],
+  [8, 6, 3],
+]);
+
+// TAUPE / neutral fragments stay behind the floating centerline.
+addBox("taupe", "taupe-rear-column", { x: [-2, -1], y: [0, 6], z: [-7, -6] });
+removeBox("taupe", { x: [-2, -2], y: [2, 4], z: [-7, -6] });
+addCells("taupe", "taupe-suspended", [
+  [-1, 4, -4],
+  [-1, 5, -4],
+  [-1, 6, -4],
+  [0, 3, -3],
+  [0, 4, -3],
+]);
+
+// Two-level central plinth only; everything above is floating geometry.
+addBox("bronze", "central-left-plinth", { x: [-2, -1], y: [0, 1], z: [3, 5] });
+addBox("blue", "central-right-plinth", { x: [1, 2], y: [0, 1], z: [3, 5] });
+addCells("taupe", "central-sculpture-seat", [
+  [0, 0, 3],
+  [0, 1, 3],
+  [0, 0, 4],
+  [0, 1, 4],
+  [-1, 2, 3],
+  [1, 2, 3],
+]);
 
 function noise(x: number, y: number, z: number) {
   const value = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453;
   return value - Math.floor(value);
 }
 
-function tower(options: TowerOptions): Voxel[] {
-  const cells: Voxel[] = [];
-
-  for (let level = 0; level < options.height; level += 1) {
-    for (let x = 0; x < options.width; x += 1) {
-      for (let z = 0; z < options.depth; z += 1) {
-        if (options.stepBack?.(x, z, level) || options.void?.(x, z, level)) {
-          continue;
-        }
-
-        cells.push({
-          x: (options.x + x) * UNIT,
-          y: level * UNIT + UNIT / 2,
-          z: (options.z + z) * UNIT,
-          shade: noise(options.x + x, level, options.z + z),
-        });
-      }
-    }
-  }
-
-  return cells;
+function resolvePalette(palette: VoxelPalette): Voxel[] {
+  return [...grids[palette].values()].map((cell) => {
+    const isEasternBackground =
+      (palette === "blue" || palette === "cyan") &&
+      (cell.cluster.includes("rear") || cell.cluster.includes("arcade"));
+    const isRedForeground = cell.cluster === "red-parking-plinth";
+    const resolvedX = cell.x + (isEasternBackground ? -1 : 0) + (isRedForeground ? 2 : 0);
+    return {
+      cluster: cell.cluster,
+      x: resolvedX * UNIT,
+      y: cell.y * UNIT + UNIT / 2,
+      z: cell.z * UNIT,
+      shade: noise(cell.x, cell.y, cell.z),
+    };
+  });
 }
 
-const red = [
-  ...tower({
-    x: -8,
-    z: -9,
-    width: 5,
-    depth: 4,
-    height: 10,
-    stepBack: (x, z, level) => level > 7 && (x > 2 || z > 1),
-    void: (x, z, level) => level > 1 && level < 5 && x > 1 && x < 4 && z === 3,
-  }),
-  ...tower({
-    x: -9,
-    z: -4,
-    width: 4,
-    depth: 5,
-    height: 13,
-    stepBack: (x, z, level) => level > 9 && (x === 0 || z > 2),
-    void: (x, z, level) => level > 1 && level < 6 && x > 0 && x < 3 && z === 4,
-  }),
-  ...tower({
-    x: -7,
-    z: 2,
-    width: 4,
-    depth: 5,
-    height: 8,
-    stepBack: (x, z, level) => level > 5 && (x > 1 || z > 2),
-    void: (x, z, level) => level < 3 && x === 2 && z > 1,
-  }),
-  ...tower({
-    x: -8,
-    z: 8,
-    width: 5,
-    depth: 3,
-    height: 6,
-    stepBack: (x, _z, level) => level > 3 && x > 2,
-  }),
-  ...tower({ x: -4, z: -3, width: 2, depth: 3, height: 6 }),
-];
-
-const blue = [
-  ...tower({
-    x: 1,
-    z: -10,
-    width: 6,
-    depth: 4,
-    height: 11,
-    stepBack: (x, z, level) => level > 8 && (x < 2 || z > 1),
-    void: (x, z, level) => level > 2 && level < 6 && x < 3 && z === 3,
-  }),
-  ...tower({
-    x: 3,
-    z: -5,
-    width: 5,
-    depth: 5,
-    height: 12,
-    stepBack: (x, z, level) => level > 8 && (x < 2 || z > 2),
-    void: (x, z, level) => level < 4 && x < 2 && z === 4,
-  }),
-  ...tower({
-    x: 4,
-    z: 1,
-    width: 4,
-    depth: 6,
-    height: 9,
-    stepBack: (x, z, level) => level > 5 && (x < 1 || (x > 1 && z > 2)),
-    void: (x, z, level) => level > 1 && level < 6 && x === 0 && z > 1,
-  }),
-  ...tower({
-    x: 2,
-    z: 8,
-    width: 4,
-    depth: 3,
-    height: 5,
-    stepBack: (x, _z, level) => level > 2 && x < 2,
-  }),
-];
-
-const cyan = [
-  ...tower({
-    x: 7,
-    z: -8,
-    width: 3,
-    depth: 7,
-    height: 10,
-    stepBack: (_x, z, level) => level > 7 && z > 3,
-  }),
-  ...tower({
-    x: 7,
-    z: 0,
-    width: 3,
-    depth: 8,
-    height: 9,
-    stepBack: (x, z, level) => level > 5 && (x < 1 || z > 4),
-    void: (x, z, level) => level < 4 && x === 0 && z > 2 && z < 6,
-  }),
-];
-
-const taupe = [
-  ...tower({
-    x: -2,
-    z: -8,
-    width: 3,
-    depth: 3,
-    height: 8,
-    stepBack: (x, z, level) => level > 5 && (x === 0 || z === 2),
-  }),
-  ...tower({
-    x: -2,
-    z: -3,
-    width: 3,
-    depth: 4,
-    height: 7,
-    stepBack: (x, z, level) => level > 4 && (x === 0 || z > 1),
-  }),
-  ...tower({
-    x: -1,
-    z: 6,
-    width: 3,
-    depth: 2,
-    height: 2,
-    void: (x, z, level) => level > 0 && x === 1 && z === 1,
-  }),
-  ...tower({ x: 0, z: -2, width: 2, depth: 2, height: 4 }),
-];
-
-const bronze = [
-  ...tower({ x: -1, z: 3, width: 2, depth: 2, height: 2 }),
-  ...tower({ x: -3, z: 8, width: 3, depth: 2, height: 3 }),
-];
-
 export const TAIKOO_UNIT = UNIT;
-
 export const TAIKOO_VOXELS: Record<VoxelPalette, Voxel[]> = {
-  red,
-  blue,
-  cyan,
-  taupe,
-  bronze,
+  red: resolvePalette("red"),
+  blue: resolvePalette("blue"),
+  cyan: resolvePalette("cyan"),
+  taupe: resolvePalette("taupe"),
+  bronze: resolvePalette("bronze"),
+};
+
+export const TAIKOO_VOXEL_COUNTS: Record<VoxelPalette | "total", number> = {
+  red: TAIKOO_VOXELS.red.length,
+  blue: TAIKOO_VOXELS.blue.length,
+  cyan: TAIKOO_VOXELS.cyan.length,
+  taupe: TAIKOO_VOXELS.taupe.length,
+  bronze: TAIKOO_VOXELS.bronze.length,
+  total: Object.values(TAIKOO_VOXELS).reduce((sum, cells) => sum + cells.length, 0),
 };
 
 export type SignKind =
@@ -205,18 +247,30 @@ export type SignPlacement = {
 };
 
 export const SIGN_PLACEMENTS: SignPlacement[] = [
-  { kind: "help", position: [-3.72, 5.65, -2.12], scale: 0.76 },
-  { kind: "recycle", position: [-5.58, 4.35, 0.34], scale: 0.72 },
-  { kind: "parking", position: [-4.72, 1.76, 6.84], scale: 0.78 },
-  { kind: "sparkles", position: [-0.62, 4.24, -3.18], scale: 0.7 },
-  { kind: "scan", position: [1.86, 3.72, -3.04], scale: 0.66 },
-  { kind: "profile", position: [2.16, 2.14, 5.28], scale: 0.72 },
-  { kind: "login", position: [-0.14, 1.06, 5.6], scale: 0.76 },
-  { kind: "fastForward", position: [4.18, 4.34, 0.66], scale: 0.68 },
+  { kind: "help", position: [-2.12, 5.48, -0.02], scale: 0.76 },
+  { kind: "recycle", position: [-4.82, 5.62, -0.02], scale: 0.72 },
+  { kind: "parking", position: [-3.42, 1.48, 7.06], scale: 0.78 },
+  { kind: "sparkles", position: [-0.64, 4.86, -1.2], scale: 0.7 },
+  { kind: "scan", position: [1.3, 3.16, -3.68], scale: 0.66 },
+  { kind: "profile", position: [2.86, 1.5, 5.66], scale: 0.74 },
+  { kind: "login", position: [0, 1.2, 3.46], scale: 1.42 },
+  { kind: "fastForward", position: [2.86, 3.18, -0.02], scale: 0.68 },
 ];
 
-export const REFERENCE_CAMERA = {
-  position: [5.2, 10.2, 22.6] as [number, number, number],
-  target: [0.1, 3.2, -0.3] as [number, number, number],
-  fov: 30,
+export type CameraPreset = "far" | "near";
+
+export const CAMERA_PRESETS: Record<
+  CameraPreset,
+  { position: [number, number, number]; target: [number, number, number]; fov: number }
+> = {
+  far: {
+    position: [5.4, 12.8, 23.8],
+    target: [0, 3.05, -0.3],
+    fov: 28,
+  },
+  near: {
+    position: [2.6, 4.7, 16.4],
+    target: [0, 3.65, 0.4],
+    fov: 24,
+  },
 };
