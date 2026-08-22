@@ -49,7 +49,9 @@ export function WorkIndex() {
             );
           })}
         </div>
-        <span>{filteredWorks.length.toString().padStart(2, "0")} / 04</span>
+        <span>
+          {filteredWorks.length.toString().padStart(2, "0")} / {works.length.toString().padStart(2, "0")}
+        </span>
       </div>
 
       <div className="archive-list">

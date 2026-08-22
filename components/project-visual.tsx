@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, type PointerEvent } from "react";
 
 export function ProjectVisual({
@@ -37,8 +38,20 @@ export function ProjectVisual({
       onPointerLeave={resetPointer}
       onPointerMove={handlePointer}
       ref={root}
-      role="img"
+    role="img"
     >
+      {slug === "taikoo-li-digital-district" && (
+        <Image
+          alt="Taikoo Li digital district reference model"
+          fill
+          priority
+          sizes="(max-width: 820px) 100vw, 55vw"
+          src="/images/taikoo-li/digital-district-reference.webp"
+          style={{ objectFit: "cover", objectPosition: "center 48%" }}
+        />
+      )}
+      {slug !== "taikoo-li-digital-district" && (
+        <>
       <div className="visual-grid" />
       <div className="visual-scan" />
       {slug === "forest-loading-gate" && (
@@ -79,6 +92,8 @@ export function ProjectVisual({
           <span className="motion-frame frame-three" />
           <span className="motion-playhead" />
           <span className="motion-time">00:14:08</span>
+        </>
+      )}
         </>
       )}
     </div>
