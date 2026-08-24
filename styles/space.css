@@ -88,6 +88,142 @@
   position: absolute;
 }
 
+.space-voxel-preview {
+  background:
+    radial-gradient(circle at 52% 44%, rgba(68, 86, 203, 0.22), transparent 31%),
+    linear-gradient(145deg, #07100f 0%, #0c1518 52%, #090d12 100%);
+  pointer-events: auto;
+}
+
+.space-voxel-preview .space-preview-grid,
+.space-voxel-preview .space-preview-code {
+  pointer-events: none;
+  z-index: 4;
+}
+
+.voxel-cube-stage {
+  --cube-size: clamp(142px, 18vw, 218px);
+  --cube-half: calc(var(--cube-size) / 2);
+  background: transparent;
+  border: 0;
+  color: rgba(242, 244, 237, 0.68);
+  cursor: pointer;
+  inset: 0;
+  overflow: hidden;
+  padding: 0;
+  perspective: 1100px;
+  position: absolute;
+  touch-action: manipulation;
+  width: 100%;
+  z-index: 2;
+}
+
+.voxel-cube-stage:focus-visible {
+  outline: 1px solid rgba(129, 221, 255, 0.92);
+  outline-offset: -8px;
+}
+
+.voxel-cube-aura {
+  background: radial-gradient(circle, rgba(84, 114, 255, 0.22), transparent 66%);
+  filter: blur(18px);
+  height: min(52vw, 520px);
+  left: 50%;
+  position: absolute;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  transition: opacity 800ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: min(52vw, 520px);
+}
+
+.voxel-cube-shadow {
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.72), rgba(7, 11, 14, 0.08) 62%, transparent 74%);
+  bottom: 19%;
+  filter: blur(9px);
+  height: 44px;
+  left: 50%;
+  opacity: 0.8;
+  position: absolute;
+  transform: translateX(-50%) scaleX(0.82);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease;
+  width: calc(var(--cube-size) * 1.7);
+}
+
+.voxel-cube-motion {
+  height: var(--cube-size);
+  left: 50%;
+  position: absolute;
+  top: 48%;
+  transform: translate3d(-50%, -62%, 0) rotateX(0deg) rotateZ(0deg);
+  transform-origin: 50% 94%;
+  transform-style: preserve-3d;
+  transition: transform 950ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: var(--cube-size);
+}
+
+.voxel-cube-spin {
+  animation: voxelDistrictSpin 16s linear infinite;
+  display: block;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  width: 100%;
+}
+
+.voxel-cube-face {
+  --face-color: rgba(63, 83, 211, 0.78);
+  background:
+    linear-gradient(90deg, transparent 49.1%, rgba(232, 242, 255, 0.32) 49.5% 50.5%, transparent 50.9%),
+    linear-gradient(transparent 49.1%, rgba(232, 242, 255, 0.32) 49.5% 50.5%, transparent 50.9%),
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 1px), rgba(225, 238, 255, 0.18) calc(25% - 1px) 25%),
+    repeating-linear-gradient(transparent 0 calc(25% - 1px), rgba(225, 238, 255, 0.18) calc(25% - 1px) 25%),
+    linear-gradient(135deg, color-mix(in srgb, var(--face-color), white 18%), var(--face-color));
+  border: 1px solid rgba(212, 232, 255, 0.42);
+  box-shadow:
+    inset 0 0 28px rgba(255, 255, 255, 0.12),
+    0 0 24px rgba(34, 64, 210, 0.08);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-style: preserve-3d;
+  width: 100%;
+}
+
+.voxel-cube-front { --face-color: rgba(44, 60, 190, 0.9); transform: translateZ(var(--cube-half)); }
+.voxel-cube-back { --face-color: rgba(8, 145, 170, 0.82); transform: rotateY(180deg) translateZ(var(--cube-half)); }
+.voxel-cube-right { --face-color: rgba(201, 12, 47, 0.86); transform: rotateY(90deg) translateZ(var(--cube-half)); }
+.voxel-cube-left { --face-color: rgba(121, 68, 151, 0.86); transform: rotateY(-90deg) translateZ(var(--cube-half)); }
+.voxel-cube-top { --face-color: rgba(222, 65, 88, 0.86); transform: rotateX(90deg) translateZ(var(--cube-half)); }
+.voxel-cube-bottom { --face-color: rgba(18, 39, 86, 0.92); transform: rotateX(-90deg) translateZ(var(--cube-half)); }
+
+.voxel-cube-stage[data-resting="true"] .voxel-cube-motion {
+  transform: translate3d(-50%, -7%, 0) rotateX(76deg) rotateZ(-16deg) scale(0.96);
+}
+
+.voxel-cube-stage[data-resting="true"] .voxel-cube-spin {
+  animation-play-state: paused;
+}
+
+.voxel-cube-stage[data-resting="true"] .voxel-cube-shadow {
+  opacity: 0.9;
+  transform: translateX(-50%) scaleX(1.38);
+}
+
+.voxel-cube-stage[data-resting="true"] .voxel-cube-aura {
+  opacity: 0.54;
+  transform: translate(-50%, -42%) scale(1.12, 0.7);
+}
+
+.voxel-cube-hint {
+  bottom: 27px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.11em;
+  opacity: 0.52;
+  position: absolute;
+  right: 30px;
+}
+
 .space-experiment-copy {
   align-content: center;
   display: grid;
@@ -493,6 +629,11 @@
   }
 }
 
+@keyframes voxelDistrictSpin {
+  from { transform: rotateX(-13deg) rotateY(0deg); }
+  to { transform: rotateX(-13deg) rotateY(360deg); }
+}
+
 @media (max-width: 1120px) {
   .space-index-heading h1 {
     font-size: 6.8rem;
@@ -676,4 +817,17 @@
     display: none;
   }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voxel-cube-spin {
+    animation: none;
+    transform: rotateX(-13deg) rotateY(28deg);
+  }
+
+  .voxel-cube-motion,
+  .voxel-cube-shadow,
+  .voxel-cube-aura {
+    transition-duration: 1ms;
+  }
 }

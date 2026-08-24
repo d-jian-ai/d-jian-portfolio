@@ -42,11 +42,11 @@ export function ProjectVisual({
     >
       {slug === "taikoo-li-digital-district" && (
         <Image
-          alt="Completed Taikoo Li voxel district model"
+          alt="Taikoo Li digital district concept scene"
           fill
           priority
           sizes="(max-width: 820px) 100vw, 55vw"
-          src="/images/taikoo-li/digital-district-voxel-completed.png"
+          src="/images/taikoo-li/digital-district-reference.webp"
           style={{ objectFit: "cover", objectPosition: "center center" }}
         />
       )}

@@ -22,6 +22,21 @@
   position: absolute;
 }
 
+.finalRender {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.canvasWrap::after {
+  background:
+    linear-gradient(180deg, rgba(245, 247, 245, 0.1), transparent 18%, transparent 78%, rgba(235, 238, 236, 0.18)),
+    radial-gradient(circle at 50% 44%, transparent 42%, rgba(24, 31, 32, 0.06) 100%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
 .canvasWrap canvas {
   cursor: grab;
   height: 100% !important;
@@ -94,6 +109,7 @@
   left: 32px;
   pointer-events: none;
   position: absolute;
+  z-index: 2;
 }
 
 .modelLegend {
@@ -105,6 +121,7 @@
   pointer-events: none;
   position: absolute;
   right: 32px;
+  z-index: 2;
 }
 
 .modelLegend span {

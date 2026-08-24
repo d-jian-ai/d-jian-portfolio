@@ -41,11 +41,11 @@ function unique(cells: VoxelCoordinate[]) {
   });
 }
 
-const red = "#d3132c";
-const rose = "#b77f87";
-const neutral = "#9a8582";
-const blue = "#3342c8";
-const cyan = "#089fb0";
+const red = "#ad082b";
+const rose = "#c32244";
+const neutral = "#786966";
+const blue = "#203397";
+const cyan = "#007d93";
 
 export const VOXEL_BUILDINGS: VoxelBuilding[] = [
   {
@@ -74,7 +74,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 3,
     dimensions: "5 × 5 × 8",
     note: "完整长方体",
-    color: "#b31c33",
+    color: "#920725",
     origin: [-17, 3],
     cells: box(5, 5, 8),
   },
@@ -83,7 +83,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 4,
     dimensions: "5 × 4 × 3 + 1",
     note: "顶部附加 1 个方块",
-    color: "#9f5060",
+    color: "#b43852",
     origin: [-15, 13],
     cells: [...box(5, 4, 3), { x: 2, y: 3, z: 0 }],
   },
@@ -92,7 +92,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 5,
     dimensions: "2 × 4 × 10",
     note: "完整长方体",
-    color: "#bb92a0",
+    color: "#9f6b77",
     origin: [-3, -16],
     cells: box(2, 4, 10),
   },
@@ -119,7 +119,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 8,
     dimensions: "2 × 3 × 7",
     note: "完整长方体",
-    color: "#5f70ca",
+    color: "#3a4da1",
     origin: [3, -7],
     cells: box(2, 3, 7),
   },
@@ -128,7 +128,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 9,
     dimensions: "3 × 5 × 8",
     note: "完整长方体",
-    color: "#5565d0",
+    color: "#3047ad",
     origin: [11, -4],
     cells: box(3, 5, 8),
   },
@@ -149,7 +149,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 11,
     dimensions: "4 × 4 × 2",
     note: "中央低层建筑",
-    color: "#766e6b",
+    color: "#655a57",
     origin: [-3, 8],
     cells: box(4, 4, 2),
   },
@@ -158,7 +158,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     index: 12,
     dimensions: "2 × 3 × 7",
     note: "位于建筑 5 后方，与建筑 1、6 对齐",
-    color: "#a88586",
+    color: "#966d72",
     origin: [-3, -14],
     cells: box(2, 3, 7),
   },

@@ -239,7 +239,7 @@ function scrollPanel(event: ReactWheelEvent<HTMLElement>) {
 const copy = {
   zh: {
     back: "返回项目",
-    title: "建筑体素编辑器",
+    title: "建筑体编辑器",
     subtitle: "12 组独立建筑 / 可迁移数据原型",
     buildings: "建筑组",
     remaining: "剩余",
@@ -421,6 +421,7 @@ export function TaikooVoxelEditor() {
   const [hovered, setHovered] = useState<HoveredVoxel>(null);
   const [message, setMessage] = useState("");
   const [hydrated, setHydrated] = useState(false);
+  const [presentationMode, setPresentationMode] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const currentLayout = layouts[activePreset];
   const { added, deleted, positions, theme } = currentLayout;
@@ -474,6 +475,10 @@ export function TaikooVoxelEditor() {
     }));
     setRedoStack((stack) => stack.slice(0, -1));
   }, [activePreset, currentLayout, redoStack]);
+
+  useEffect(() => {
+    setPresentationMode(new URLSearchParams(window.location.search).has("capture"));
+  }, []);
 
   useEffect(() => {
     try {
@@ -820,6 +825,7 @@ export function TaikooVoxelEditor() {
             onRestore={restoreVoxel}
             onSelect={setSelectedBuildingId}
             positions={positions}
+            presentationMode={presentationMode}
             selectedBuildingId={selectedBuildingId}
             theme={activePreset === "reference" ? theme : "original"}
           />

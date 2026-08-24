@@ -46,6 +46,7 @@ type VoxelEditorModelProps = {
   onRestore: (buildingId: string, cell: VoxelCoordinate) => void;
   onSelect: (buildingId: string) => void;
   positions: BuildingPositions;
+  presentationMode: boolean;
   selectedBuildingId: string;
   theme: SceneTheme;
 };
@@ -59,11 +60,11 @@ const THEME_SPECS: Record<SceneTheme, {
   colors: string[];
 }> = {
   original: {
-    background: "#e8ebea",
-    fog: "#e8ebea",
-    ground: "#e6e8e7",
-    gridMajor: "#9ca2a1",
-    gridMinor: "#c8cdcc",
+    background: "#f5f6f4",
+    fog: "#f5f6f4",
+    ground: "#eceeeb",
+    gridMajor: "#9ba4a2",
+    gridMinor: "#d4d9d7",
     colors: [],
   },
   mondrian: {
@@ -106,9 +107,12 @@ function useEditorEnvironment() {
   useEffect(() => {
     const pmrem = new THREE.PMREMGenerator(gl);
     const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    const previousIntensity = scene.environmentIntensity;
     scene.environment = environment;
+    scene.environmentIntensity = 1.3;
     return () => {
       scene.environment = null;
+      scene.environmentIntensity = previousIntensity;
       environment.dispose();
       pmrem.dispose();
     };
@@ -228,15 +232,22 @@ function VoxelInstances({
         />
       ) : (
         <meshPhysicalMaterial
+          attenuationColor={theme === "original" ? color : "#ffffff"}
+          attenuationDistance={theme === "original" ? 0.72 : Infinity}
           clearcoat={1}
-          clearcoatRoughness={theme === "iridescent" ? 0.035 : 0.12}
+          clearcoatRoughness={theme === "iridescent" ? 0.035 : theme === "original" ? 0.07 : 0.12}
           color={color}
           emissive={selected ? color : "#000000"}
-          emissiveIntensity={selected ? 0.09 : 0}
-          metalness={theme === "dior" ? 0.48 : theme === "iridescent" ? 0.3 : 0.04}
-          opacity={theme === "original" ? (selected ? 0.82 : 0.62) : theme === "iridescent" ? 0.84 : 1}
-          roughness={theme === "dior" ? 0.1 : theme === "iridescent" ? 0.055 : 0.2}
-          transparent={theme === "original" || theme === "iridescent"}
+          emissiveIntensity={selected ? 0.035 : 0}
+          envMapIntensity={theme === "original" ? 1.8 : 1.2}
+          ior={theme === "original" ? 1.47 : 1.5}
+          metalness={theme === "dior" ? 0.48 : theme === "iridescent" ? 0.3 : theme === "original" ? 0.06 : 0.02}
+          opacity={theme === "iridescent" ? 0.9 : 1}
+          roughness={theme === "dior" ? 0.1 : theme === "iridescent" ? 0.055 : theme === "original" ? 0.14 : 0.2}
+          specularIntensity={theme === "original" ? 1 : 0.72}
+          thickness={theme === "original" ? 0.45 : 0.22}
+          transmission={theme === "original" ? 0.42 : theme === "iridescent" ? 0.08 : 0}
+          transparent={theme === "iridescent"}
         />
       )}
     </instancedMesh>
@@ -292,11 +303,13 @@ function EditorCamera({
   autoRotate,
   buildingId,
   focusSignal,
+  presentationMode,
   positions,
 }: {
   autoRotate: boolean;
   buildingId: string;
   focusSignal: number;
+  presentationMode: boolean;
   positions: BuildingPositions;
 }) {
   const { camera, gl } = useThree();
@@ -315,11 +328,12 @@ function EditorCamera({
     next.maxDistance = 64;
     next.maxPolarAngle = Math.PI * 0.49;
     next.minDistance = 5;
-    next.target.set(0, 3.4, 0);
+    if (presentationMode) camera.position.set(0, 16.5, 34);
+    next.target.set(0, presentationMode ? 4 : 3.4, 0);
     next.update();
     controls.current = next;
     return () => next.dispose();
-  }, [camera, gl]);
+  }, [camera, gl, presentationMode]);
 
   useEffect(() => {
     if (!controls.current) return;
@@ -563,14 +577,23 @@ function Scene(props: VoxelEditorModelProps) {
   return (
     <>
       <color attach="background" args={[themeSpec.background]} />
-      <fog attach="fog" args={[themeSpec.fog, 42, 78]} />
-      <ambientLight intensity={1.1} />
-      <directionalLight castShadow intensity={2.2} position={[10, 24, 14]} shadow-mapSize={[2048, 2048]} />
-      <directionalLight color="#b7cdfd" intensity={0.75} position={[-14, 10, -8]} />
+      {props.theme === "original" ? null : <fog attach="fog" args={[themeSpec.fog, 52, 102]} />}
+      <ambientLight intensity={props.theme === "original" ? 0.12 : 0.62} />
+      <hemisphereLight color="#fffdf7" groundColor="#56615f" intensity={props.theme === "original" ? 0.3 : 0.74} />
+      <directionalLight
+        castShadow
+        color="#fff1df"
+        intensity={props.theme === "original" ? 2.45 : 2.35}
+        position={[12, 25, 16]}
+        shadow-bias={-0.00035}
+        shadow-mapSize={[2048, 2048]}
+      />
+      <directionalLight color="#7898ff" intensity={props.theme === "original" ? 0.5 : 0.7} position={[-16, 12, -10]} />
       <EditorCamera
         autoRotate={props.autoRotate}
         buildingId={props.focusBuildingId}
         focusSignal={props.focusSignal}
+        presentationMode={props.presentationMode}
         positions={props.positions}
       />
 
@@ -617,10 +640,16 @@ function Scene(props: VoxelEditorModelProps) {
         </mesh>
       ) : null}
 
-      <gridHelper args={[44, 44, themeSpec.gridMajor, themeSpec.gridMinor]} position={[0, 0.01, 0]} />
+      {props.presentationMode ? null : (
+        <gridHelper args={[44, 44, themeSpec.gridMajor, themeSpec.gridMinor]} position={[0, 0.01, 0]} />
+      )}
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
         <planeGeometry args={[54, 54]} />
-        <meshStandardMaterial color={themeSpec.ground} metalness={props.theme === "dior" ? 0.22 : 0} roughness={0.82} />
+        <meshStandardMaterial
+          color={themeSpec.ground}
+          metalness={props.theme === "dior" ? 0.22 : props.theme === "original" ? 0.08 : 0}
+          roughness={props.theme === "original" ? 0.4 : 0.82}
+        />
       </mesh>
     </>
   );
@@ -630,8 +659,13 @@ export default function VoxelEditorModel(props: VoxelEditorModelProps) {
   return (
     <Canvas
       camera={{ far: 120, fov: 38, near: 0.1, position: [22, 22, 33] }}
-      dpr={[1, 1.6]}
+      dpr={[1, 2]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
+      onCreated={({ gl }) => {
+        gl.toneMapping = THREE.ACESFilmicToneMapping;
+        gl.toneMappingExposure = 0.9;
+        gl.outputColorSpace = THREE.SRGBColorSpace;
+      }}
       onPointerMissed={() => props.onHover(null)}
       shadows
     >
