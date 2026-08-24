@@ -85,7 +85,7 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     note: "顶部附加 1 个方块",
     color: "#9f5060",
     origin: [-15, 13],
-    cells: [...box(5, 4, 3), { x: 2, y: 3, z: 2 }],
+    cells: [...box(5, 4, 3), { x: 2, y: 3, z: 0 }],
   },
   {
     id: "building-5",

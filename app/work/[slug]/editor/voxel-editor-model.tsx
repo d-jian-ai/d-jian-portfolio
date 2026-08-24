@@ -14,7 +14,7 @@ import {
   voxelKey,
 } from "./voxel-editor-data";
 
-export type EditorMode = "inspect" | "delete" | "restore" | "move";
+export type EditorMode = "inspect" | "delete" | "restore" | "place" | "move";
 
 export type BuildingPosition = {
   x: number;
@@ -32,6 +32,7 @@ export type HoveredVoxel = {
 } | null;
 
 type VoxelEditorModelProps = {
+  added: Set<string>;
   autoRotate: boolean;
   deleted: Set<string>;
   focusBuildingId: string;
@@ -41,6 +42,7 @@ type VoxelEditorModelProps = {
   mode: EditorMode;
   onDelete: (buildingId: string, cell: VoxelCoordinate) => void;
   onHover: (voxel: HoveredVoxel) => void;
+  onPlace: (buildingId: string, cell: VoxelCoordinate) => void;
   onRestore: (buildingId: string, cell: VoxelCoordinate) => void;
   onSelect: (buildingId: string) => void;
   positions: BuildingPositions;
@@ -120,6 +122,7 @@ function VoxelInstances({
   mode,
   onDelete,
   onHover,
+  onPlace,
   onRestore,
   onSelect,
   selected,
@@ -131,6 +134,7 @@ function VoxelInstances({
   mode: EditorMode;
   onDelete: VoxelEditorModelProps["onDelete"];
   onHover: VoxelEditorModelProps["onHover"];
+  onPlace: VoxelEditorModelProps["onPlace"];
   onRestore: VoxelEditorModelProps["onRestore"];
   onSelect: VoxelEditorModelProps["onSelect"];
   selected: boolean;
@@ -174,6 +178,21 @@ function VoxelInstances({
     onSelect(building.id);
     if (ghost && mode === "restore") onRestore(building.id, cell);
     if (!ghost && mode === "delete") onDelete(building.id, cell);
+    if (!ghost && mode === "place" && event.face) {
+      const normal = event.face.normal;
+      const axes = [
+        { axis: "x" as const, value: normal.x },
+        { axis: "y" as const, value: normal.y },
+        { axis: "z" as const, value: normal.z },
+      ];
+      const dominant = axes.reduce((best, candidate) => (
+        Math.abs(candidate.value) > Math.abs(best.value) ? candidate : best
+      ));
+      onPlace(building.id, {
+        ...cell,
+        [dominant.axis]: cell[dominant.axis] + Math.sign(dominant.value),
+      });
+    }
   }
 
   return (
@@ -225,21 +244,35 @@ function VoxelInstances({
 }
 
 function BuildingGroup(props: {
+  added: Set<string>;
   building: VoxelBuilding;
   deleted: Set<string>;
   mode: EditorMode;
   onDelete: VoxelEditorModelProps["onDelete"];
   onHover: VoxelEditorModelProps["onHover"];
+  onPlace: VoxelEditorModelProps["onPlace"];
   onRestore: VoxelEditorModelProps["onRestore"];
   onSelect: VoxelEditorModelProps["onSelect"];
   position: BuildingPosition;
   selected: boolean;
   theme: SceneTheme;
 }) {
-  const { building, deleted, mode, position, selected } = props;
+  const { added, building, deleted, mode, position, selected } = props;
+  const addedCells = useMemo(
+    () => [...added]
+      .filter((key) => key.startsWith(`${building.id}/`))
+      .map((key) => {
+        const [, x, y, z] = key.split("/");
+        return { x: Number(x), y: Number(y), z: Number(z) };
+      }),
+    [added, building.id],
+  );
   const activeCells = useMemo(
-    () => building.cells.filter((cell) => !deleted.has(voxelKey(building.id, cell))),
-    [building, deleted],
+    () => [
+      ...building.cells.filter((cell) => !deleted.has(voxelKey(building.id, cell))),
+      ...addedCells,
+    ],
+    [addedCells, building, deleted],
   );
   const removedCells = useMemo(
     () => building.cells.filter((cell) => deleted.has(voxelKey(building.id, cell))),
@@ -546,12 +579,14 @@ function Scene(props: VoxelEditorModelProps) {
         if (props.isolate && !selected) return null;
         return (
           <BuildingGroup
+            added={props.added}
             building={building}
             deleted={props.deleted}
             key={building.id}
             mode={props.mode}
             onDelete={props.onDelete}
             onHover={props.onHover}
+            onPlace={props.onPlace}
             onRestore={props.onRestore}
             onSelect={props.onSelect}
             position={props.positions[building.id] ?? {
