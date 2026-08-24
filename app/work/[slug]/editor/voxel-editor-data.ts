@@ -117,31 +117,31 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
   {
     id: "building-8",
     index: 8,
-    dimensions: "2 × 3 × 8",
+    dimensions: "2 × 3 × 7",
     note: "完整长方体",
     color: "#5f70ca",
     origin: [3, -7],
-    cells: box(2, 3, 8),
+    cells: box(2, 3, 7),
   },
   {
     id: "building-9",
     index: 9,
-    dimensions: "3 × 4 × 8",
+    dimensions: "3 × 5 × 8",
     note: "完整长方体",
     color: "#5565d0",
     origin: [11, -4],
-    cells: box(3, 4, 8),
+    cells: box(3, 5, 8),
   },
   {
     id: "building-10",
     index: 10,
-    dimensions: "5 × 3 × 6 + 5 × 2 × 2",
-    note: "顶部两层贴右侧对齐",
+    dimensions: "5 × 3 × 5 + 2 × 5 × 2",
+    note: "第六层从 X4 / Y6 / Z3 开始",
     color: blue,
     origin: [9, 8],
     cells: unique([
-      ...box(5, 3, 6),
-      ...box(5, 2, 2, { x: 0, y: 6, z: 1 }),
+      ...box(5, 3, 5),
+      ...box(2, 5, 2, { x: 3, y: 5, z: 2 }),
     ]),
   },
   {
@@ -177,4 +177,3 @@ export const VALID_VOXEL_KEYS = new Set(
     building.cells.map((cell) => voxelKey(building.id, cell)),
   ),
 );
-

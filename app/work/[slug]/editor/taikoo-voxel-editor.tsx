@@ -25,6 +25,7 @@ import {
   type VoxelCoordinate,
   voxelKey,
 } from "./voxel-editor-data";
+import defaultVoxelLayout from "./taikoo-li-voxel-layout.json";
 import styles from "./voxel-editor.module.css";
 
 const VoxelEditorModel = dynamic(() => import("./voxel-editor-model"), {
@@ -38,6 +39,9 @@ const VoxelEditorModel = dynamic(() => import("./voxel-editor-model"), {
 });
 
 const STORAGE_KEY = "taikoo-li-voxel-editor-v1";
+const DEFAULT_DELETED = new Set(
+  defaultVoxelLayout.deleted.filter((key) => VALID_VOXEL_KEYS.has(key)),
+);
 
 const copy = {
   zh: {
@@ -148,7 +152,9 @@ function cloneDeleted(value: Set<string>) {
 export function TaikooVoxelEditor() {
   const { locale } = useLanguage();
   const text = copy[locale];
-  const [deleted, setDeleted] = useState<Set<string>>(new Set());
+  const [deleted, setDeleted] = useState<Set<string>>(
+    () => new Set(DEFAULT_DELETED),
+  );
   const [undoStack, setUndoStack] = useState<Set<string>[]>([]);
   const [redoStack, setRedoStack] = useState<Set<string>[]>([]);
   const [mode, setMode] = useState<EditorMode>("delete");
@@ -462,4 +468,3 @@ export function TaikooVoxelEditor() {
     </main>
   );
 }
-
