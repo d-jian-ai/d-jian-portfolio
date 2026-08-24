@@ -5,13 +5,17 @@ import Link from "next/link";
 import {
   ArrowLeft,
   Box,
+  ChevronLeft,
+  ChevronRight,
   Download,
   Eye,
   Focus,
   Move3D,
   MousePointer2,
+  Palette,
   Redo2,
   RotateCcw,
+  RefreshCw,
   Trash2,
   Undo2,
   Upload,
@@ -21,6 +25,8 @@ import { useLanguage } from "@/providers/language-provider";
 import type {
   BuildingPosition,
   BuildingPositions,
+  BuildingVisualStyle,
+  BuildingVisualStyles,
   EditorMode,
   HoveredVoxel,
 } from "./voxel-editor-model";
@@ -44,7 +50,7 @@ const VoxelEditorModel = dynamic(() => import("./voxel-editor-model"), {
   ),
 });
 
-const STORAGE_KEY = "taikoo-li-voxel-editor-v2";
+const STORAGE_KEY = "taikoo-li-voxel-editor-v3";
 const DEFAULT_DELETED = new Set(
   defaultVoxelLayout.deleted.filter((key) => VALID_VOXEL_KEYS.has(key)),
 );
@@ -54,9 +60,18 @@ type PresetId = "reference" | "solid";
 type LayoutState = {
   deleted: Set<string>;
   positions: BuildingPositions;
+  spinning: Set<string>;
+  styles: BuildingVisualStyles;
 };
 
 type PresetLayouts = Record<PresetId, LayoutState>;
+const VISUAL_STYLES: BuildingVisualStyle[] = [
+  "glass",
+  "crystal",
+  "matte",
+  "wireframe",
+];
+const BUILDING_IDS = new Set(VOXEL_BUILDINGS.map((building) => building.id));
 
 function createDefaultPositions(): BuildingPositions {
   return Object.fromEntries(
@@ -67,10 +82,21 @@ function createDefaultPositions(): BuildingPositions {
   );
 }
 
+function createDefaultStyles(): BuildingVisualStyles {
+  return Object.fromEntries(
+    VOXEL_BUILDINGS.map((building) => [building.id, "glass"]),
+  );
+}
+
 function createCanonicalLayout(preset: PresetId): LayoutState {
+  const defaultPositions = createDefaultPositions();
   return {
     deleted: preset === "reference" ? new Set(DEFAULT_DELETED) : new Set(),
-    positions: createDefaultPositions(),
+    positions: preset === "reference"
+      ? parsePositions(defaultVoxelLayout.positions, defaultPositions)
+      : defaultPositions,
+    spinning: new Set(),
+    styles: createDefaultStyles(),
   };
 }
 
@@ -91,6 +117,8 @@ function cloneLayout(value: LayoutState): LayoutState {
   return {
     deleted: new Set(value.deleted),
     positions: clonePositions(value.positions),
+    spinning: new Set(value.spinning),
+    styles: { ...value.styles },
   };
 }
 
@@ -129,12 +157,44 @@ function parsePositions(value: unknown, fallback: BuildingPositions) {
   return positions;
 }
 
+function parseSpinning(value: unknown, fallback: Set<string>) {
+  if (!Array.isArray(value)) return new Set(fallback);
+  return new Set(
+    value.filter(
+      (id): id is string => typeof id === "string" && BUILDING_IDS.has(id),
+    ),
+  );
+}
+
+function parseStyles(value: unknown, fallback: BuildingVisualStyles) {
+  const styles = { ...fallback };
+  if (!Array.isArray(value)) return styles;
+  value.forEach((entry) => {
+    if (!entry || typeof entry !== "object") return;
+    const item = entry as Record<string, unknown>;
+    if (
+      typeof item.id === "string" &&
+      item.id in styles &&
+      typeof item.style === "string" &&
+      VISUAL_STYLES.includes(item.style as BuildingVisualStyle)
+    ) {
+      styles[item.id] = item.style as BuildingVisualStyle;
+    }
+  });
+  return styles;
+}
+
 function serializeLayout(layout: LayoutState) {
   return {
     deleted: [...layout.deleted].sort(),
     positions: VOXEL_BUILDINGS.map((building) => ({
       id: building.id,
       ...layout.positions[building.id],
+    })),
+    spinning: [...layout.spinning].sort(),
+    styles: VOXEL_BUILDINGS.map((building) => ({
+      id: building.id,
+      style: layout.styles[building.id],
     })),
   };
 }
@@ -147,6 +207,8 @@ function parseLayout(value: unknown, fallback: LayoutState): LayoutState {
       ? parseDeleted(item.deleted)
       : new Set(fallback.deleted),
     positions: parsePositions(item.positions, fallback.positions),
+    spinning: parseSpinning(item.spinning, fallback.spinning),
+    styles: parseStyles(item.styles, fallback.styles),
   };
 }
 
@@ -154,7 +216,7 @@ const copy = {
   zh: {
     back: "返回项目",
     title: "建筑体素编辑器",
-    subtitle: "11 组独立建筑 / 可迁移数据原型",
+    subtitle: "12 组独立建筑 / 可迁移数据原型",
     buildings: "建筑组",
     remaining: "剩余",
     removed: "已删除",
@@ -174,6 +236,18 @@ const copy = {
     moveHelp: "点击建筑进行选择，再用坐标按钮将整栋建筑移动一格。",
     position: "整体位置",
     moveBuilding: "移动当前建筑 / 每次一格",
+    special: "建筑表现",
+    spinStart: "开始自旋",
+    spinStop: "停止自旋",
+    changeStyle: "更换样式",
+    styleGlass: "透明玻璃",
+    styleCrystal: "镜面晶体",
+    styleMatte: "雾面实体",
+    styleWireframe: "结构线框",
+    hideBuildings: "隐藏建筑列表",
+    showBuildings: "显示建筑列表",
+    hideTools: "隐藏编辑工具",
+    showTools: "显示编辑工具",
     focus: "聚焦当前建筑",
     isolate: "仅显示当前建筑",
     allBuildings: "显示全部建筑",
@@ -194,7 +268,7 @@ const copy = {
   en: {
     back: "Back to project",
     title: "Building voxel editor",
-    subtitle: "11 independent groups / portable data prototype",
+    subtitle: "12 independent groups / portable data prototype",
     buildings: "Building groups",
     remaining: "Remaining",
     removed: "Removed",
@@ -214,6 +288,18 @@ const copy = {
     moveHelp: "Select a building, then move the whole group one grid unit at a time.",
     position: "Group position",
     moveBuilding: "Move selected / one grid unit",
+    special: "Presentation",
+    spinStart: "Start spin",
+    spinStop: "Stop spin",
+    changeStyle: "Change style",
+    styleGlass: "Transparent glass",
+    styleCrystal: "Mirror crystal",
+    styleMatte: "Matte solid",
+    styleWireframe: "Structural wireframe",
+    hideBuildings: "Hide building list",
+    showBuildings: "Show building list",
+    hideTools: "Hide editing tools",
+    showTools: "Show editing tools",
     focus: "Focus selected",
     isolate: "Show selected only",
     allBuildings: "Show all buildings",
@@ -234,7 +320,7 @@ const copy = {
   fr: {
     back: "Retour au projet",
     title: "Éditeur de voxels",
-    subtitle: "11 groupes indépendants / données transférables",
+    subtitle: "12 groupes indépendants / données transférables",
     buildings: "Groupes",
     remaining: "Restants",
     removed: "Supprimés",
@@ -254,6 +340,18 @@ const copy = {
     moveHelp: "Sélectionner un bâtiment, puis déplacer le groupe d'une unité à la fois.",
     position: "Position du groupe",
     moveBuilding: "Déplacer l'actif / une unité",
+    special: "Présentation",
+    spinStart: "Lancer la rotation",
+    spinStop: "Arrêter la rotation",
+    changeStyle: "Changer le style",
+    styleGlass: "Verre transparent",
+    styleCrystal: "Cristal miroir",
+    styleMatte: "Volume mat",
+    styleWireframe: "Structure filaire",
+    hideBuildings: "Masquer la liste",
+    showBuildings: "Afficher la liste",
+    hideTools: "Masquer les outils",
+    showTools: "Afficher les outils",
     focus: "Cadrer le bâtiment",
     isolate: "Afficher seulement l'actif",
     allBuildings: "Afficher tous les bâtiments",
@@ -284,12 +382,14 @@ export function TaikooVoxelEditor() {
   const [selectedBuildingId, setSelectedBuildingId] = useState("building-1");
   const [focusSignal, setFocusSignal] = useState(0);
   const [isolate, setIsolate] = useState(false);
+  const [leftCollapsed, setLeftCollapsed] = useState(false);
+  const [rightCollapsed, setRightCollapsed] = useState(false);
   const [hovered, setHovered] = useState<HoveredVoxel>(null);
   const [message, setMessage] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const currentLayout = layouts[activePreset];
-  const { deleted, positions } = currentLayout;
+  const { deleted, positions, spinning, styles: buildingStyles } = currentLayout;
 
   const selectedBuilding = VOXEL_BUILDINGS.find(
     (building) => building.id === selectedBuildingId,
@@ -337,7 +437,7 @@ export function TaikooVoxelEditor() {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const payload = JSON.parse(stored) as Record<string, unknown>;
-        if (payload.version === 2 && payload.presets && typeof payload.presets === "object") {
+        if (payload.version === 3 && payload.presets && typeof payload.presets === "object") {
           const storedPresets = payload.presets as Record<string, unknown>;
           const canonical = createCanonicalLayouts();
           setLayouts({
@@ -358,7 +458,7 @@ export function TaikooVoxelEditor() {
     window.localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
-        version: 2,
+        version: 3,
         presets: {
           reference: serializeLayout(layouts.reference),
           solid: serializeLayout(layouts.solid),
@@ -389,7 +489,7 @@ export function TaikooVoxelEditor() {
     if (deleted.has(key)) return;
     const nextDeleted = new Set(deleted);
     nextDeleted.add(key);
-    commit({ deleted: nextDeleted, positions });
+    commit({ deleted: nextDeleted, positions, spinning, styles: buildingStyles });
   }
 
   function restoreVoxel(buildingId: string, cell: VoxelCoordinate) {
@@ -397,7 +497,7 @@ export function TaikooVoxelEditor() {
     if (!deleted.has(key)) return;
     const nextDeleted = new Set(deleted);
     nextDeleted.delete(key);
-    commit({ deleted: nextDeleted, positions });
+    commit({ deleted: nextDeleted, positions, spinning, styles: buildingStyles });
   }
 
   function resetSelected() {
@@ -414,6 +514,13 @@ export function TaikooVoxelEditor() {
       positions: {
         ...clonePositions(positions),
         [selectedBuildingId]: { ...baseline.positions[selectedBuildingId] },
+      },
+      spinning: new Set(
+        [...spinning].filter((buildingId) => buildingId !== selectedBuildingId),
+      ),
+      styles: {
+        ...buildingStyles,
+        [selectedBuildingId]: baseline.styles[selectedBuildingId],
       },
     });
     setMessage(text.resetDone);
@@ -446,14 +553,42 @@ export function TaikooVoxelEditor() {
           [axis]: current[axis] + amount,
         },
       },
+      spinning,
+      styles: buildingStyles,
     });
     setMode("move");
     setHovered(null);
   }
 
+  function toggleSpin() {
+    const nextSpinning = new Set(spinning);
+    if (nextSpinning.has(selectedBuildingId)) nextSpinning.delete(selectedBuildingId);
+    else nextSpinning.add(selectedBuildingId);
+    commit({
+      deleted: new Set(deleted),
+      positions,
+      spinning: nextSpinning,
+      styles: buildingStyles,
+    });
+    setMode("inspect");
+    setHovered(null);
+  }
+
+  function cycleStyle() {
+    const currentStyle = buildingStyles[selectedBuildingId] ?? "glass";
+    const currentIndex = VISUAL_STYLES.indexOf(currentStyle);
+    const nextStyle = VISUAL_STYLES[(currentIndex + 1) % VISUAL_STYLES.length];
+    commit({
+      deleted: new Set(deleted),
+      positions,
+      spinning,
+      styles: { ...buildingStyles, [selectedBuildingId]: nextStyle },
+    });
+  }
+
   function exportConfiguration() {
     const payload = {
-      version: 2,
+      version: 3,
       project: "taikoo-li-digital-district",
       totalVoxels: VOXEL_TOTAL,
       activePreset,
@@ -484,7 +619,7 @@ export function TaikooVoxelEditor() {
     try {
       const payload = JSON.parse(await file.text()) as Record<string, unknown>;
       const canonical = createCanonicalLayouts();
-      if (payload.version === 2 && payload.presets && typeof payload.presets === "object") {
+      if (payload.presets && typeof payload.presets === "object") {
         const presets = payload.presets as Record<string, unknown>;
         setLayouts({
           reference: parseLayout(presets.reference, canonical.reference),
@@ -494,6 +629,8 @@ export function TaikooVoxelEditor() {
         const reference = {
           deleted: parseDeleted(payload.deleted),
           positions: parsePositions(payload.positions, canonical.reference.positions),
+          spinning: parseSpinning(payload.spinning, canonical.reference.spinning),
+          styles: parseStyles(payload.styles, canonical.reference.styles),
         };
         setLayouts({ reference, solid: canonical.solid });
       }
@@ -521,9 +658,16 @@ export function TaikooVoxelEditor() {
     y: 0,
     z: selectedBuilding.origin[1],
   };
+  const selectedStyle = buildingStyles[selectedBuilding.id] ?? "glass";
+  const selectedStyleLabel = {
+    glass: text.styleGlass,
+    crystal: text.styleCrystal,
+    matte: text.styleMatte,
+    wireframe: text.styleWireframe,
+  }[selectedStyle];
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} data-voxel-editor-page>
       <header className={styles.topbar}>
         <Link className={styles.back} href="/work/taikoo-li-digital-district">
           <ArrowLeft aria-hidden="true" size={16} />
@@ -539,11 +683,34 @@ export function TaikooVoxelEditor() {
         </div>
       </header>
 
-      <div className={styles.workspace}>
-        <aside className={styles.buildingPanel}>
+      <div
+        className={styles.workspace}
+        data-left-collapsed={leftCollapsed}
+        data-right-collapsed={rightCollapsed}
+      >
+        <button
+          aria-expanded={!leftCollapsed}
+          aria-label={leftCollapsed ? text.showBuildings : text.hideBuildings}
+          className={`${styles.panelToggle} ${styles.leftToggle}`}
+          onClick={() => setLeftCollapsed((value) => !value)}
+          type="button"
+        >
+          {leftCollapsed ? <ChevronRight aria-hidden="true" size={15} /> : <ChevronLeft aria-hidden="true" size={15} />}
+        </button>
+        <button
+          aria-expanded={!rightCollapsed}
+          aria-label={rightCollapsed ? text.showTools : text.hideTools}
+          className={`${styles.panelToggle} ${styles.rightToggle}`}
+          onClick={() => setRightCollapsed((value) => !value)}
+          type="button"
+        >
+          {rightCollapsed ? <ChevronLeft aria-hidden="true" size={15} /> : <ChevronRight aria-hidden="true" size={15} />}
+        </button>
+
+        <aside className={styles.buildingPanel} data-collapsed={leftCollapsed}>
           <div className={styles.panelHeading}>
             <span>{text.buildings}</span>
-            <strong>11</strong>
+            <strong>{VOXEL_BUILDINGS.length}</strong>
           </div>
           <div className={styles.buildingList}>
             {VOXEL_BUILDINGS.map((building) => {
@@ -581,6 +748,8 @@ export function TaikooVoxelEditor() {
             onSelect={setSelectedBuildingId}
             positions={positions}
             selectedBuildingId={selectedBuildingId}
+            spinning={spinning}
+            styles={buildingStyles}
           />
           <div className={styles.stageLabel}>
             <span>BUILDING {String(selectedBuilding.index).padStart(2, "0")}</span>
@@ -598,7 +767,7 @@ export function TaikooVoxelEditor() {
           </div>
         </section>
 
-        <aside className={styles.toolPanel}>
+        <aside className={styles.toolPanel} data-collapsed={rightCollapsed}>
           <section className={styles.presetSection}>
             <span className={styles.toolLabel}>{text.preset}</span>
             <div className={styles.presetSwitch}>
@@ -645,22 +814,32 @@ export function TaikooVoxelEditor() {
 
           <section className={styles.toolSection}>
             <span className={styles.toolLabel}>{text.position}</span>
-            <div className={styles.positionReadout}>
-              <span>X<strong>{selectedPosition.x}</strong></span>
-              <span>Y<strong>{selectedPosition.y}</strong></span>
-              <span>Z<strong>{selectedPosition.z}</strong></span>
-            </div>
             <div className={styles.moveHeading}>
               <Move3D aria-hidden="true" size={14} />
               <span>{text.moveBuilding}</span>
             </div>
             <div className={styles.moveGrid}>
-              <button aria-label="X 减 1" onClick={() => moveSelected("x", -1)} type="button">X−</button>
-              <button aria-label="X 加 1" onClick={() => moveSelected("x", 1)} type="button">X+</button>
-              <button aria-label="Y 减 1" onClick={() => moveSelected("y", -1)} type="button">Y−</button>
-              <button aria-label="Y 加 1" onClick={() => moveSelected("y", 1)} type="button">Y+</button>
-              <button aria-label="Z 减 1" onClick={() => moveSelected("z", -1)} type="button">Z−</button>
-              <button aria-label="Z 加 1" onClick={() => moveSelected("z", 1)} type="button">Z+</button>
+              {(["x", "y", "z"] as const).map((axis) => (
+                <div key={axis}>
+                  <span>{axis.toUpperCase()} <strong>{selectedPosition[axis]}</strong></span>
+                  <button aria-label={`${axis.toUpperCase()} 减 1`} onClick={() => moveSelected(axis, -1)} type="button">−</button>
+                  <button aria-label={`${axis.toUpperCase()} 加 1`} onClick={() => moveSelected(axis, 1)} type="button">+</button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className={styles.toolSection}>
+            <span className={styles.toolLabel}>{text.special}</span>
+            <div className={styles.specialActions}>
+              <button data-active={spinning.has(selectedBuildingId)} onClick={toggleSpin} type="button">
+                <RefreshCw aria-hidden="true" size={15} />
+                {spinning.has(selectedBuildingId) ? text.spinStop : text.spinStart}
+              </button>
+              <button onClick={cycleStyle} type="button">
+                <Palette aria-hidden="true" size={15} />
+                <span>{text.changeStyle}<small>{selectedStyleLabel}</small></span>
+              </button>
             </div>
           </section>
 

@@ -23,6 +23,9 @@ export type BuildingPosition = {
 
 export type BuildingPositions = Record<string, BuildingPosition>;
 
+export type BuildingVisualStyle = "glass" | "crystal" | "matte" | "wireframe";
+export type BuildingVisualStyles = Record<string, BuildingVisualStyle>;
+
 export type HoveredVoxel = {
   buildingId: string;
   cell: VoxelCoordinate;
@@ -41,6 +44,8 @@ type VoxelEditorModelProps = {
   onSelect: (buildingId: string) => void;
   positions: BuildingPositions;
   selectedBuildingId: string;
+  spinning: Set<string>;
+  styles: BuildingVisualStyles;
 };
 
 function useEditorEnvironment() {
@@ -68,6 +73,7 @@ function VoxelInstances({
   onRestore,
   onSelect,
   selected,
+  visualStyle,
 }: {
   building: VoxelBuilding;
   cells: VoxelCoordinate[];
@@ -78,6 +84,7 @@ function VoxelInstances({
   onRestore: VoxelEditorModelProps["onRestore"];
   onSelect: VoxelEditorModelProps["onSelect"];
   selected: boolean;
+  visualStyle: BuildingVisualStyle;
 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const geometry = useMemo(
@@ -138,16 +145,31 @@ function VoxelInstances({
           transparent
           wireframe
         />
+      ) : visualStyle === "wireframe" ? (
+        <meshBasicMaterial
+          color={building.color}
+          opacity={selected ? 0.86 : 0.64}
+          transparent
+          wireframe
+        />
+      ) : visualStyle === "matte" ? (
+        <meshStandardMaterial
+          color={building.color}
+          emissive={selected ? building.color : "#000000"}
+          emissiveIntensity={selected ? 0.08 : 0}
+          metalness={0.02}
+          roughness={0.74}
+        />
       ) : (
         <meshPhysicalMaterial
-          clearcoat={1}
-          clearcoatRoughness={0.16}
+          clearcoat={visualStyle === "crystal" ? 0.72 : 1}
+          clearcoatRoughness={visualStyle === "crystal" ? 0.04 : 0.16}
           color={building.color}
           emissive={selected ? building.color : "#000000"}
           emissiveIntensity={selected ? 0.09 : 0}
-          metalness={0.03}
-          opacity={selected ? 0.91 : 0.78}
-          roughness={0.16}
+          metalness={visualStyle === "crystal" ? 0.36 : 0.03}
+          opacity={visualStyle === "crystal" ? (selected ? 0.96 : 0.9) : (selected ? 0.82 : 0.62)}
+          roughness={visualStyle === "crystal" ? 0.06 : 0.16}
           transparent
         />
       )}
@@ -165,8 +187,11 @@ function BuildingGroup(props: {
   onSelect: VoxelEditorModelProps["onSelect"];
   position: BuildingPosition;
   selected: boolean;
+  spinning: boolean;
+  visualStyle: BuildingVisualStyle;
 }) {
-  const { building, deleted, mode, position, selected } = props;
+  const { building, deleted, mode, position, selected, spinning } = props;
+  const spinGroup = useRef<THREE.Group>(null);
   const activeCells = useMemo(
     () => building.cells.filter((cell) => !deleted.has(voxelKey(building.id, cell))),
     [building, deleted],
@@ -175,13 +200,35 @@ function BuildingGroup(props: {
     () => building.cells.filter((cell) => deleted.has(voxelKey(building.id, cell))),
     [building, deleted],
   );
+  const pivot = useMemo(() => {
+    const minX = Math.min(...building.cells.map((cell) => cell.x));
+    const maxX = Math.max(...building.cells.map((cell) => cell.x));
+    const minZ = Math.min(...building.cells.map((cell) => cell.z));
+    const maxZ = Math.max(...building.cells.map((cell) => cell.z));
+    return { x: (minX + maxX) / 2, z: (minZ + maxZ) / 2 };
+  }, [building]);
+
+  useFrame((_state, delta) => {
+    if (!spinGroup.current) return;
+    if (spinning) spinGroup.current.rotation.y += delta * 0.62;
+    else spinGroup.current.rotation.y = THREE.MathUtils.damp(
+      spinGroup.current.rotation.y,
+      0,
+      7,
+      delta,
+    );
+  });
 
   return (
     <group position={[position.x, position.y, position.z]}>
-      <VoxelInstances {...props} cells={activeCells} />
-      {selected && mode === "restore" && removedCells.length > 0 ? (
-        <VoxelInstances {...props} cells={removedCells} ghost />
-      ) : null}
+      <group position={[pivot.x, 0, pivot.z]} ref={spinGroup}>
+        <group position={[-pivot.x, 0, -pivot.z]}>
+          <VoxelInstances {...props} cells={activeCells} />
+          {selected && mode === "restore" && removedCells.length > 0 ? (
+            <VoxelInstances {...props} cells={removedCells} ghost />
+          ) : null}
+        </group>
+      </group>
     </group>
   );
 }
@@ -286,11 +333,13 @@ function Scene(props: VoxelEditorModelProps) {
               z: building.origin[1],
             }}
             selected={selected}
+            spinning={props.spinning.has(building.id)}
+            visualStyle={props.styles[building.id] ?? "glass"}
           />
         );
       })}
 
-      {props.hovered && hoveredBuilding ? (
+      {props.hovered && hoveredBuilding && !props.spinning.has(hoveredBuilding.id) ? (
         <mesh
           position={[
             (props.positions[hoveredBuilding.id]?.x ?? hoveredBuilding.origin[0]) + props.hovered.cell.x,

@@ -135,13 +135,13 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
   {
     id: "building-10",
     index: 10,
-    dimensions: "5 × 3 × 5 + 2 × 5 × 2",
-    note: "第六层从 X4 / Y6 / Z3 向 Z2 方向延伸",
+    dimensions: "5 × 3 × 6 + 2 × 5 × 2",
+    note: "第一至六层为 5 × 3，第七至八层为 2 × 5",
     color: blue,
     origin: [9, 8],
     cells: unique([
-      ...box(5, 3, 5),
-      ...box(2, 5, 2, { x: 3, y: 5, z: -2 }),
+      ...box(5, 3, 6),
+      ...box(2, 5, 2, { x: 3, y: 6, z: -2 }),
     ]),
   },
   {
@@ -152,6 +152,15 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     color: "#766e6b",
     origin: [-3, 8],
     cells: box(4, 4, 2),
+  },
+  {
+    id: "building-12",
+    index: 12,
+    dimensions: "2 × 3 × 7",
+    note: "位于建筑 5 后方，与建筑 1、6 对齐",
+    color: "#a88586",
+    origin: [-3, -14],
+    cells: box(2, 3, 7),
   },
 ];
 
