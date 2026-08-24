@@ -13,7 +13,15 @@ import {
   voxelKey,
 } from "./voxel-editor-data";
 
-export type EditorMode = "inspect" | "delete" | "restore";
+export type EditorMode = "inspect" | "delete" | "restore" | "move";
+
+export type BuildingPosition = {
+  x: number;
+  y: number;
+  z: number;
+};
+
+export type BuildingPositions = Record<string, BuildingPosition>;
 
 export type HoveredVoxel = {
   buildingId: string;
@@ -31,6 +39,7 @@ type VoxelEditorModelProps = {
   onHover: (voxel: HoveredVoxel) => void;
   onRestore: (buildingId: string, cell: VoxelCoordinate) => void;
   onSelect: (buildingId: string) => void;
+  positions: BuildingPositions;
   selectedBuildingId: string;
 };
 
@@ -154,9 +163,10 @@ function BuildingGroup(props: {
   onHover: VoxelEditorModelProps["onHover"];
   onRestore: VoxelEditorModelProps["onRestore"];
   onSelect: VoxelEditorModelProps["onSelect"];
+  position: BuildingPosition;
   selected: boolean;
 }) {
-  const { building, deleted, mode, selected } = props;
+  const { building, deleted, mode, position, selected } = props;
   const activeCells = useMemo(
     () => building.cells.filter((cell) => !deleted.has(voxelKey(building.id, cell))),
     [building, deleted],
@@ -167,7 +177,7 @@ function BuildingGroup(props: {
   );
 
   return (
-    <group position={[building.origin[0], 0, building.origin[1]]}>
+    <group position={[position.x, position.y, position.z]}>
       <VoxelInstances {...props} cells={activeCells} />
       {selected && mode === "restore" && removedCells.length > 0 ? (
         <VoxelInstances {...props} cells={removedCells} ghost />
@@ -176,9 +186,22 @@ function BuildingGroup(props: {
   );
 }
 
-function EditorCamera({ buildingId, focusSignal }: { buildingId: string; focusSignal: number }) {
+function EditorCamera({
+  buildingId,
+  focusSignal,
+  positions,
+}: {
+  buildingId: string;
+  focusSignal: number;
+  positions: BuildingPositions;
+}) {
   const { camera, gl } = useThree();
   const controls = useRef<OrbitControls | null>(null);
+  const positionsRef = useRef(positions);
+
+  useEffect(() => {
+    positionsRef.current = positions;
+  }, [positions]);
 
   useEffect(() => {
     const next = new OrbitControls(camera, gl.domElement);
@@ -198,15 +221,23 @@ function EditorCamera({ buildingId, focusSignal }: { buildingId: string; focusSi
     if (!focusSignal || !controls.current) return;
     const building = VOXEL_BUILDINGS.find((item) => item.id === buildingId);
     if (!building) return;
+    const minX = Math.min(...building.cells.map((cell) => cell.x));
+    const minY = Math.min(...building.cells.map((cell) => cell.y));
+    const minZ = Math.min(...building.cells.map((cell) => cell.z));
     const maxX = Math.max(...building.cells.map((cell) => cell.x));
     const maxY = Math.max(...building.cells.map((cell) => cell.y));
     const maxZ = Math.max(...building.cells.map((cell) => cell.z));
+    const position = positionsRef.current[building.id] ?? {
+      x: building.origin[0],
+      y: 0,
+      z: building.origin[1],
+    };
     const center = new THREE.Vector3(
-      building.origin[0] + maxX / 2,
-      maxY / 2 + 0.5,
-      building.origin[1] + maxZ / 2,
+      position.x + (minX + maxX) / 2,
+      position.y + (minY + maxY) / 2 + 0.5,
+      position.z + (minZ + maxZ) / 2,
     );
-    const radius = Math.max(maxX, maxY, maxZ) + 4;
+    const radius = Math.max(maxX - minX, maxY - minY, maxZ - minZ) + 4;
     controls.current.target.copy(center);
     camera.position.set(center.x + radius * 0.78, center.y + radius * 0.72, center.z + radius);
     camera.lookAt(center);
@@ -230,7 +261,11 @@ function Scene(props: VoxelEditorModelProps) {
       <ambientLight intensity={1.1} />
       <directionalLight castShadow intensity={2.2} position={[10, 24, 14]} shadow-mapSize={[2048, 2048]} />
       <directionalLight color="#b7cdfd" intensity={0.75} position={[-14, 10, -8]} />
-      <EditorCamera buildingId={props.focusBuildingId} focusSignal={props.focusSignal} />
+      <EditorCamera
+        buildingId={props.focusBuildingId}
+        focusSignal={props.focusSignal}
+        positions={props.positions}
+      />
 
       {VOXEL_BUILDINGS.map((building) => {
         const selected = building.id === props.selectedBuildingId;
@@ -245,6 +280,11 @@ function Scene(props: VoxelEditorModelProps) {
             onHover={props.onHover}
             onRestore={props.onRestore}
             onSelect={props.onSelect}
+            position={props.positions[building.id] ?? {
+              x: building.origin[0],
+              y: 0,
+              z: building.origin[1],
+            }}
             selected={selected}
           />
         );
@@ -253,9 +293,9 @@ function Scene(props: VoxelEditorModelProps) {
       {props.hovered && hoveredBuilding ? (
         <mesh
           position={[
-            hoveredBuilding.origin[0] + props.hovered.cell.x,
-            props.hovered.cell.y + 0.5,
-            hoveredBuilding.origin[1] + props.hovered.cell.z,
+            (props.positions[hoveredBuilding.id]?.x ?? hoveredBuilding.origin[0]) + props.hovered.cell.x,
+            (props.positions[hoveredBuilding.id]?.y ?? 0) + props.hovered.cell.y + 0.5,
+            (props.positions[hoveredBuilding.id]?.z ?? hoveredBuilding.origin[1]) + props.hovered.cell.z,
           ]}
         >
           <boxGeometry args={[1.03, 1.03, 1.03]} />

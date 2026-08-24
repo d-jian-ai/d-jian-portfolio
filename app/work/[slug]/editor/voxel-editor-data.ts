@@ -136,12 +136,12 @@ export const VOXEL_BUILDINGS: VoxelBuilding[] = [
     id: "building-10",
     index: 10,
     dimensions: "5 × 3 × 5 + 2 × 5 × 2",
-    note: "第六层从 X4 / Y6 / Z3 开始",
+    note: "第六层从 X4 / Y6 / Z3 向 Z2 方向延伸",
     color: blue,
     origin: [9, 8],
     cells: unique([
       ...box(5, 3, 5),
-      ...box(2, 5, 2, { x: 3, y: 5, z: 2 }),
+      ...box(2, 5, 2, { x: 3, y: 5, z: -2 }),
     ]),
   },
   {

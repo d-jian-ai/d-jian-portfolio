@@ -178,6 +178,10 @@
   cursor: grabbing;
 }
 
+.stage[data-mode="move"] canvas {
+  cursor: grab;
+}
+
 .stageLabel {
   display: grid;
   gap: 5px;
@@ -219,6 +223,37 @@
   padding: 22px 20px 26px;
   scrollbar-color: rgba(20, 23, 23, 0.24) transparent;
   scrollbar-width: thin;
+}
+
+.presetSection {
+  border-bottom: 1px solid var(--editor-line);
+  padding-bottom: 20px;
+}
+
+.presetSwitch {
+  background: rgba(20, 23, 23, 0.07);
+  border-radius: 8px;
+  display: grid;
+  gap: 3px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 12px;
+  padding: 3px;
+}
+
+.presetSwitch button,
+.moveGrid button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: rgba(20, 23, 23, 0.68);
+  cursor: pointer;
+  font-size: 0.58rem;
+  min-height: 34px;
+}
+
+.presetSwitch button[data-active="true"] {
+  background: #171a1a;
+  color: #f6f6f1;
 }
 
 .selectedCard {
@@ -286,7 +321,7 @@
   border-radius: 8px;
   display: grid;
   gap: 3px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin-top: 12px;
   padding: 3px;
 }
@@ -312,6 +347,56 @@
   font-size: 0.6rem;
   line-height: 1.55;
   margin: 12px 0 0;
+}
+
+.positionReadout {
+  display: grid;
+  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 12px;
+}
+
+.positionReadout span {
+  background: rgba(255, 255, 255, 0.56);
+  border-radius: 7px;
+  color: rgba(20, 23, 23, 0.46);
+  display: grid;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.52rem;
+  gap: 4px;
+  padding: 8px 10px;
+}
+
+.positionReadout strong {
+  color: var(--editor-black);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.moveHeading {
+  align-items: center;
+  color: rgba(20, 23, 23, 0.54);
+  display: flex;
+  font-size: 0.56rem;
+  gap: 7px;
+  margin-top: 13px;
+}
+
+.moveGrid {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 9px;
+}
+
+.moveGrid button {
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(20, 23, 23, 0.14);
+  font-family: Consolas, "SFMono-Regular", monospace;
+}
+
+.moveGrid button:hover {
+  background: #fff;
 }
 
 .actionGrid {
@@ -498,4 +583,3 @@
     text-overflow: ellipsis;
   }
 }
-
