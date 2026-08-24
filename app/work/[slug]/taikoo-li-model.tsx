@@ -307,6 +307,8 @@ function AnnulusBody() {
   );
 }
 
+const PORTAL_RING_TILT = Math.PI / 12;
+
 export function TaikooPortal({
   accentColor,
   cameraPreset,
@@ -332,7 +334,7 @@ export function TaikooPortal({
       ref={group}
       scale={cameraPreset === "near" ? [0.88, 1, 0.88] : 1}
     >
-      <group rotation={[cameraPreset === "near" ? 0.34 : 0, 0, 0]}>
+      <group rotation={[PORTAL_RING_TILT, 0, 0]}>
         <AnnulusBody />
         <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[1.18, 1.78, 128]} />
@@ -350,7 +352,7 @@ export function TaikooPortal({
           <meshPhysicalMaterial color={edgeColor ?? "#d7fbff"} clearcoat={1} opacity={0.72} roughness={0.12} transparent />
         </mesh>
       </group>
-      <mesh castShadow scale={[1.18, 0.84, 0.96]}>
+      <mesh castShadow scale={1.08}>
         <sphereGeometry args={[1, 64, 48]} />
         <meshPhysicalMaterial
           color={accentColor ?? "#9b7fbd"}
@@ -363,24 +365,7 @@ export function TaikooPortal({
           transmission={0.5}
         />
       </mesh>
-      <mesh position={[0, -0.74, 0.02]} scale={[0.66, 0.56, 0.62]}>
-        <sphereGeometry args={[1, 56, 40]} />
-        <meshPhysicalMaterial
-          color={accentColor ?? "#8f73b4"}
-          clearcoat={1}
-          envMapIntensity={2.1}
-          opacity={0.46}
-          roughness={0.08}
-          thickness={0.65}
-          transparent
-          transmission={0.5}
-        />
-      </mesh>
-      <mesh position={[0, 0.62, 0]} scale={[0.94, 0.4, 0.78]}>
-        <sphereGeometry args={[1, 56, 40]} />
-        <meshPhysicalMaterial color={accentColor ?? "#a98bc6"} opacity={0.4} roughness={0.1} transparent transmission={0.5} />
-      </mesh>
-      <group position={[-0.08, 0.05, 0.84]} rotation={[0.02, 0, 0]} scale={0.52}>
+      <group position={[-0.08, 0.05, 1.02]} rotation={[0.02, 0, 0]} scale={0.52}>
         <TriangleFrame x={-0.38} />
         <TriangleFrame x={0.38} />
       </group>

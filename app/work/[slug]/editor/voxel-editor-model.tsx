@@ -326,42 +326,170 @@ function EditorCamera({
 }
 
 const TREE_CROWN = [
-  { position: [-0.72, 1.92, 0.08] as const, scale: [0.78, 0.7, 0.72] as const },
-  { position: [-0.35, 2.38, -0.15] as const, scale: [0.86, 0.78, 0.8] as const },
-  { position: [0.18, 2.48, 0.08] as const, scale: [0.92, 0.84, 0.86] as const },
-  { position: [0.7, 2.12, -0.02] as const, scale: [0.76, 0.72, 0.72] as const },
-  { position: [-0.15, 1.96, 0.44] as const, scale: [0.92, 0.76, 0.78] as const },
-  { position: [0.42, 1.82, 0.46] as const, scale: [0.72, 0.66, 0.68] as const },
-  { position: [-0.62, 2.0, -0.48] as const, scale: [0.66, 0.62, 0.65] as const },
-  { position: [0.48, 2.42, -0.45] as const, scale: [0.72, 0.68, 0.7] as const },
-  { position: [0.02, 2.78, -0.12] as const, scale: [0.68, 0.62, 0.66] as const },
+  { position: [-0.92, 2.42, 0.08] as const, scale: [0.92, 0.86, 0.9] as const },
+  { position: [-0.58, 2.93, -0.28] as const, scale: [1.02, 0.94, 0.96] as const },
+  { position: [-0.1, 3.18, 0.04] as const, scale: [1.08, 1.02, 1.04] as const },
+  { position: [0.48, 3.0, -0.18] as const, scale: [0.98, 0.96, 0.94] as const },
+  { position: [0.92, 2.48, 0.02] as const, scale: [0.86, 0.82, 0.86] as const },
+  { position: [-0.54, 2.4, 0.62] as const, scale: [1.04, 0.88, 0.92] as const },
+  { position: [0.05, 2.58, 0.68] as const, scale: [1.08, 0.9, 0.96] as const },
+  { position: [0.62, 2.42, 0.56] as const, scale: [0.9, 0.84, 0.88] as const },
+  { position: [-0.94, 2.5, -0.58] as const, scale: [0.82, 0.78, 0.82] as const },
+  { position: [0.04, 2.55, -0.68] as const, scale: [0.98, 0.88, 0.94] as const },
+  { position: [0.82, 2.62, -0.54] as const, scale: [0.78, 0.76, 0.8] as const },
+  { position: [-0.32, 3.55, -0.18] as const, scale: [0.84, 0.8, 0.82] as const },
+  { position: [0.35, 3.48, 0.22] as const, scale: [0.8, 0.76, 0.8] as const },
 ];
 
-function OrangeTree({ position }: { position: BuildingPosition }) {
+const TREE_BRANCHES = [
+  { from: [0, 0, 0] as const, to: [0.08, 2.28, 0] as const, start: 0.34, end: 0.19 },
+  { from: [0.03, 1.22, 0] as const, to: [-0.72, 2.48, 0.08] as const, start: 0.17, end: 0.09 },
+  { from: [0.06, 1.42, 0] as const, to: [0.68, 2.58, -0.16] as const, start: 0.16, end: 0.08 },
+  { from: [0.06, 1.68, -0.02] as const, to: [-0.2, 2.9, -0.48] as const, start: 0.14, end: 0.075 },
+  { from: [0.05, 1.62, 0.02] as const, to: [0.22, 2.78, 0.5] as const, start: 0.14, end: 0.075 },
+];
+
+const GARDEN_STONES = [
+  [-0.08, 0.18, 1.48] as const,
+  [0.1, 0.2, 1.08] as const,
+  [-0.04, 0.19, 0.68] as const,
+  [0.08, 0.2, 0.3] as const,
+];
+
+const GARDEN_SHRUBS = [
+  [-1.18, 0.3, -0.92, 0.42] as const,
+  [1.18, 0.29, -0.88, 0.38] as const,
+  [-1.28, 0.28, 0.92, 0.34] as const,
+  [1.25, 0.27, 0.88, 0.32] as const,
+];
+
+function TreeBranch({
+  endRadius,
+  from,
+  startRadius,
+  to,
+}: {
+  endRadius: number;
+  from: readonly [number, number, number];
+  startRadius: number;
+  to: readonly [number, number, number];
+}) {
+  const branch = useMemo(() => {
+    const start = new THREE.Vector3(...from);
+    const finish = new THREE.Vector3(...to);
+    const direction = finish.clone().sub(start);
+    const geometry = new THREE.CylinderGeometry(endRadius, startRadius, direction.length(), 24, 2);
+    const quaternion = new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      direction.clone().normalize(),
+    );
+    return {
+      geometry,
+      position: start.clone().add(finish).multiplyScalar(0.5),
+      quaternion,
+    };
+  }, [endRadius, from, startRadius, to]);
+
   return (
-    <group position={[position.x + 1.5, position.y + 2.02, position.z + 1.5]} scale={0.78}>
-      <mesh castShadow position={[0, 0.82, 0]}>
-        <cylinderGeometry args={[0.17, 0.3, 1.65, 20]} />
-        <meshStandardMaterial color="#8b431f" roughness={0.58} />
-      </mesh>
-      <mesh castShadow position={[-0.25, 1.38, 0]} rotation={[0, 0, -0.52]}>
-        <cylinderGeometry args={[0.09, 0.14, 0.95, 14]} />
-        <meshStandardMaterial color="#8b431f" roughness={0.58} />
-      </mesh>
-      <mesh castShadow position={[0.28, 1.35, 0.04]} rotation={[0.08, 0, 0.56]}>
-        <cylinderGeometry args={[0.08, 0.13, 0.88, 14]} />
-        <meshStandardMaterial color="#8b431f" roughness={0.58} />
-      </mesh>
+    <mesh castShadow geometry={branch.geometry} position={branch.position} quaternion={branch.quaternion}>
+      <meshStandardMaterial color="#82411f" roughness={0.68} />
+    </mesh>
+  );
+}
+
+function CrownBlob({
+  color,
+  position,
+  scale,
+}: {
+  color: string;
+  position: readonly [number, number, number];
+  scale: readonly [number, number, number];
+}) {
+  return (
+    <mesh castShadow position={position} scale={scale}>
+      <sphereGeometry args={[0.78, 36, 28]} />
+      <meshPhysicalMaterial
+        clearcoat={0.3}
+        clearcoatRoughness={0.28}
+        color={color}
+        roughness={0.46}
+      />
+    </mesh>
+  );
+}
+
+function OrangeTree() {
+  return (
+    <group position={[0, 0.14, -0.1]} scale={1.05}>
+      {TREE_BRANCHES.map((branch, index) => (
+        <TreeBranch
+          endRadius={branch.end}
+          from={branch.from}
+          key={index}
+          startRadius={branch.start}
+          to={branch.to}
+        />
+      ))}
       {TREE_CROWN.map((blob, index) => (
-        <mesh castShadow key={index} position={blob.position} scale={blob.scale}>
-          <sphereGeometry args={[0.72, 28, 22]} />
-          <meshPhysicalMaterial
-            clearcoat={0.22}
-            color={index % 3 === 0 ? "#ffad1f" : index % 3 === 1 ? "#f89a17" : "#ffb52b"}
-            roughness={0.5}
-          />
+        <CrownBlob
+          color={index % 4 === 0 ? "#ffb52d" : index % 4 === 1 ? "#f89b1c" : index % 4 === 2 ? "#ffbf3c" : "#f5a01f"}
+          key={index}
+          position={blob.position}
+          scale={blob.scale}
+        />
+      ))}
+      {[-0.42, 0.02, 0.46].map((x, index) => (
+        <mesh
+          castShadow
+          key={x}
+          position={[x, 0.12, index === 1 ? 0.18 : -0.02]}
+          rotation={[Math.PI / 2, index * 1.8, 0]}
+        >
+          <cylinderGeometry args={[0.05, 0.17, 0.85, 16]} />
+          <meshStandardMaterial color="#733817" roughness={0.72} />
         </mesh>
       ))}
+    </group>
+  );
+}
+
+function RooftopGarden({ position }: { position: BuildingPosition }) {
+  return (
+    <group position={[position.x + 1.5, position.y + 2.02, position.z + 1.5]}>
+      <mesh castShadow receiveShadow position={[0, 0.08, 0]}>
+        <cylinderGeometry args={[1.86, 1.9, 0.16, 64]} />
+        <meshStandardMaterial color="#8b9b58" roughness={0.82} />
+      </mesh>
+      <mesh position={[0, 0.17, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[1.76, 0.045, 12, 96]} />
+        <meshStandardMaterial color="#d9c48f" roughness={0.72} />
+      </mesh>
+      {GARDEN_STONES.map((stone, index) => (
+        <mesh
+          castShadow
+          key={index}
+          position={stone}
+          rotation={[0, index * 0.42, 0]}
+          scale={[0.28, 0.075, 0.2]}
+        >
+          <sphereGeometry args={[1, 24, 14]} />
+          <meshStandardMaterial color={index % 2 ? "#efe4c7" : "#d9ccb0"} roughness={0.78} />
+        </mesh>
+      ))}
+      {GARDEN_SHRUBS.map(([x, y, z, size], index) => (
+        <group key={index} position={[x, y, z]}>
+          <mesh castShadow scale={[size, size * 0.72, size]}>
+            <sphereGeometry args={[1, 24, 18]} />
+            <meshStandardMaterial color={index % 2 ? "#4f7046" : "#68804b"} roughness={0.78} />
+          </mesh>
+          <mesh castShadow position={[size * 0.44, size * 0.08, size * 0.16]} scale={size * 0.58}>
+            <sphereGeometry args={[1, 20, 14]} />
+            <meshStandardMaterial color={index % 2 ? "#e89635" : "#f1b34b"} roughness={0.72} />
+          </mesh>
+        </group>
+      ))}
+      <OrangeTree />
     </group>
   );
 }
@@ -378,8 +506,8 @@ function BuildingElevenDecor({
   const edgeColor = theme === "original" ? undefined : themeSpec.colors[3 % themeSpec.colors.length];
   return (
     <>
-      <OrangeTree position={position} />
-      <group position={[position.x + 1.5, position.y + 0.82, position.z + 1.18]}>
+      <RooftopGarden position={position} />
+      <group position={[position.x + 1.5, position.y + 4.5, position.z + 1.18]}>
         <TaikooPortal accentColor={accentColor} cameraPreset="far" edgeColor={edgeColor} />
       </group>
     </>
