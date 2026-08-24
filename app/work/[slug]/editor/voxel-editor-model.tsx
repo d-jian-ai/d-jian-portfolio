@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { TaikooPortal } from "../taikoo-li-model";
 import {
   VOXEL_BUILDINGS,
   type VoxelBuilding,
@@ -23,8 +24,7 @@ export type BuildingPosition = {
 
 export type BuildingPositions = Record<string, BuildingPosition>;
 
-export type BuildingVisualStyle = "glass" | "crystal" | "matte" | "wireframe";
-export type BuildingVisualStyles = Record<string, BuildingVisualStyle>;
+export type SceneTheme = "original" | "mondrian" | "iridescent" | "vangogh" | "dior";
 
 export type HoveredVoxel = {
   buildingId: string;
@@ -32,6 +32,7 @@ export type HoveredVoxel = {
 } | null;
 
 type VoxelEditorModelProps = {
+  autoRotate: boolean;
   deleted: Set<string>;
   focusBuildingId: string;
   focusSignal: number;
@@ -44,8 +45,57 @@ type VoxelEditorModelProps = {
   onSelect: (buildingId: string) => void;
   positions: BuildingPositions;
   selectedBuildingId: string;
-  spinning: Set<string>;
-  styles: BuildingVisualStyles;
+  theme: SceneTheme;
+};
+
+const THEME_SPECS: Record<SceneTheme, {
+  background: string;
+  fog: string;
+  ground: string;
+  gridMajor: string;
+  gridMinor: string;
+  colors: string[];
+}> = {
+  original: {
+    background: "#e8ebea",
+    fog: "#e8ebea",
+    ground: "#e6e8e7",
+    gridMajor: "#9ca2a1",
+    gridMinor: "#c8cdcc",
+    colors: [],
+  },
+  mondrian: {
+    background: "#f1f0eb",
+    fog: "#f1f0eb",
+    ground: "#deded7",
+    gridMajor: "#5b5b55",
+    gridMinor: "#b8b8ae",
+    colors: ["#f7f5ed", "#ef2b24", "#f2c900", "#114cc8", "#20201d"],
+  },
+  iridescent: {
+    background: "#dce9eb",
+    fog: "#dce9eb",
+    ground: "#bfcfd0",
+    gridMajor: "#617a7c",
+    gridMinor: "#9fb6b7",
+    colors: ["#071a2c", "#40d8d2", "#f0c7a2", "#e6eef1", "#4d2456", "#d89aa9"],
+  },
+  vangogh: {
+    background: "#102a3d",
+    fog: "#102a3d",
+    ground: "#17394c",
+    gridMajor: "#d1c44a",
+    gridMinor: "#31576a",
+    colors: ["#173e5e", "#216b8c", "#1c5579", "#5c8aa0", "#d6c84c"],
+  },
+  dior: {
+    background: "#9a7148",
+    fog: "#9a7148",
+    ground: "#7f542d",
+    gridMajor: "#e0ba73",
+    gridMinor: "#9f7649",
+    colors: ["#171311", "#6f421e", "#b77832", "#d7aa64", "#3e2415"],
+  },
 };
 
 function useEditorEnvironment() {
@@ -73,7 +123,7 @@ function VoxelInstances({
   onRestore,
   onSelect,
   selected,
-  visualStyle,
+  theme,
 }: {
   building: VoxelBuilding;
   cells: VoxelCoordinate[];
@@ -84,13 +134,17 @@ function VoxelInstances({
   onRestore: VoxelEditorModelProps["onRestore"];
   onSelect: VoxelEditorModelProps["onSelect"];
   selected: boolean;
-  visualStyle: BuildingVisualStyle;
+  theme: SceneTheme;
 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const geometry = useMemo(
     () => new RoundedBoxGeometry(0.92, 0.92, 0.92, 2, 0.045),
     [],
   );
+  const themeSpec = THEME_SPECS[theme];
+  const color = theme === "original"
+    ? building.color
+    : themeSpec.colors[(building.index - 1) % themeSpec.colors.length];
 
   useLayoutEffect(() => {
     if (!mesh.current) return;
@@ -139,38 +193,31 @@ function VoxelInstances({
     >
       {ghost ? (
         <meshBasicMaterial
-          color={building.color}
+          color={color}
           depthWrite={false}
           opacity={0.18}
           transparent
           wireframe
         />
-      ) : visualStyle === "wireframe" ? (
-        <meshBasicMaterial
-          color={building.color}
-          opacity={selected ? 0.86 : 0.64}
-          transparent
-          wireframe
-        />
-      ) : visualStyle === "matte" ? (
+      ) : theme === "vangogh" ? (
         <meshStandardMaterial
-          color={building.color}
-          emissive={selected ? building.color : "#000000"}
+          color={color}
+          emissive={selected ? color : "#000000"}
           emissiveIntensity={selected ? 0.08 : 0}
-          metalness={0.02}
-          roughness={0.74}
+          metalness={0.08}
+          roughness={0.58}
         />
       ) : (
         <meshPhysicalMaterial
-          clearcoat={visualStyle === "crystal" ? 0.72 : 1}
-          clearcoatRoughness={visualStyle === "crystal" ? 0.04 : 0.16}
-          color={building.color}
-          emissive={selected ? building.color : "#000000"}
+          clearcoat={1}
+          clearcoatRoughness={theme === "iridescent" ? 0.035 : 0.12}
+          color={color}
+          emissive={selected ? color : "#000000"}
           emissiveIntensity={selected ? 0.09 : 0}
-          metalness={visualStyle === "crystal" ? 0.36 : 0.03}
-          opacity={visualStyle === "crystal" ? (selected ? 0.96 : 0.9) : (selected ? 0.82 : 0.62)}
-          roughness={visualStyle === "crystal" ? 0.06 : 0.16}
-          transparent
+          metalness={theme === "dior" ? 0.48 : theme === "iridescent" ? 0.3 : 0.04}
+          opacity={theme === "original" ? (selected ? 0.82 : 0.62) : theme === "iridescent" ? 0.84 : 1}
+          roughness={theme === "dior" ? 0.1 : theme === "iridescent" ? 0.055 : 0.2}
+          transparent={theme === "original" || theme === "iridescent"}
         />
       )}
     </instancedMesh>
@@ -187,11 +234,9 @@ function BuildingGroup(props: {
   onSelect: VoxelEditorModelProps["onSelect"];
   position: BuildingPosition;
   selected: boolean;
-  spinning: boolean;
-  visualStyle: BuildingVisualStyle;
+  theme: SceneTheme;
 }) {
-  const { building, deleted, mode, position, selected, spinning } = props;
-  const spinGroup = useRef<THREE.Group>(null);
+  const { building, deleted, mode, position, selected } = props;
   const activeCells = useMemo(
     () => building.cells.filter((cell) => !deleted.has(voxelKey(building.id, cell))),
     [building, deleted],
@@ -200,44 +245,23 @@ function BuildingGroup(props: {
     () => building.cells.filter((cell) => deleted.has(voxelKey(building.id, cell))),
     [building, deleted],
   );
-  const pivot = useMemo(() => {
-    const minX = Math.min(...building.cells.map((cell) => cell.x));
-    const maxX = Math.max(...building.cells.map((cell) => cell.x));
-    const minZ = Math.min(...building.cells.map((cell) => cell.z));
-    const maxZ = Math.max(...building.cells.map((cell) => cell.z));
-    return { x: (minX + maxX) / 2, z: (minZ + maxZ) / 2 };
-  }, [building]);
-
-  useFrame((_state, delta) => {
-    if (!spinGroup.current) return;
-    if (spinning) spinGroup.current.rotation.y += delta * 0.62;
-    else spinGroup.current.rotation.y = THREE.MathUtils.damp(
-      spinGroup.current.rotation.y,
-      0,
-      7,
-      delta,
-    );
-  });
-
   return (
     <group position={[position.x, position.y, position.z]}>
-      <group position={[pivot.x, 0, pivot.z]} ref={spinGroup}>
-        <group position={[-pivot.x, 0, -pivot.z]}>
-          <VoxelInstances {...props} cells={activeCells} />
-          {selected && mode === "restore" && removedCells.length > 0 ? (
-            <VoxelInstances {...props} cells={removedCells} ghost />
-          ) : null}
-        </group>
-      </group>
+      <VoxelInstances {...props} cells={activeCells} />
+      {selected && mode === "restore" && removedCells.length > 0 ? (
+        <VoxelInstances {...props} cells={removedCells} ghost />
+      ) : null}
     </group>
   );
 }
 
 function EditorCamera({
+  autoRotate,
   buildingId,
   focusSignal,
   positions,
 }: {
+  autoRotate: boolean;
   buildingId: string;
   focusSignal: number;
   positions: BuildingPositions;
@@ -263,6 +287,12 @@ function EditorCamera({
     controls.current = next;
     return () => next.dispose();
   }, [camera, gl]);
+
+  useEffect(() => {
+    if (!controls.current) return;
+    controls.current.autoRotate = autoRotate;
+    controls.current.autoRotateSpeed = 0.7;
+  }, [autoRotate]);
 
   useEffect(() => {
     if (!focusSignal || !controls.current) return;
@@ -295,20 +325,89 @@ function EditorCamera({
   return null;
 }
 
+const TREE_CROWN = [
+  { position: [-0.72, 1.92, 0.08] as const, scale: [0.78, 0.7, 0.72] as const },
+  { position: [-0.35, 2.38, -0.15] as const, scale: [0.86, 0.78, 0.8] as const },
+  { position: [0.18, 2.48, 0.08] as const, scale: [0.92, 0.84, 0.86] as const },
+  { position: [0.7, 2.12, -0.02] as const, scale: [0.76, 0.72, 0.72] as const },
+  { position: [-0.15, 1.96, 0.44] as const, scale: [0.92, 0.76, 0.78] as const },
+  { position: [0.42, 1.82, 0.46] as const, scale: [0.72, 0.66, 0.68] as const },
+  { position: [-0.62, 2.0, -0.48] as const, scale: [0.66, 0.62, 0.65] as const },
+  { position: [0.48, 2.42, -0.45] as const, scale: [0.72, 0.68, 0.7] as const },
+  { position: [0.02, 2.78, -0.12] as const, scale: [0.68, 0.62, 0.66] as const },
+];
+
+function OrangeTree({ position }: { position: BuildingPosition }) {
+  return (
+    <group position={[position.x + 1.5, position.y + 2.02, position.z + 1.5]} scale={0.78}>
+      <mesh castShadow position={[0, 0.82, 0]}>
+        <cylinderGeometry args={[0.17, 0.3, 1.65, 20]} />
+        <meshStandardMaterial color="#8b431f" roughness={0.58} />
+      </mesh>
+      <mesh castShadow position={[-0.25, 1.38, 0]} rotation={[0, 0, -0.52]}>
+        <cylinderGeometry args={[0.09, 0.14, 0.95, 14]} />
+        <meshStandardMaterial color="#8b431f" roughness={0.58} />
+      </mesh>
+      <mesh castShadow position={[0.28, 1.35, 0.04]} rotation={[0.08, 0, 0.56]}>
+        <cylinderGeometry args={[0.08, 0.13, 0.88, 14]} />
+        <meshStandardMaterial color="#8b431f" roughness={0.58} />
+      </mesh>
+      {TREE_CROWN.map((blob, index) => (
+        <mesh castShadow key={index} position={blob.position} scale={blob.scale}>
+          <sphereGeometry args={[0.72, 28, 22]} />
+          <meshPhysicalMaterial
+            clearcoat={0.22}
+            color={index % 3 === 0 ? "#ffad1f" : index % 3 === 1 ? "#f89a17" : "#ffb52b"}
+            roughness={0.5}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function BuildingElevenDecor({
+  position,
+  theme,
+}: {
+  position: BuildingPosition;
+  theme: SceneTheme;
+}) {
+  const themeSpec = THEME_SPECS[theme];
+  const accentColor = theme === "original" ? undefined : themeSpec.colors[2 % themeSpec.colors.length];
+  const edgeColor = theme === "original" ? undefined : themeSpec.colors[3 % themeSpec.colors.length];
+  return (
+    <>
+      <OrangeTree position={position} />
+      <group position={[position.x + 1.5, position.y + 0.82, position.z + 1.18]}>
+        <TaikooPortal accentColor={accentColor} cameraPreset="far" edgeColor={edgeColor} />
+      </group>
+    </>
+  );
+}
+
 function Scene(props: VoxelEditorModelProps) {
   useEditorEnvironment();
+  const themeSpec = THEME_SPECS[props.theme];
   const hoveredBuilding = props.hovered
     ? VOXEL_BUILDINGS.find((building) => building.id === props.hovered?.buildingId)
     : null;
+  const buildingEleven = VOXEL_BUILDINGS.find((building) => building.id === "building-11");
+  const buildingElevenPosition = props.positions["building-11"] ?? {
+    x: buildingEleven?.origin[0] ?? -3,
+    y: 0,
+    z: buildingEleven?.origin[1] ?? 1,
+  };
 
   return (
     <>
-      <color attach="background" args={["#e8ebea"]} />
-      <fog attach="fog" args={["#e8ebea", 42, 78]} />
+      <color attach="background" args={[themeSpec.background]} />
+      <fog attach="fog" args={[themeSpec.fog, 42, 78]} />
       <ambientLight intensity={1.1} />
       <directionalLight castShadow intensity={2.2} position={[10, 24, 14]} shadow-mapSize={[2048, 2048]} />
       <directionalLight color="#b7cdfd" intensity={0.75} position={[-14, 10, -8]} />
       <EditorCamera
+        autoRotate={props.autoRotate}
         buildingId={props.focusBuildingId}
         focusSignal={props.focusSignal}
         positions={props.positions}
@@ -333,13 +432,16 @@ function Scene(props: VoxelEditorModelProps) {
               z: building.origin[1],
             }}
             selected={selected}
-            spinning={props.spinning.has(building.id)}
-            visualStyle={props.styles[building.id] ?? "glass"}
+            theme={props.theme}
           />
         );
       })}
 
-      {props.hovered && hoveredBuilding && !props.spinning.has(hoveredBuilding.id) ? (
+      {(!props.isolate || props.selectedBuildingId === "building-11") ? (
+        <BuildingElevenDecor position={buildingElevenPosition} theme={props.theme} />
+      ) : null}
+
+      {props.hovered && hoveredBuilding ? (
         <mesh
           position={[
             (props.positions[hoveredBuilding.id]?.x ?? hoveredBuilding.origin[0]) + props.hovered.cell.x,
@@ -352,10 +454,10 @@ function Scene(props: VoxelEditorModelProps) {
         </mesh>
       ) : null}
 
-      <gridHelper args={[44, 44, "#9ca2a1", "#c8cdcc"]} position={[0, 0.01, 0]} />
+      <gridHelper args={[44, 44, themeSpec.gridMajor, themeSpec.gridMinor]} position={[0, 0.01, 0]} />
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
         <planeGeometry args={[54, 54]} />
-        <meshStandardMaterial color="#e6e8e7" roughness={0.82} />
+        <meshStandardMaterial color={themeSpec.ground} metalness={props.theme === "dior" ? 0.22 : 0} roughness={0.82} />
       </mesh>
     </>
   );

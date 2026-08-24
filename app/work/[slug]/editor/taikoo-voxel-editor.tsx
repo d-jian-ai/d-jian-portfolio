@@ -20,15 +20,21 @@ import {
   Undo2,
   Upload,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type WheelEvent as ReactWheelEvent,
+} from "react";
 import { useLanguage } from "@/providers/language-provider";
 import type {
   BuildingPosition,
   BuildingPositions,
-  BuildingVisualStyle,
-  BuildingVisualStyles,
   EditorMode,
   HoveredVoxel,
+  SceneTheme,
 } from "./voxel-editor-model";
 import {
   VALID_VOXEL_KEYS,
@@ -60,18 +66,17 @@ type PresetId = "reference" | "solid";
 type LayoutState = {
   deleted: Set<string>;
   positions: BuildingPositions;
-  spinning: Set<string>;
-  styles: BuildingVisualStyles;
+  theme: SceneTheme;
 };
 
 type PresetLayouts = Record<PresetId, LayoutState>;
-const VISUAL_STYLES: BuildingVisualStyle[] = [
-  "glass",
-  "crystal",
-  "matte",
-  "wireframe",
+const SCENE_THEMES: SceneTheme[] = [
+  "original",
+  "mondrian",
+  "iridescent",
+  "vangogh",
+  "dior",
 ];
-const BUILDING_IDS = new Set(VOXEL_BUILDINGS.map((building) => building.id));
 
 function createDefaultPositions(): BuildingPositions {
   return Object.fromEntries(
@@ -82,12 +87,6 @@ function createDefaultPositions(): BuildingPositions {
   );
 }
 
-function createDefaultStyles(): BuildingVisualStyles {
-  return Object.fromEntries(
-    VOXEL_BUILDINGS.map((building) => [building.id, "glass"]),
-  );
-}
-
 function createCanonicalLayout(preset: PresetId): LayoutState {
   const defaultPositions = createDefaultPositions();
   return {
@@ -95,8 +94,7 @@ function createCanonicalLayout(preset: PresetId): LayoutState {
     positions: preset === "reference"
       ? parsePositions(defaultVoxelLayout.positions, defaultPositions)
       : defaultPositions,
-    spinning: new Set(),
-    styles: createDefaultStyles(),
+    theme: "original",
   };
 }
 
@@ -117,8 +115,7 @@ function cloneLayout(value: LayoutState): LayoutState {
   return {
     deleted: new Set(value.deleted),
     positions: clonePositions(value.positions),
-    spinning: new Set(value.spinning),
-    styles: { ...value.styles },
+    theme: value.theme,
   };
 }
 
@@ -157,31 +154,10 @@ function parsePositions(value: unknown, fallback: BuildingPositions) {
   return positions;
 }
 
-function parseSpinning(value: unknown, fallback: Set<string>) {
-  if (!Array.isArray(value)) return new Set(fallback);
-  return new Set(
-    value.filter(
-      (id): id is string => typeof id === "string" && BUILDING_IDS.has(id),
-    ),
-  );
-}
-
-function parseStyles(value: unknown, fallback: BuildingVisualStyles) {
-  const styles = { ...fallback };
-  if (!Array.isArray(value)) return styles;
-  value.forEach((entry) => {
-    if (!entry || typeof entry !== "object") return;
-    const item = entry as Record<string, unknown>;
-    if (
-      typeof item.id === "string" &&
-      item.id in styles &&
-      typeof item.style === "string" &&
-      VISUAL_STYLES.includes(item.style as BuildingVisualStyle)
-    ) {
-      styles[item.id] = item.style as BuildingVisualStyle;
-    }
-  });
-  return styles;
+function parseTheme(value: unknown, fallback: SceneTheme) {
+  return typeof value === "string" && SCENE_THEMES.includes(value as SceneTheme)
+    ? value as SceneTheme
+    : fallback;
 }
 
 function serializeLayout(layout: LayoutState) {
@@ -191,11 +167,7 @@ function serializeLayout(layout: LayoutState) {
       id: building.id,
       ...layout.positions[building.id],
     })),
-    spinning: [...layout.spinning].sort(),
-    styles: VOXEL_BUILDINGS.map((building) => ({
-      id: building.id,
-      style: layout.styles[building.id],
-    })),
+    theme: layout.theme,
   };
 }
 
@@ -207,9 +179,17 @@ function parseLayout(value: unknown, fallback: LayoutState): LayoutState {
       ? parseDeleted(item.deleted)
       : new Set(fallback.deleted),
     positions: parsePositions(item.positions, fallback.positions),
-    spinning: parseSpinning(item.spinning, fallback.spinning),
-    styles: parseStyles(item.styles, fallback.styles),
+    theme: parseTheme(item.theme, fallback.theme),
   };
+}
+
+function scrollPanel(event: ReactWheelEvent<HTMLElement>) {
+  const nested = event.currentTarget.querySelector<HTMLElement>("[data-panel-scroll]");
+  const target = nested ?? event.currentTarget;
+  if (target.scrollHeight <= target.clientHeight) return;
+  target.scrollTop += event.deltaY;
+  event.preventDefault();
+  event.stopPropagation();
 }
 
 const copy = {
@@ -236,14 +216,15 @@ const copy = {
     moveHelp: "点击建筑进行选择，再用坐标按钮将整栋建筑移动一格。",
     position: "整体位置",
     moveBuilding: "移动当前建筑 / 每次一格",
-    special: "建筑表现",
-    spinStart: "开始自旋",
-    spinStop: "停止自旋",
-    changeStyle: "更换样式",
-    styleGlass: "透明玻璃",
-    styleCrystal: "镜面晶体",
-    styleMatte: "雾面实体",
-    styleWireframe: "结构线框",
+    special: "场景预览",
+    spinStart: "开始全景旋转",
+    spinStop: "停止全景旋转",
+    changeStyle: "切换整体风格",
+    styleOriginal: "原始彩色玻璃",
+    styleMondrian: "蒙德里安色调",
+    styleIridescent: "虹彩珠宝色调",
+    styleVangogh: "深蓝绘画色调",
+    styleDior: "Dior 金棕色调",
     hideBuildings: "隐藏建筑列表",
     showBuildings: "显示建筑列表",
     hideTools: "隐藏编辑工具",
@@ -288,14 +269,15 @@ const copy = {
     moveHelp: "Select a building, then move the whole group one grid unit at a time.",
     position: "Group position",
     moveBuilding: "Move selected / one grid unit",
-    special: "Presentation",
-    spinStart: "Start spin",
-    spinStop: "Stop spin",
-    changeStyle: "Change style",
-    styleGlass: "Transparent glass",
-    styleCrystal: "Mirror crystal",
-    styleMatte: "Matte solid",
-    styleWireframe: "Structural wireframe",
+    special: "Scene preview",
+    spinStart: "Start scene rotation",
+    spinStop: "Stop scene rotation",
+    changeStyle: "Change scene style",
+    styleOriginal: "Original colored glass",
+    styleMondrian: "Mondrian palette",
+    styleIridescent: "Iridescent jewel palette",
+    styleVangogh: "Deep blue painted palette",
+    styleDior: "Dior gold-brown palette",
     hideBuildings: "Hide building list",
     showBuildings: "Show building list",
     hideTools: "Hide editing tools",
@@ -340,14 +322,15 @@ const copy = {
     moveHelp: "Sélectionner un bâtiment, puis déplacer le groupe d'une unité à la fois.",
     position: "Position du groupe",
     moveBuilding: "Déplacer l'actif / une unité",
-    special: "Présentation",
-    spinStart: "Lancer la rotation",
-    spinStop: "Arrêter la rotation",
-    changeStyle: "Changer le style",
-    styleGlass: "Verre transparent",
-    styleCrystal: "Cristal miroir",
-    styleMatte: "Volume mat",
-    styleWireframe: "Structure filaire",
+    special: "Aperçu de la scène",
+    spinStart: "Lancer la rotation globale",
+    spinStop: "Arrêter la rotation globale",
+    changeStyle: "Changer le style global",
+    styleOriginal: "Verre coloré d'origine",
+    styleMondrian: "Palette Mondrian",
+    styleIridescent: "Palette bijou irisée",
+    styleVangogh: "Palette picturale bleu nuit",
+    styleDior: "Palette Dior or-brun",
     hideBuildings: "Masquer la liste",
     showBuildings: "Afficher la liste",
     hideTools: "Masquer les outils",
@@ -384,12 +367,13 @@ export function TaikooVoxelEditor() {
   const [isolate, setIsolate] = useState(false);
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [rightCollapsed, setRightCollapsed] = useState(false);
+  const [sceneAutoRotate, setSceneAutoRotate] = useState(false);
   const [hovered, setHovered] = useState<HoveredVoxel>(null);
   const [message, setMessage] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const currentLayout = layouts[activePreset];
-  const { deleted, positions, spinning, styles: buildingStyles } = currentLayout;
+  const { deleted, positions, theme } = currentLayout;
 
   const selectedBuilding = VOXEL_BUILDINGS.find(
     (building) => building.id === selectedBuildingId,
@@ -489,7 +473,7 @@ export function TaikooVoxelEditor() {
     if (deleted.has(key)) return;
     const nextDeleted = new Set(deleted);
     nextDeleted.add(key);
-    commit({ deleted: nextDeleted, positions, spinning, styles: buildingStyles });
+    commit({ deleted: nextDeleted, positions, theme });
   }
 
   function restoreVoxel(buildingId: string, cell: VoxelCoordinate) {
@@ -497,7 +481,7 @@ export function TaikooVoxelEditor() {
     if (!deleted.has(key)) return;
     const nextDeleted = new Set(deleted);
     nextDeleted.delete(key);
-    commit({ deleted: nextDeleted, positions, spinning, styles: buildingStyles });
+    commit({ deleted: nextDeleted, positions, theme });
   }
 
   function resetSelected() {
@@ -515,13 +499,7 @@ export function TaikooVoxelEditor() {
         ...clonePositions(positions),
         [selectedBuildingId]: { ...baseline.positions[selectedBuildingId] },
       },
-      spinning: new Set(
-        [...spinning].filter((buildingId) => buildingId !== selectedBuildingId),
-      ),
-      styles: {
-        ...buildingStyles,
-        [selectedBuildingId]: baseline.styles[selectedBuildingId],
-      },
+      theme,
     });
     setMessage(text.resetDone);
   }
@@ -553,36 +531,26 @@ export function TaikooVoxelEditor() {
           [axis]: current[axis] + amount,
         },
       },
-      spinning,
-      styles: buildingStyles,
+      theme,
     });
     setMode("move");
     setHovered(null);
   }
 
   function toggleSpin() {
-    const nextSpinning = new Set(spinning);
-    if (nextSpinning.has(selectedBuildingId)) nextSpinning.delete(selectedBuildingId);
-    else nextSpinning.add(selectedBuildingId);
-    commit({
-      deleted: new Set(deleted),
-      positions,
-      spinning: nextSpinning,
-      styles: buildingStyles,
-    });
+    setSceneAutoRotate((value) => !value);
     setMode("inspect");
     setHovered(null);
   }
 
   function cycleStyle() {
-    const currentStyle = buildingStyles[selectedBuildingId] ?? "glass";
-    const currentIndex = VISUAL_STYLES.indexOf(currentStyle);
-    const nextStyle = VISUAL_STYLES[(currentIndex + 1) % VISUAL_STYLES.length];
+    if (activePreset !== "reference") return;
+    const currentIndex = SCENE_THEMES.indexOf(theme);
+    const nextTheme = SCENE_THEMES[(currentIndex + 1) % SCENE_THEMES.length];
     commit({
       deleted: new Set(deleted),
       positions,
-      spinning,
-      styles: { ...buildingStyles, [selectedBuildingId]: nextStyle },
+      theme: nextTheme,
     });
   }
 
@@ -629,8 +597,7 @@ export function TaikooVoxelEditor() {
         const reference = {
           deleted: parseDeleted(payload.deleted),
           positions: parsePositions(payload.positions, canonical.reference.positions),
-          spinning: parseSpinning(payload.spinning, canonical.reference.spinning),
-          styles: parseStyles(payload.styles, canonical.reference.styles),
+          theme: parseTheme(payload.theme, canonical.reference.theme),
         };
         setLayouts({ reference, solid: canonical.solid });
       }
@@ -658,13 +625,13 @@ export function TaikooVoxelEditor() {
     y: 0,
     z: selectedBuilding.origin[1],
   };
-  const selectedStyle = buildingStyles[selectedBuilding.id] ?? "glass";
   const selectedStyleLabel = {
-    glass: text.styleGlass,
-    crystal: text.styleCrystal,
-    matte: text.styleMatte,
-    wireframe: text.styleWireframe,
-  }[selectedStyle];
+    original: text.styleOriginal,
+    mondrian: text.styleMondrian,
+    iridescent: text.styleIridescent,
+    vangogh: text.styleVangogh,
+    dior: text.styleDior,
+  }[theme];
 
   return (
     <main className={styles.page} data-voxel-editor-page>
@@ -696,6 +663,7 @@ export function TaikooVoxelEditor() {
           type="button"
         >
           {leftCollapsed ? <ChevronRight aria-hidden="true" size={15} /> : <ChevronLeft aria-hidden="true" size={15} />}
+          <span>{leftCollapsed ? text.showBuildings : text.hideBuildings}</span>
         </button>
         <button
           aria-expanded={!rightCollapsed}
@@ -705,14 +673,19 @@ export function TaikooVoxelEditor() {
           type="button"
         >
           {rightCollapsed ? <ChevronLeft aria-hidden="true" size={15} /> : <ChevronRight aria-hidden="true" size={15} />}
+          <span>{rightCollapsed ? text.showTools : text.hideTools}</span>
         </button>
 
-        <aside className={styles.buildingPanel} data-collapsed={leftCollapsed}>
+        <aside
+          className={styles.buildingPanel}
+          data-collapsed={leftCollapsed}
+          onWheel={scrollPanel}
+        >
           <div className={styles.panelHeading}>
             <span>{text.buildings}</span>
             <strong>{VOXEL_BUILDINGS.length}</strong>
           </div>
-          <div className={styles.buildingList}>
+          <div className={styles.buildingList} data-panel-scroll>
             {VOXEL_BUILDINGS.map((building) => {
               const removed = removedByBuilding.get(building.id) ?? 0;
               return (
@@ -736,6 +709,7 @@ export function TaikooVoxelEditor() {
 
         <section className={styles.stage} data-mode={mode} data-testid="voxel-editor-stage">
           <VoxelEditorModel
+            autoRotate={sceneAutoRotate}
             deleted={deleted}
             focusBuildingId={selectedBuildingId}
             focusSignal={focusSignal}
@@ -748,8 +722,7 @@ export function TaikooVoxelEditor() {
             onSelect={setSelectedBuildingId}
             positions={positions}
             selectedBuildingId={selectedBuildingId}
-            spinning={spinning}
-            styles={buildingStyles}
+            theme={activePreset === "reference" ? theme : "original"}
           />
           <div className={styles.stageLabel}>
             <span>BUILDING {String(selectedBuilding.index).padStart(2, "0")}</span>
@@ -767,7 +740,11 @@ export function TaikooVoxelEditor() {
           </div>
         </section>
 
-        <aside className={styles.toolPanel} data-collapsed={rightCollapsed}>
+        <aside
+          className={styles.toolPanel}
+          data-collapsed={rightCollapsed}
+          onWheel={scrollPanel}
+        >
           <section className={styles.presetSection}>
             <span className={styles.toolLabel}>{text.preset}</span>
             <div className={styles.presetSwitch}>
@@ -831,15 +808,17 @@ export function TaikooVoxelEditor() {
 
           <section className={styles.toolSection}>
             <span className={styles.toolLabel}>{text.special}</span>
-            <div className={styles.specialActions}>
-              <button data-active={spinning.has(selectedBuildingId)} onClick={toggleSpin} type="button">
+            <div className={styles.specialActions} data-single={activePreset !== "reference"}>
+              <button data-active={sceneAutoRotate} onClick={toggleSpin} type="button">
                 <RefreshCw aria-hidden="true" size={15} />
-                {spinning.has(selectedBuildingId) ? text.spinStop : text.spinStart}
+                {sceneAutoRotate ? text.spinStop : text.spinStart}
               </button>
-              <button onClick={cycleStyle} type="button">
-                <Palette aria-hidden="true" size={15} />
-                <span>{text.changeStyle}<small>{selectedStyleLabel}</small></span>
-              </button>
+              {activePreset === "reference" ? (
+                <button onClick={cycleStyle} type="button">
+                  <Palette aria-hidden="true" size={15} />
+                  <span>{text.changeStyle}<small>{selectedStyleLabel}</small></span>
+                </button>
+              ) : null}
             </div>
           </section>
 

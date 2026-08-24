@@ -307,7 +307,15 @@ function AnnulusBody() {
   );
 }
 
-function Portal({ cameraPreset }: { cameraPreset: CameraPreset }) {
+export function TaikooPortal({
+  accentColor,
+  cameraPreset,
+  edgeColor,
+}: {
+  accentColor?: string;
+  cameraPreset: CameraPreset;
+  edgeColor?: string;
+}) {
   const group = useRef<THREE.Group>(null);
   const ringTexture = useCircularTextTexture();
   const portalY = cameraPreset === "near" ? 4.88 : 5.05;
@@ -339,13 +347,13 @@ function Portal({ cameraPreset }: { cameraPreset: CameraPreset }) {
         </mesh>
         <mesh position={[0, 0.08, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[1.78, 0.06, 16, 128]} />
-          <meshPhysicalMaterial color="#d7fbff" clearcoat={1} opacity={0.72} roughness={0.12} transparent />
+          <meshPhysicalMaterial color={edgeColor ?? "#d7fbff"} clearcoat={1} opacity={0.72} roughness={0.12} transparent />
         </mesh>
       </group>
       <mesh castShadow scale={[1.18, 0.84, 0.96]}>
         <sphereGeometry args={[1, 64, 48]} />
         <meshPhysicalMaterial
-          color="#9b7fbd"
+          color={accentColor ?? "#9b7fbd"}
           clearcoat={1}
           envMapIntensity={2.2}
           opacity={0.5}
@@ -358,7 +366,7 @@ function Portal({ cameraPreset }: { cameraPreset: CameraPreset }) {
       <mesh position={[0, -0.74, 0.02]} scale={[0.66, 0.56, 0.62]}>
         <sphereGeometry args={[1, 56, 40]} />
         <meshPhysicalMaterial
-          color="#8f73b4"
+          color={accentColor ?? "#8f73b4"}
           clearcoat={1}
           envMapIntensity={2.1}
           opacity={0.46}
@@ -370,7 +378,7 @@ function Portal({ cameraPreset }: { cameraPreset: CameraPreset }) {
       </mesh>
       <mesh position={[0, 0.62, 0]} scale={[0.94, 0.4, 0.78]}>
         <sphereGeometry args={[1, 56, 40]} />
-        <meshPhysicalMaterial color="#a98bc6" opacity={0.4} roughness={0.1} transparent transmission={0.5} />
+        <meshPhysicalMaterial color={accentColor ?? "#a98bc6"} opacity={0.4} roughness={0.1} transparent transmission={0.5} />
       </mesh>
       <group position={[-0.08, 0.05, 0.84]} rotation={[0.02, 0, 0]} scale={0.52}>
         <TriangleFrame x={-0.38} />
@@ -606,7 +614,7 @@ function CityScene(props: TaikooLiModelProps) {
             scale={props.cameraPreset === "near" ? (sign.scale ?? 1) * 0.78 : sign.scale}
           />
         ))}
-        <Portal cameraPreset={props.cameraPreset} />
+        <TaikooPortal cameraPreset={props.cameraPreset} />
         <ChromeSculpture cameraPreset={props.cameraPreset} />
       </group>
 

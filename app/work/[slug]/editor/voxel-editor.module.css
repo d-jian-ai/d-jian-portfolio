@@ -96,12 +96,16 @@
   color: var(--editor-black);
   cursor: pointer;
   display: flex;
+  font-size: 0.54rem;
+  gap: 5px;
   height: 32px;
   justify-content: center;
   position: absolute;
   top: 12px;
   transition: left 220ms ease, right 220ms ease, background 150ms ease;
-  width: 28px;
+  padding: 0 9px;
+  white-space: nowrap;
+  width: auto;
   z-index: 6;
 }
 
@@ -245,7 +249,7 @@
   left: 24px;
   pointer-events: none;
   position: absolute;
-  top: 22px;
+  top: 56px;
 }
 
 .stageLabel strong {
@@ -462,6 +466,10 @@
   gap: 7px;
   grid-template-columns: 1fr 1fr;
   margin-top: 10px;
+}
+
+.specialActions[data-single="true"] {
+  grid-template-columns: 1fr;
 }
 
 .specialActions button {
