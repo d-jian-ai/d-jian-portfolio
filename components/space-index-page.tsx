@@ -21,21 +21,21 @@ const VOXEL_EXPERIMENT_COPY = {
     title: "数字街区",
     summary: "十二组经过镂空与错位处理的圆角体素建筑，组成一个可以旋转、查看并继续搭建的数字街区原型。",
     status: "可交互原型",
-    previewLabel: "数字街区立方体预览，点击使立方体阻尼落面，再次点击重新立起",
+    previewLabel: "数字街区立方体预览，点击使立方体沿惯性自然滑停，再次点击从当前位置继续旋转",
   },
   en: {
     category: "Voxel space / Web interaction",
     title: "Taikoo Li Digital District",
     summary: "Twelve rounded voxel buildings, carved and offset into an explorable digital district that can still be inspected and extended.",
     status: "Interactive prototype",
-    previewLabel: "Digital District cube preview. Click to settle it on a face, then click again to raise it.",
+    previewLabel: "Digital District cube preview. Click to let it coast to a stop, then click again to continue from the same orientation.",
   },
   fr: {
     category: "Espace voxel / Interaction web",
     title: "Quartier numérique Taikoo Li",
     summary: "Douze bâtiments en voxels arrondis, évidés et décalés, composent un quartier numérique à observer, faire tourner et prolonger.",
     status: "Prototype interactif",
-    previewLabel: "Aperçu du cube Quartier numérique. Cliquer pour le poser sur une face, puis cliquer à nouveau pour le relever.",
+    previewLabel: "Aperçu du cube Quartier numérique. Cliquer pour le laisser ralentir naturellement, puis cliquer à nouveau pour reprendre depuis la même orientation.",
   },
 } as const;
 
@@ -99,7 +99,7 @@ export function SpaceIndexPage() {
         <article className="space-experiment-item" key="taikoo-li-voxel-district">
           <div
             className="space-experiment-preview space-voxel-preview"
-            style={{ background: "#020403" }}
+            style={{ background: "#d9e3e1" }}
           >
             <VoxelDistrictCubePreview label={voxelCopy.previewLabel} />
             <span className="space-preview-code">03</span>
@@ -143,7 +143,7 @@ function ExperimentPreview({ kind }: { kind: SpacePreviewKind }) {
 }
 
 function VoxelDistrictCubePreview({ label }: { label: string }) {
-  const [resting, setResting] = useState(false);
+  const [stopped, setStopped] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -159,16 +159,16 @@ function VoxelDistrictCubePreview({ label }: { label: string }) {
   return (
     <button
       aria-label={label}
-      aria-pressed={resting}
+      aria-pressed={stopped}
       className="voxel-cube-stage"
-      data-resting={resting}
-      onClick={() => setResting((value) => !value)}
-      style={{ background: "#020403" }}
+      data-stopped={stopped}
+      onClick={() => setStopped((value) => !value)}
+      style={{ background: "#d9e3e1", color: "rgba(27, 47, 52, 0.62)" }}
       type="button"
     >
       <Canvas
         aria-hidden="true"
-        camera={{ far: 30, fov: 35, near: 0.1, position: [0, 1.25, 6.05] }}
+        camera={{ far: 30, fov: 34, near: 0.1, position: [0, 2.25, 5.7] }}
         dpr={[1, 1.6]}
         gl={{
           alpha: false,
@@ -176,47 +176,62 @@ function VoxelDistrictCubePreview({ label }: { label: string }) {
           powerPreference: "high-performance",
           preserveDrawingBuffer: true,
         }}
-        shadows
+        shadows="variance"
         style={{ inset: 0, pointerEvents: "none", position: "absolute" }}
       >
-        <color args={["#020403"]} attach="background" />
+        <color args={["#d9e3e1"]} attach="background" />
         <GlassEnvironment />
-        <ambientLight intensity={0.08} />
-        <hemisphereLight args={["#b9ddd5", "#020705", 0.28]} />
+        <ambientLight intensity={0.42} />
+        <hemisphereLight args={["#fff9e8", "#4d86ff", 1.15]} />
         <directionalLight
-          color="#e1f5ef"
-          intensity={1.25}
-          position={[4.2, 5.2, 5.6]}
-        />
-        <directionalLight
-          color="#64c6a6"
-          intensity={0.55}
-          position={[-4.2, 1.6, 3.4]}
+          castShadow
+          color="#fffbed"
+          intensity={2.25}
+          position={[-2.8, 6.4, 4.4]}
+          shadow-bias={-0.0004}
+          shadow-blurSamples={18}
+          shadow-mapSize-height={1024}
+          shadow-mapSize-width={1024}
+          shadow-radius={12}
         />
         <rectAreaLight
-          color="#75b9a8"
-          height={4.2}
-          intensity={3}
-          position={[-3.8, 1.4, 3.4]}
-          rotation={[0, THREE.MathUtils.degToRad(-48), 0]}
-          width={2.2}
+          color="#fff8dc"
+          height={2.2}
+          intensity={4.8}
+          position={[-1.8, 4.6, 3.1]}
+          rotation={[THREE.MathUtils.degToRad(-48), 0, 0]}
+          width={5.4}
         />
         <rectAreaLight
-          color="#d6e7e5"
-          height={1.6}
-          intensity={2}
-          position={[1.4, 4.2, 2.8]}
-          rotation={[THREE.MathUtils.degToRad(-52), 0, 0]}
-          width={5}
+          color="#a5f4ff"
+          height={3.8}
+          intensity={3.2}
+          position={[-3.6, 0.2, 2.6]}
+          rotation={[0, THREE.MathUtils.degToRad(-54), 0]}
+          width={1.8}
         />
-        <GlassDistrictCube reducedMotion={reducedMotion} resting={resting} />
-        <mesh position={[0, -1.15, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
+        <pointLight
+          color="#3974ff"
+          decay={1.25}
+          distance={4.5}
+          intensity={9}
+          position={[0.45, -0.92, 1.75]}
+        />
+        <pointLight
+          color="#67e7ef"
+          decay={1.4}
+          distance={4.5}
+          intensity={3.5}
+          position={[-2.4, -0.45, 2.1]}
+        />
+        <GlassDistrictCube reducedMotion={reducedMotion} stopped={stopped} />
+        <mesh position={[0, -1.05, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[14, 14]} />
-          <shadowMaterial color="#000000" opacity={0.2} transparent />
+          <shadowMaterial color="#668988" opacity={0.2} transparent />
         </mesh>
       </Canvas>
       <span className="voxel-cube-hint">
-        {resting ? "CLICK / RISE" : "CLICK / SETTLE"}
+        {stopped ? "CLICK / CONTINUE" : "CLICK / COAST"}
       </span>
     </button>
   );
@@ -234,7 +249,7 @@ function GlassEnvironment() {
     const previousIntensity = scene.environmentIntensity;
 
     scene.environment = environmentMap;
-    scene.environmentIntensity = 0.45;
+    scene.environmentIntensity = 0.68;
 
     return () => {
       scene.environment = previousEnvironment;
@@ -250,233 +265,112 @@ function GlassEnvironment() {
 
 function GlassDistrictCube({
   reducedMotion,
-  resting,
+  stopped,
 }: {
   reducedMotion: boolean;
-  resting: boolean;
+  stopped: boolean;
 }) {
-  const lift = useRef<THREE.Group>(null);
-  const spin = useRef<THREE.Group>(null);
-  const tilt = useRef<THREE.Group>(null);
+  const cube = useRef<THREE.Mesh>(null);
   const physics = useRef({
-    progress: 0,
-    progressVelocity: 0,
-    targetYaw: THREE.MathUtils.degToRad(-28),
-    tiltX: THREE.MathUtils.degToRad(-13),
-    tiltVelocityX: 0,
-    tiltZ: THREE.MathUtils.degToRad(-7),
-    tiltVelocityZ: 0,
     yaw: THREE.MathUtils.degToRad(28),
-    yawVelocity: THREE.MathUtils.degToRad(22.5),
+    yawVelocity: THREE.MathUtils.degToRad(-26),
   });
-  const bodyGeometry = useMemo(
-    () => new RoundedBoxGeometry(1.62, 1.62, 1.62, 6, 0.075),
-    [],
-  );
-  const rimGeometry = useMemo(
-    () => new RoundedBoxGeometry(1.28, 1.28, 0.07, 5, 0.052),
-    [],
-  );
-  const panelGeometry = useMemo(
-    () => new RoundedBoxGeometry(1.12, 1.12, 0.055, 5, 0.045),
-    [],
-  );
+  const bodyGeometry = useMemo(() => {
+    const geometry = new RoundedBoxGeometry(1.52, 1.52, 1.52, 8, 0.13);
+    const positions = geometry.getAttribute("position");
+    const colors = new Float32Array(positions.count * 3);
+    const bottomColor = new THREE.Color("#5372ff");
+    const middleColor = new THREE.Color("#8adce3");
+    const topColor = new THREE.Color("#fff8e8");
+    const vertexColor = new THREE.Color();
 
-  useEffect(() => {
-    if (!resting) return;
-    const state = physics.current;
-    const displayOffset = THREE.MathUtils.degToRad(-28);
-    const fullTurn = Math.PI * 2;
-    state.targetYaw =
-      Math.round((state.yaw - displayOffset) / fullTurn) * fullTurn + displayOffset;
-  }, [resting]);
+    for (let index = 0; index < positions.count; index += 1) {
+      const normalizedY = THREE.MathUtils.clamp(
+        (positions.getY(index) + 0.76) / 1.52,
+        0,
+        1,
+      );
+
+      if (normalizedY < 0.52) {
+        vertexColor.copy(bottomColor).lerp(middleColor, normalizedY / 0.52);
+      } else {
+        vertexColor
+          .copy(middleColor)
+          .lerp(topColor, (normalizedY - 0.52) / 0.48);
+      }
+
+      colors[index * 3] = vertexColor.r;
+      colors[index * 3 + 1] = vertexColor.g;
+      colors[index * 3 + 2] = vertexColor.b;
+    }
+
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    return geometry;
+  }, []);
 
   useEffect(
     () => () => {
       bodyGeometry.dispose();
-      panelGeometry.dispose();
-      rimGeometry.dispose();
     },
-    [bodyGeometry, panelGeometry, rimGeometry],
+    [bodyGeometry],
   );
 
-  useFrame((frameState, frameDelta) => {
-    const liftGroup = lift.current;
-    const spinGroup = spin.current;
-    const tiltGroup = tilt.current;
-    if (!liftGroup || !spinGroup || !tiltGroup) return;
+  useFrame((_frameState, frameDelta) => {
+    const cubeMesh = cube.current;
+    if (!cubeMesh) return;
 
     const delta = Math.min(1 / 30, frameDelta);
     const state = physics.current;
-    const targetProgress = resting ? 1 : 0;
-    const targetTiltX = resting ? 0 : THREE.MathUtils.degToRad(-13);
-    const targetTiltZ = resting ? 0 : THREE.MathUtils.degToRad(-7);
 
     if (reducedMotion) {
-      state.progress = targetProgress;
-      state.progressVelocity = 0;
-      state.tiltX = targetTiltX;
-      state.tiltVelocityX = 0;
-      state.tiltZ = targetTiltZ;
-      state.tiltVelocityZ = 0;
-      if (resting) {
-        state.yaw = state.targetYaw;
-        state.yawVelocity = 0;
-      }
-    } else {
-      [state.progress, state.progressVelocity] = stepDampedSpring(
-        state.progress,
-        state.progressVelocity,
-        targetProgress,
-        55,
-        10.5,
-        delta,
-      );
-      [state.tiltX, state.tiltVelocityX] = stepDampedSpring(
-        state.tiltX,
-        state.tiltVelocityX,
-        targetTiltX,
-        48,
-        10.5,
-        delta,
-      );
-      [state.tiltZ, state.tiltVelocityZ] = stepDampedSpring(
-        state.tiltZ,
-        state.tiltVelocityZ,
-        targetTiltZ,
-        48,
-        10.5,
-        delta,
-      );
-
-      if (resting) {
-        [state.yaw, state.yawVelocity] = stepDampedSpring(
-          state.yaw,
-          state.yawVelocity,
-          state.targetYaw,
-          38,
-          10.5,
-          delta,
-        );
-      } else if (state.progress < 0.14) {
-        const idleSpeed = THREE.MathUtils.degToRad(22.5);
-        state.yawVelocity +=
-          (idleSpeed - state.yawVelocity) * Math.min(1, delta * 4.8);
-        state.yaw += state.yawVelocity * delta;
-      } else {
-        state.yaw += state.yawVelocity * delta;
-        state.yawVelocity *= Math.exp(-delta * 5.4);
-      }
+      state.yawVelocity = 0;
+      cubeMesh.rotation.y = state.yaw;
+      return;
     }
 
-    const visibleProgress = THREE.MathUtils.clamp(state.progress, 0, 1);
-    const compression = THREE.MathUtils.clamp(state.progress - 1, 0, 0.075);
-    const idleBob =
-      (1 - visibleProgress) * Math.sin(frameState.clock.elapsedTime * 1.08) * 0.045;
+    const cruiseVelocity = THREE.MathUtils.degToRad(-26);
+    const targetVelocity = stopped ? 0 : cruiseVelocity;
+    const velocityResponse = stopped ? 1.9 : 1.55;
+    const velocityBlend = 1 - Math.exp(-velocityResponse * delta);
 
-    liftGroup.position.y = THREE.MathUtils.lerp(0.5, -0.34, visibleProgress) + idleBob;
-    liftGroup.scale.set(
-      1 + compression * 0.52,
-      1 - compression * 1.45,
-      1 + compression * 0.52,
+    state.yawVelocity = THREE.MathUtils.lerp(
+      state.yawVelocity,
+      targetVelocity,
+      velocityBlend,
     );
-    spinGroup.rotation.y = state.yaw;
-    tiltGroup.rotation.x = state.tiltX;
-    tiltGroup.rotation.z = state.tiltZ;
+
+    if (stopped && Math.abs(state.yawVelocity) < THREE.MathUtils.degToRad(0.035)) {
+      state.yawVelocity = 0;
+    }
+
+    state.yaw += state.yawVelocity * delta;
+    cubeMesh.rotation.y = state.yaw;
   });
 
   return (
-    <group position={[0, 0.5, 0]} ref={lift}>
-      <group ref={spin} rotation={[0, THREE.MathUtils.degToRad(28), 0]}>
-        <group
-          ref={tilt}
-          rotation={[
-            THREE.MathUtils.degToRad(-13),
-            0,
-            THREE.MathUtils.degToRad(-7),
-          ]}
-        >
-          <mesh castShadow receiveShadow>
-            <primitive attach="geometry" object={bodyGeometry} />
-            <meshPhysicalMaterial
-              attenuationColor="#174b39"
-              attenuationDistance={0.82}
-              clearcoat={1}
-              clearcoatRoughness={0.07}
-              color="#386b5d"
-              emissive="#03100c"
-              emissiveIntensity={0.03}
-              envMapIntensity={1.25}
-              iridescence={0.12}
-              iridescenceIOR={1.2}
-              iridescenceThicknessRange={[120, 360]}
-              ior={1.46}
-              metalness={0}
-              opacity={1}
-              roughness={0.09}
-              specularIntensity={1}
-              thickness={1.4}
-              transmission={0.5}
-              transparent
-            />
-          </mesh>
-
-          <mesh castShadow position={[0, 0, 0.835]}>
-            <primitive attach="geometry" object={rimGeometry} />
-            <meshPhysicalMaterial
-              clearcoat={1}
-              clearcoatRoughness={0.08}
-              color="#254d42"
-              emissive="#041611"
-              emissiveIntensity={0.05}
-              envMapIntensity={1.35}
-              metalness={0.12}
-              roughness={0.12}
-              transmission={0.12}
-            />
-          </mesh>
-
-          <mesh castShadow position={[0, 0, 0.842]}>
-            <primitive attach="geometry" object={panelGeometry} />
-            <meshPhysicalMaterial
-              attenuationColor="#0b2c20"
-              attenuationDistance={0.75}
-              clearcoat={1}
-              clearcoatRoughness={0.09}
-              color="#102f24"
-              emissive="#010705"
-              emissiveIntensity={0.02}
-              envMapIntensity={1.2}
-              ior={1.4}
-              metalness={0.08}
-              opacity={1}
-              roughness={0.15}
-              thickness={0.62}
-              transmission={0.2}
-              transparent
-            />
-          </mesh>
-        </group>
-      </group>
-    </group>
+    <mesh castShadow position={[0, -0.29, 0]} receiveShadow ref={cube}>
+      <primitive attach="geometry" object={bodyGeometry} />
+      <meshPhysicalMaterial
+        attenuationColor="#8fcfff"
+        attenuationDistance={0.72}
+        clearcoat={1}
+        clearcoatRoughness={0.1}
+        color="#ffffff"
+        dispersion={0.1}
+        envMapIntensity={1.18}
+        ior={1.42}
+        iridescence={0.16}
+        iridescenceIOR={1.24}
+        iridescenceThicknessRange={[120, 420]}
+        metalness={0}
+        opacity={1}
+        roughness={0.2}
+        specularIntensity={1}
+        thickness={1.35}
+        transmission={0.58}
+        transparent
+        vertexColors
+      />
+    </mesh>
   );
-}
-
-function stepDampedSpring(
-  value: number,
-  velocity: number,
-  target: number,
-  stiffness: number,
-  damping: number,
-  delta: number,
-): [number, number] {
-  const acceleration = (target - value) * stiffness - velocity * damping;
-  const nextVelocity = velocity + acceleration * delta;
-  const nextValue = value + nextVelocity * delta;
-
-  if (Math.abs(target - nextValue) < 0.0001 && Math.abs(nextVelocity) < 0.001) {
-    return [target, 0];
-  }
-
-  return [nextValue, nextVelocity];
 }
