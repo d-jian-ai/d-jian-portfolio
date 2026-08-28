@@ -1,5 +1,5 @@
-import { GenerativeFieldPage } from "@/components/generative-field-page";
+import { ParticleStoryExperience } from "./particle-story-experience";
 
 export default function Page() {
-  return <GenerativeFieldPage />;
+  return <ParticleStoryExperience />;
 }
