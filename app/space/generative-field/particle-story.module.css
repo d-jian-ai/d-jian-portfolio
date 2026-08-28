@@ -1,0 +1,612 @@
+.experience {
+  --field-base: #050914;
+  --field-mist: #12254a;
+  --guide-accent: #2f6dff;
+  --guide-ink: #071126;
+  --guide-surface: #dce7ff;
+  background:
+    radial-gradient(circle at 59% 44%, color-mix(in srgb, var(--guide-accent) 6%, transparent), transparent 29%),
+    linear-gradient(112deg, rgb(255 255 255 / 0.42), transparent 38%),
+    color-mix(in srgb, var(--guide-surface) 18%, #efeee9);
+  color: var(--guide-ink);
+  cursor: default;
+  font-family: "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  height: 100dvh;
+  isolation: isolate;
+  min-height: 580px;
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: relative;
+  touch-action: none;
+  width: 100%;
+}
+
+.experience::after {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
+  content: "";
+  inset: 0;
+  mix-blend-mode: multiply;
+  opacity: 0.035;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.experience[data-entered="true"] {
+  background: var(--field-base);
+  color: var(--guide-surface);
+  cursor: crosshair;
+}
+
+.experience:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -1px;
+}
+
+.field,
+.field > div {
+  height: 100%;
+  inset: 0;
+  position: absolute !important;
+  width: 100%;
+}
+
+.field {
+  pointer-events: none;
+  z-index: 0;
+}
+
+.themeWave {
+  border-radius: 50%;
+  height: 180vmax;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0);
+  visibility: hidden;
+  width: 180vmax;
+  will-change: transform;
+  z-index: 2;
+}
+
+.guideCanvas {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 6;
+}
+
+.experience :global(.particle-story-cursor-trail) {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 110;
+}
+
+.chrome {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  padding: 27px clamp(28px, 4.4vw, 86px);
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 30;
+}
+
+.chrome::after {
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: clamp(28px, 4.4vw, 86px);
+  position: absolute;
+  right: clamp(28px, 4.4vw, 86px);
+}
+
+.back,
+.utilities button,
+.guideRoster button,
+.enterButton,
+.chapterRail button {
+  -webkit-tap-highlight-color: transparent;
+  color: inherit;
+  pointer-events: auto;
+}
+
+.back {
+  align-items: center;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 620;
+  gap: 10px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.back svg {
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.back:hover svg {
+  transform: translateX(-4px);
+}
+
+.back:focus-visible,
+.utilities button:focus-visible,
+.guideRoster button:focus-visible,
+.enterButton:focus-visible,
+.chapterRail button:focus-visible {
+  outline: 2px solid var(--guide-accent);
+  outline-offset: 4px;
+}
+
+.utilities {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 150px;
+  pointer-events: auto;
+}
+
+.utilities button {
+  align-items: center;
+  background: color-mix(in srgb, var(--field-base) 62%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 2px;
+  display: inline-flex;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 9px;
+  gap: 9px;
+  min-height: 38px;
+  padding: 0 14px;
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.utilities button:hover {
+  background: currentColor;
+  color: var(--field-base);
+  transform: translateY(-2px);
+}
+
+.changeGuide i {
+  background: var(--guide-accent) !important;
+  height: 17px;
+  width: 3px;
+}
+
+.changeGuide small {
+  opacity: 0.58;
+}
+
+.guideIntro,
+.guideDetail,
+.guideRoster,
+.enterButton {
+  transition: opacity 320ms ease, visibility 320ms ease;
+}
+
+.experience[data-entered="true"] .guideIntro,
+.experience[data-entered="true"] .guideDetail,
+.experience[data-entered="true"] .guideRoster,
+.experience[data-entered="true"] .enterButton {
+  opacity: 0 !important;
+  pointer-events: none;
+  visibility: hidden !important;
+}
+
+.guideIntro {
+  display: flex;
+  flex-direction: column;
+  left: clamp(28px, 4.4vw, 86px);
+  pointer-events: none;
+  position: absolute;
+  top: clamp(112px, 15vh, 176px);
+  width: min(28vw, 430px);
+  z-index: 12;
+}
+
+.guideTitle {
+  font-family: "Iowan Old Style", "Times New Roman", "Songti SC", serif;
+  font-size: clamp(38px, 3.35vw, 58px);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  margin: 0;
+  max-width: 9ch;
+  order: 1;
+  text-wrap: balance;
+}
+
+.guidePurpose {
+  font-size: clamp(11px, 0.86vw, 13px);
+  font-weight: 480;
+  letter-spacing: 0.035em;
+  line-height: 1.65;
+  margin: 17px 0 0;
+  max-width: 28em;
+  opacity: 0.62;
+  order: 2;
+  text-wrap: pretty;
+}
+
+.guideLine,
+.sceneLine {
+  display: block;
+  overflow: hidden;
+}
+
+.guideLine > span,
+.sceneLine > span {
+  display: block;
+  will-change: transform;
+}
+
+.guideDetail {
+  left: clamp(28px, 4.4vw, 86px);
+  pointer-events: none;
+  position: absolute;
+  bottom: clamp(138px, 18vh, 190px);
+  top: auto;
+  width: min(30vw, 470px);
+  z-index: 13;
+}
+
+.sceneLabel,
+.sceneInstruction,
+.sceneRule {
+  font-family: Consolas, "SFMono-Regular", monospace;
+}
+
+.spiritName {
+  color: var(--guide-accent);
+  display: inline;
+  font-family: "Iowan Old Style", "Times New Roman", "Songti SC", serif;
+  font-size: clamp(42px, 4.3vw, 72px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+  margin: 0;
+}
+
+.spiritTrait {
+  border-left: 1px solid var(--guide-accent);
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  margin-left: 15px;
+  padding-left: 11px;
+  transform: translateY(-4px);
+}
+
+.spiritEffect {
+  font-size: clamp(11px, 0.86vw, 13px);
+  font-weight: 480;
+  letter-spacing: 0.02em;
+  line-height: 1.65;
+  margin: 13px 0 0;
+  max-width: 30em;
+}
+
+.guideRoster {
+  bottom: 38px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(92px, 1fr));
+  left: clamp(28px, 4.4vw, 86px);
+  margin: 0;
+  position: absolute;
+  right: calc(clamp(28px, 4.4vw, 86px) + min(16vw, 238px) + 22px);
+  top: auto;
+  width: auto;
+  z-index: 28;
+}
+
+.guideRoster button {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--guide-ink) 25%, transparent);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 62px;
+  padding: 8px 14px 6px 0;
+  position: relative;
+  text-align: left;
+  transition: background-color 260ms ease, color 260ms ease, padding 260ms ease;
+}
+
+.guideRoster button::before {
+  background: var(--guide-accent);
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  top: -1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.guideRoster b {
+  font-family: "Iowan Old Style", "Times New Roman", "Songti SC", serif;
+  font-size: clamp(13px, 1.05vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.guideRoster small {
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 8px;
+  line-height: 1.35;
+  margin-left: 0;
+  margin-top: 5px;
+  max-width: 15ch;
+  opacity: 0.46;
+  text-align: left;
+}
+
+.guideRoster button:hover,
+.guideRoster .activeGuide {
+  background: transparent;
+  color: var(--guide-accent);
+  padding-left: 11px;
+}
+
+.guideRoster button:hover::before,
+.guideRoster .activeGuide::before {
+  transform: scaleX(1);
+}
+
+.enterButton {
+  align-items: center;
+  background: var(--guide-ink);
+  border: 1px solid var(--guide-ink);
+  border-radius: 0;
+  bottom: auto;
+  color: var(--guide-surface);
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  font-weight: 620;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 62px;
+  padding: 0 22px;
+  position: absolute;
+  right: clamp(28px, 4.4vw, 86px);
+  text-align: left;
+  top: auto;
+  bottom: 38px;
+  transition: background-color 280ms ease, color 280ms ease, transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: min(16vw, 238px);
+  z-index: 28;
+}
+
+.enterButton:hover {
+  background: var(--guide-accent);
+  border-color: var(--guide-accent);
+  color: var(--guide-surface);
+  transform: translateY(-5px);
+}
+
+.enterButton:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.enterButton svg {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.enterButton:hover svg {
+  transform: translateX(6px);
+}
+
+.scene {
+  bottom: clamp(32px, 4vh, 54px);
+  left: clamp(28px, 4.1vw, 78px);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+  width: min(32vw, 540px);
+  z-index: 18;
+}
+
+.experience[data-entered="true"] .scene {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sceneLabel {
+  color: var(--guide-accent);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  margin: 0 0 7px;
+}
+
+.sceneTitle {
+  font-size: clamp(32px, 3vw, 54px);
+  font-weight: 850;
+  letter-spacing: -0.07em;
+  line-height: 0.96;
+  margin: 0;
+}
+
+.sceneInstruction {
+  align-items: center;
+  display: flex;
+  font-size: 10px;
+  gap: 9px;
+  letter-spacing: 0.02em;
+  margin: 13px 0 0;
+  opacity: 0.74;
+}
+
+.sceneInstruction i {
+  border: 1px solid var(--guide-accent);
+  border-radius: 50%;
+  height: 7px;
+  width: 7px;
+}
+
+.sceneRule {
+  align-items: center;
+  display: flex;
+  font-size: 9px;
+  gap: 9px;
+  letter-spacing: 0.04em;
+  margin: 14px 0 0;
+  opacity: 0.48;
+}
+
+.sceneRule b {
+  color: var(--guide-accent);
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.chapterRail {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(6, minmax(64px, 1fr));
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 24px;
+  transform: translateX(-50%);
+  visibility: hidden;
+  width: min(43vw, 710px);
+  z-index: 32;
+}
+
+.experience[data-entered="true"] .chapterRail {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.chapterRail button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  min-height: 42px;
+  opacity: 0.54;
+  padding: 4px 6px 11px;
+  position: relative;
+  text-align: center;
+  transition: color 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+
+.chapterRail button::after {
+  background: var(--guide-accent);
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 18%;
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 64%;
+}
+
+.chapterRail span {
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 7px;
+  margin-right: 7px;
+  opacity: 0.46;
+}
+
+.chapterRail b {
+  font-size: 12px;
+  font-weight: 720;
+  letter-spacing: -0.025em;
+}
+
+.chapterRail button:hover,
+.chapterRail .activeChapter {
+  color: var(--guide-accent);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.chapterRail button:hover::after,
+.chapterRail .activeChapter::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 920px) {
+  .guideIntro { width: 45vw; }
+  .guideDetail { width: 38vw; }
+  .guideRoster { left: 28px; right: 260px; width: auto; }
+  .guideRoster small { display: none; }
+  .enterButton { width: 210px; }
+}
+
+@media (max-width: 760px) {
+  .experience { min-height: 620px; }
+  .chrome { padding: 20px 18px; }
+  .back { font-size: 0; gap: 0; }
+  .back svg { height: 17px; width: 17px; }
+  .utilities { min-width: 0; }
+  .utilities button { min-height: 34px; padding: 0 11px; }
+  .changeGuide small { display: none; }
+  .guideIntro { left: 18px; right: 18px; top: 66px; width: auto; }
+  .guideTitle { font-size: clamp(32px, 10vw, 46px); max-width: 9ch; }
+  .guidePurpose { font-size: 12px; line-height: 1.45; margin-top: 14px; max-width: 27em; }
+  .guideDetail { bottom: auto; left: 18px; top: 58dvh; width: calc(100% - 36px); }
+  .spiritName { font-size: clamp(36px, 12vw, 54px); }
+  .spiritTrait { font-size: 11px; margin-left: 11px; padding-left: 8px; transform: translateY(-3px); }
+  .spiritEffect { font-size: 12px; margin-top: 10px; max-width: 27em; }
+  .guideRoster { bottom: 18px; grid-template-columns: repeat(5, minmax(0, 1fr)); left: 18px; right: auto; top: auto; width: calc(100% - 174px); }
+  .guideRoster button { border-bottom: 0; flex-direction: column; justify-content: center; min-height: 56px; padding: 11px 2px 7px; text-align: center; }
+  .guideRoster button:last-child { border-bottom: 0; }
+  .guideRoster button:hover,
+  .guideRoster .activeGuide { padding-left: 2px; }
+  .guideRoster b { font-size: 11px; }
+  .guideRoster small { display: none; }
+  .enterButton { bottom: 18px; font-size: 11px; gap: 8px; min-height: 58px; padding: 0 14px; right: 18px; top: auto; width: 138px; }
+  .scene { bottom: 92px; left: 18px; width: calc(100% - 36px); }
+  .sceneTitle { font-size: clamp(30px, 10vw, 44px); }
+  .sceneInstruction { font-size: 8px; margin-top: 9px; }
+  .sceneRule { margin-top: 9px; }
+  .chapterRail { bottom: 20px; gap: 1px; grid-template-columns: repeat(6, 1fr); left: 18px; top: auto; transform: none; width: calc(100% - 36px); }
+  .chapterRail button { min-width: 0; padding: 7px 1px 10px; }
+  .chapterRail span { display: block; font-size: 7px; margin: 0; }
+  .chapterRail b { display: none; }
+}
+
+@media (max-height: 720px) and (min-width: 761px) {
+  .guideIntro { top: 84px; }
+  .guideTitle { font-size: clamp(38px, 4.2vw, 64px); }
+  .guidePurpose { margin-top: 16px; }
+  .guideDetail { top: 42vh; }
+  .spiritName { font-size: clamp(42px, 5vw, 74px); }
+  .spiritEffect { margin-top: 11px; }
+  .guideRoster button { min-height: 64px; }
+  .enterButton { min-height: 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back svg,
+  .utilities button,
+  .guideRoster button,
+  .guideRoster button::before,
+  .enterButton,
+  .enterButton svg,
+  .chapterRail button,
+  .chapterRail button::after {
+    transition-duration: 0.01ms !important;
+  }
+}
