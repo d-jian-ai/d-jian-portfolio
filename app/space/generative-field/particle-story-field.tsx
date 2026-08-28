@@ -375,12 +375,12 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float societyPoint = step(0.5, chapter) * (1.0 - step(1.5, chapter));
     float nebulaPoint = step(3.5, chapter) * (1.0 - step(4.5, chapter));
     float spiralPoint = step(4.5, chapter);
-    float scenePointBoost = mountainPoint * (0.66 + feature * 0.42) + societyPoint * (0.26 + feature * 0.32) + oceanPoint * (0.62 + feature * 0.74) + grassPoint * pow(aLocal, 2.4) * 1.32 + nebulaPoint * (0.34 + feature * 0.62) + spiralPoint * (0.24 + aDnaKind * 0.38);
+    float scenePointBoost = mountainPoint * (0.82 + feature * 0.5) + societyPoint * (0.26 + feature * 0.32) + oceanPoint * (0.62 + feature * 0.74) + grassPoint * pow(aLocal, 2.4) * 1.32 + nebulaPoint * (0.34 + feature * 0.62) + spiralPoint * (0.24 + aDnaKind * 0.38);
     float activeSize = (0.92 + aScale * 2.8) + field * (1.3 + velocity * 0.84) + echoRing * 2.45 + spark * 1.08 + feature * (0.88 + societyPoint * 0.54) + scenePointBoost;
     gl_PointSize = clamp(activeSize * depthScale * uPixelRatio, 0.38 * uPixelRatio, 9.6 * uPixelRatio);
     float depthFade = smoothstep(27.0, 6.0, -viewPosition.z) * smoothstep(1.6, 4.2, -viewPosition.z);
     float atmosphericDepth = smoothstep(0.0, 1.0, clamp((-viewPosition.z - 4.0) / 17.0, 0.0, 1.0));
-    float sceneAlphaBoost = 1.0 + mountainPoint * (0.42 + feature * 0.08) + societyPoint * (0.16 + feature * 0.16) + oceanPoint * (0.32 + feature * 0.26) + grassPoint * pow(aLocal, 2.2) * 0.48 + nebulaPoint * 0.36 + spiralPoint * 0.3;
+    float sceneAlphaBoost = 1.0 + mountainPoint * (0.56 + feature * 0.12 + atmosphericDepth * 0.24) + societyPoint * (0.16 + feature * 0.16) + oceanPoint * (0.32 + feature * 0.26) + grassPoint * pow(aLocal, 2.2) * 0.48 + nebulaPoint * 0.36 + spiralPoint * 0.3;
     float spiralLegibility = mix(1.0, 0.18 + aDnaKind * 0.82, spiralPoint);
     vAlpha = aAlpha * depthFade * (0.78 + pulse * 0.22) * mix(1.18, 0.42, atmosphericDepth) * sceneAlphaBoost * spiralLegibility;
     vBand = aBand;
@@ -1015,25 +1015,49 @@ function sampleMountainHeight(x: number, z: number) {
   const absoluteValleyDistance = Math.abs(valleyDistance);
   const gorgeFloor = Math.exp(-(valleyDistance ** 2) * 0.74);
   const broadBasin = Math.exp(-(valleyDistance ** 2) * 0.12);
-  const wallDistance = 3.25 + Math.sin(z * 0.29) * 0.38;
-  const westWall = Math.exp(-((valleyDistance + wallDistance) ** 2) * 0.31)
-    * (3.55 + Math.sin(z * 0.58) * 0.62 + Math.cos(z * 0.21) * 0.34);
-  const eastWall = Math.exp(-((valleyDistance - wallDistance) ** 2) * 0.29)
-    * (3.28 + Math.cos(z * 0.53 + 0.6) * 0.58 + Math.sin(z * 0.18) * 0.3);
+  const wallDistance = 3.45 + Math.sin(z * 0.29) * 0.42 + Math.max(0, -z) * 0.055;
+  const westWall = Math.exp(-((valleyDistance + wallDistance) ** 2) * 0.34)
+    * (3.72 + Math.sin(z * 0.58) * 0.68 + Math.cos(z * 0.21) * 0.38);
+  const eastWall = Math.exp(-((valleyDistance - wallDistance) ** 2) * 0.32)
+    * (3.52 + Math.cos(z * 0.53 + 0.6) * 0.64 + Math.sin(z * 0.18) * 0.34);
   const outerMass = (1 - Math.exp(-(absoluteValleyDistance ** 2) * 0.055))
-    * (1.08 + Math.sin(z * 0.22 + absoluteValleyDistance * 0.17) * 0.24);
-  const westSummit = Math.exp(-((x + 7.4) ** 2) * 0.1 - ((z + 2.8) ** 2) * 0.09) * 2.85;
-  const eastSummit = Math.exp(-((x - 7.9) ** 2) * 0.095 - ((z - 1.6) ** 2) * 0.08) * 3.12;
-  const farCrown = Math.exp(-((z + 8.2) ** 2) * 0.22)
-    * (1.2 + Math.sin(x * 0.38) * 0.42 + Math.cos(x * 0.17 + 0.8) * 0.35);
+    * (1.22 + Math.sin(z * 0.22 + absoluteValleyDistance * 0.17) * 0.28);
+  const westSummit = Math.exp(-((x + 7.2) ** 2) * 0.12 - ((z + 0.8) ** 2) * 0.075) * 4.2;
+  const westNeedle = Math.exp(-((x + 4.7) ** 2) * 0.25 - ((z + 3.8) ** 2) * 0.15) * 3.85;
+  const westSpire = Math.exp(-((x + 6.15) ** 2) * 0.46 - ((z + 1.9) ** 2) * 0.19) * 2.28;
+  const eastSummit = Math.exp(-((x - 7.5) ** 2) * 0.11 - ((z - 0.2) ** 2) * 0.072) * 4.38;
+  const eastNeedle = Math.exp(-((x - 4.4) ** 2) * 0.24 - ((z + 4.8) ** 2) * 0.16) * 4.06;
+  const eastSpire = Math.exp(-((x - 6.25) ** 2) * 0.44 - ((z + 2.7) ** 2) * 0.2) * 2.46;
+  const foregroundWest = Math.exp(-((x + 9.6) ** 2) * 0.075 - ((z - 6.2) ** 2) * 0.11) * 2.42;
+  const foregroundEast = Math.exp(-((x - 9.4) ** 2) * 0.075 - ((z - 5.7) ** 2) * 0.105) * 2.56;
+  const farBand = Math.exp(-((z + 8.25) ** 2) * 0.3);
+  const farNotch = 0.4 + (1 - Math.exp(-(valleyDistance ** 2) * 0.18)) * 0.78;
+  const farCrown = farBand * farNotch
+    * (4.2
+      + Math.sin(x * 0.68 + 0.25) * 0.82
+      + Math.sin(x * 1.43 - 0.4) * 0.52
+      + Math.cos(x * 2.56 + 0.8) * 0.28);
+  const distantWestPeak = Math.exp(-((x + 8.8) ** 2) * 0.16 - ((z + 7.2) ** 2) * 0.26) * 3.28;
+  const distantEastPeak = Math.exp(-((x - 8.2) ** 2) * 0.17 - ((z + 7.6) ** 2) * 0.27) * 3.46;
+  const distantSaddleWest = Math.exp(-((x + 2.85) ** 2) * 0.34 - ((z + 8.05) ** 2) * 0.38) * 3.1;
+  const distantSaddleEast = Math.exp(-((x - 3.15) ** 2) * 0.38 - ((z + 8.25) ** 2) * 0.4) * 3.36;
   const tributaryWest = Math.exp(-((x + 5.2 + z * 0.16) ** 2) * 0.52) * Math.exp(-((z - 1.8) ** 2) * 0.025) * 0.72;
   const tributaryEast = Math.exp(-((x - 5.6 + z * 0.14) ** 2) * 0.48) * Math.exp(-((z + 2.4) ** 2) * 0.028) * 0.64;
-  const strata = Math.sin(x * 1.22 + z * 0.31) * 0.16
-    + Math.cos(z * 1.08 - x * 0.24) * 0.13
-    + Math.sin(x * 0.48 - z * 0.72) * 0.11;
+  const ridgeMask = Math.min(1, absoluteValleyDistance * 0.2);
+  const alpineSerration = (
+    Math.abs(Math.sin(x * 0.72 + z * 0.23)) * 0.32
+    + Math.abs(Math.sin(x * 1.48 - z * 0.17)) * 0.17
+    + Math.abs(Math.cos(x * 2.72 + z * 0.34)) * 0.08
+  ) * ridgeMask * (0.48 + farBand * 0.74);
+  const strata = Math.sin(x * 1.22 + z * 0.31) * 0.19
+    + Math.cos(z * 1.08 - x * 0.24) * 0.15
+    + Math.sin(x * 0.48 - z * 0.72) * 0.13;
   const floorRipple = Math.sin(z * 0.82 + valleyCenter) * gorgeFloor * 0.12;
   const erosion = (hashNumber(Math.floor((x + 13) * 4.6) * 97 + Math.floor((z + 10) * 4.6) * 31) - 0.5) * 0.11;
-  return -3.05 + outerMass + westWall + eastWall + westSummit + eastSummit + farCrown
+  return -3.2 + outerMass + westWall + eastWall
+    + westSummit + westNeedle + westSpire + eastSummit + eastNeedle + eastSpire
+    + foregroundWest + foregroundEast + farCrown + distantWestPeak + distantEastPeak
+    + distantSaddleWest + distantSaddleEast + alpineSerration
     - gorgeFloor * 1.55 - broadBasin * 0.48 - tributaryWest - tributaryEast
     + strata * (0.42 + Math.min(1, absoluteValleyDistance * 0.22)) + floorRipple + erosion;
 }
@@ -1367,7 +1391,7 @@ function createSurfaceLineGeometry(mode: "mountain" | "ocean") {
   const columns = mode === "mountain" ? 236 : 248;
   const crossColumns = mode === "mountain" ? 54 : 4;
   const depthSteps = mode === "mountain" ? 132 : 118;
-  const semanticPaths = mode === "mountain" ? 3 : 14;
+  const semanticPaths = mode === "mountain" ? 7 : 14;
   const semanticSteps = mode === "mountain" ? 188 : 176;
   const segmentCount = rows * (columns - 1)
     + crossColumns * (depthSteps - 1)
@@ -1414,16 +1438,24 @@ function createSurfaceLineGeometry(mode: "mountain" | "ocean") {
 
   for (let path = 0; path < semanticPaths; path += 1) {
     const phase = 9.7 + path * 0.41;
-    const weight = mode === "mountain" ? (path === 0 ? 1.9 : 1.25) : 0.62 + (path % 3) * 0.18;
+    const weight = mode === "mountain"
+      ? path === 0 ? 1.9 : path < 3 ? 1.36 : 0.9
+      : 0.62 + (path % 3) * 0.18;
     const samplePath = (value: number) => {
       if (mode === "mountain") {
         const z = (value - 0.5) * depth;
         const center = sampleValleyCenter(z);
         const wallDistance = 3.25 + Math.sin(z * 0.29) * 0.38;
-        return {
-          x: path === 0 ? center : center + (path === 1 ? -wallDistance : wallDistance),
-          z,
-        };
+        const outerDistance = 6.65 + Math.sin(z * 0.18 + path) * 0.64;
+        const mountainX = path === 0
+          ? center
+          : path === 1
+            ? center - wallDistance
+            : path === 2
+              ? center + wallDistance
+              : center + (path % 2 === 1 ? -outerDistance : outerDistance)
+                + Math.sin(z * (0.28 + path * 0.018)) * 0.48;
+        return { x: mountainX, z };
       }
       const x = (value - 0.5) * width;
       const lane = (path / Math.max(1, semanticPaths - 1) - 0.5) * depth;
