@@ -157,31 +157,56 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
 
     float time = uTime * uSpeed * (0.17 + aSeed * 0.035);
     if (chapter < 0.5) {
-      float mountainSurface = 1.0 - step(0.64, aSeed);
-      float mountainMass = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
-      float mountainDebris = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
-      float mountainMist = step(0.95, aSeed);
+      float mountainSurface = 1.0 - step(0.7, aSeed);
+      float mountainMass = step(0.7, aSeed) * (1.0 - step(0.86, aSeed));
+      float mountainDebris = step(0.86, aSeed) * (1.0 - step(0.93, aSeed));
+      float mountainMist = step(0.93, aSeed);
       float mountainDepth = clamp((transformed.z + 11.0) / 22.0, 0.0, 1.0);
       float mountainRate = mix(0.64, 0.24, mountainDepth) + aSeed * 0.07;
       float mountainBreath = sin(uTime * uSpeed * mountainRate + transformed.x * 0.24 + aPhase * 0.08);
       float ridgeDrift = cos(uTime * 0.17 + transformed.z * 0.42 + transformed.x * 0.09);
       float geologicPulse = sin(uTime * 0.032 + transformed.x * 0.075 - transformed.z * 0.052);
+      float ridgeExposure = smoothstep(-0.8, 3.4, transformed.y);
+      float windFront = 0.5 + 0.5 * sin(
+        uTime * (0.24 + aSeed * 0.07)
+        - transformed.x * 0.18
+        + transformed.z * 0.11
+        + sin(transformed.z * 0.19) * 0.62
+      );
+      float mountainGust = smoothstep(0.5, 0.94, windFront) * (0.28 + ridgeExposure * 0.72);
       transformed.y += mountainSurface * (
         mountainBreath * 0.032
         + ridgeDrift * (0.012 + mountainDepth * 0.016)
       );
+      transformed.x += mountainSurface * mountainGust * sin(uTime * 0.31 + aPhase) * 0.018;
       transformed.y += mountainMass * geologicPulse * (0.005 + mountainDepth * 0.007);
-      transformed.x += mountainDebris * sin(uTime * (0.13 + aSeed * 0.08) + aPhase) * 0.07;
+      transformed.x += mountainDebris * (
+        sin(uTime * (0.13 + aSeed * 0.08) + aPhase) * 0.07
+        + mountainGust * (0.12 + aSeed * 0.12)
+      );
       transformed.y += mountainDebris * (
         sin(uTime * (0.2 + aSeed * 0.12) + aPhase) * 0.1
         + geologicPulse * 0.025
+        + mountainGust * 0.075
       );
-      transformed.x += mountainMist * sin(uTime * 0.16 + aPhase + transformed.z * 0.21) * 0.24;
-      transformed.y += mountainMist * sin(uTime * 0.22 + aPhase) * 0.18;
-      transformed.z += mountainMist * sin(uTime * 0.11 + aPhase * 0.7) * 0.62;
+      transformed.x += mountainMist * (
+        sin(uTime * 0.16 + aPhase + transformed.z * 0.21) * 0.24
+        + mountainGust * (0.36 + aSeed * 0.22)
+      );
+      transformed.y += mountainMist * (
+        sin(uTime * 0.22 + aPhase) * 0.18
+        + mountainGust * 0.12
+      );
+      transformed.z += mountainMist * (
+        sin(uTime * 0.11 + aPhase * 0.7) * 0.62
+        + cos(uTime * 0.18 + aPhase) * mountainGust * 0.16
+      );
       float contour = smoothstep(0.86, 0.99, abs(sin((transformed.y + 2.8) * 6.4)));
       float peakLight = smoothstep(-1.2, 2.4, transformed.y);
-      feature = max(peakLight * (mountainSurface + mountainDebris), contour * mountainSurface * 0.48);
+      feature = max(
+        peakLight * (mountainSurface + mountainDebris),
+        max(contour * mountainSurface * 0.48, mountainGust * (mountainDebris + mountainMist) * 0.72)
+      );
     } else if (chapter < 1.5) {
       float societyTime = uTime * uSpeed * 0.24;
       float socialEpochTime = societyTime * (0.34 + aSeed * 0.08) + aSeed * 3.0;
@@ -307,10 +332,10 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float wake = field * pow(abs(dot(direction, velocityDirection)), 3.0) * velocity;
     float release = 1.0 - uPress;
     if (chapter < 0.5) {
-      float mountainSurface = 1.0 - step(0.64, aSeed);
-      float mountainMass = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
-      float mountainDebris = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
-      float mountainMist = step(0.95, aSeed);
+      float mountainSurface = 1.0 - step(0.7, aSeed);
+      float mountainMass = step(0.7, aSeed) * (1.0 - step(0.86, aSeed));
+      float mountainDebris = step(0.86, aSeed) * (1.0 - step(0.93, aSeed));
+      float mountainMist = step(0.93, aSeed);
       float layerResponse = mountainSurface + mountainMass * 0.32 + mountainDebris * 1.42 + mountainMist * 1.78;
       float terrainLift = field * (0.18 + uEnergy * 0.58 + uPress * 0.42) * uPointerForce * layerResponse;
       transformed.y += terrainLift;
@@ -397,30 +422,32 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float societyPoint = step(0.5, chapter) * (1.0 - step(1.5, chapter));
     float nebulaPoint = step(3.5, chapter) * (1.0 - step(4.5, chapter));
     float spiralPoint = step(4.5, chapter);
-    float mountainSurfacePoint = 1.0 - step(0.64, aSeed);
-    float mountainMassPoint = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
-    float mountainDebrisPoint = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
-    float mountainMistPoint = step(0.95, aSeed);
-    float mountainLayerSize = mountainSurfacePoint * 0.54
-      + mountainMassPoint * 0.22
-      + mountainDebrisPoint * 1.04
-      + mountainMistPoint * 0.42;
+    float mountainSurfacePoint = 1.0 - step(0.7, aSeed);
+    float mountainMassPoint = step(0.7, aSeed) * (1.0 - step(0.86, aSeed));
+    float mountainDebrisPoint = step(0.86, aSeed) * (1.0 - step(0.93, aSeed));
+    float mountainMistPoint = step(0.93, aSeed);
+    float mountainLayerSize = mountainSurfacePoint * 0.78
+      + mountainMassPoint * 0.24
+      + mountainDebrisPoint * 1.12
+      + mountainMistPoint * 0.56;
     float scenePointBoost = mountainPoint * (mountainLayerSize + feature * 0.62) + societyPoint * (0.26 + feature * 0.32) + oceanPoint * (0.62 + feature * 0.74) + grassPoint * pow(aLocal, 2.4) * 1.32 + nebulaPoint * (0.34 + feature * 0.62) + spiralPoint * (0.24 + aDnaKind * 0.38);
     float activeSize = (0.92 + aScale * 2.8) + field * (1.3 + velocity * 0.84) + echoRing * 2.45 + spark * 1.08 + feature * (0.88 + societyPoint * 0.54) + scenePointBoost;
     gl_PointSize = clamp(
       activeSize * depthScale * uPixelRatio,
       0.38 * uPixelRatio,
-      mix(9.6, 6.4, mountainPoint) * uPixelRatio
+      mix(9.6, 7.2, mountainPoint) * uPixelRatio
     );
-    float depthFade = smoothstep(27.0, 6.0, -viewPosition.z) * smoothstep(1.6, 4.2, -viewPosition.z);
+    float farDepthFade = 1.0 - smoothstep(6.0, 27.0, -viewPosition.z);
+    float nearDepthFade = smoothstep(1.6, 4.2, -viewPosition.z);
+    float depthFade = farDepthFade * nearDepthFade;
     float atmosphericDepth = smoothstep(0.0, 1.0, clamp((-viewPosition.z - 4.0) / 17.0, 0.0, 1.0));
-    float mountainLayerAlpha = mountainSurfacePoint * 0.84
-      + mountainMassPoint * 0.34
-      + mountainDebrisPoint * 0.96
-      + mountainMistPoint * 0.26;
+    float mountainLayerAlpha = mountainSurfacePoint * 1.22
+      + mountainMassPoint * 0.38
+      + mountainDebrisPoint * 1.12
+      + mountainMistPoint * 0.44;
     float sceneAlphaBoost = 1.0 + mountainPoint * (mountainLayerAlpha * (0.48 + atmosphericDepth * 0.22) + feature * 0.16) + societyPoint * (0.16 + feature * 0.16) + oceanPoint * (0.32 + feature * 0.26) + grassPoint * pow(aLocal, 2.2) * 0.48 + nebulaPoint * 0.36 + spiralPoint * 0.3;
     float spiralLegibility = mix(1.0, 0.18 + aDnaKind * 0.82, spiralPoint);
-    float depthAttenuation = mix(1.18, mix(0.42, 0.68, mountainPoint), atmosphericDepth);
+    float depthAttenuation = mix(1.18, mix(0.42, 0.9, mountainPoint), atmosphericDepth);
     vAlpha = aAlpha * depthFade * (0.78 + pulse * 0.22) * depthAttenuation * sceneAlphaBoost * spiralLegibility;
     vBand = aBand;
     vDepth = atmosphericDepth;
@@ -751,11 +778,20 @@ const SURFACE_LINE_VERTEX_SHADER = /* glsl */ `
     if (uMode < 0.5) {
       float mountainDepth = clamp((transformed.z + 11.0) / 22.0, 0.0, 1.0);
       float lineRate = mix(0.72, 0.26, mountainDepth) + fract(sin(aLinePhase * 12.4) * 512.8) * 0.08;
+      float ridgeExposure = smoothstep(-0.8, 3.4, transformed.y);
+      float windFront = 0.5 + 0.5 * sin(
+        uTime * 0.23
+        - transformed.x * 0.18
+        + transformed.z * 0.11
+        + sin(transformed.z * 0.19) * 0.62
+      );
+      float mountainGust = smoothstep(0.56, 0.94, windFront) * ridgeExposure;
       transformed.y += sin(uTime * lineRate + transformed.x * 0.24 + aLinePhase) * (0.026 + aLineWeight * 0.025);
       transformed.y += sin(uTime * 0.032 + transformed.x * 0.075 - transformed.z * 0.052) * (0.008 + mountainDepth * 0.012);
+      transformed.x += mountainGust * sin(uTime * 0.28 + aLinePhase) * (0.012 + aLineWeight * 0.012);
       transformed.y += field * (0.24 + uPress * 0.46);
       transformed.z += sin(distanceToPointer * 6.0 - uTime * 3.1) * field * 0.09;
-      feature = smoothstep(-0.8, 2.0, transformed.y);
+      feature = max(smoothstep(-0.8, 2.0, transformed.y), mountainGust * 0.34);
     } else {
       float oceanDepth = clamp((transformed.z + 8.4) / 16.8, 0.0, 1.0);
       float tide = 0.88 + sin(uTime * 0.072) * 0.12;
@@ -1116,7 +1152,7 @@ function sampleMountainParticle(index: number, roleSeed: number) {
   let valleyCenter = sampleValleyCenter(z);
   let x = (random() - 0.5) * MOUNTAIN_WIDTH;
 
-  if (roleSeed < 0.64) {
+  if (roleSeed < 0.7) {
     const surface = sampleMountainHeight(x, z);
     return new THREE.Vector3(
       x + (random() - 0.5) * 0.045,
@@ -1125,7 +1161,7 @@ function sampleMountainParticle(index: number, roleSeed: number) {
     );
   }
 
-  if (roleSeed < 0.85) {
+  if (roleSeed < 0.86) {
     const surface = sampleMountainHeight(x, z);
     const exposedHeight = Math.max(0.2, surface + 3.2);
     const rawLayerDepth = 0.28 + Math.pow(random(), 0.68) * (1.5 + exposedHeight * 0.52);
@@ -1138,7 +1174,7 @@ function sampleMountainParticle(index: number, roleSeed: number) {
     );
   }
 
-  if (roleSeed < 0.95) {
+  if (roleSeed < 0.93) {
     for (let attempt = 0; attempt < 7; attempt += 1) {
       const candidateZ = (random() - 0.5) * MOUNTAIN_DEPTH;
       const candidateX = (random() - 0.5) * MOUNTAIN_WIDTH;
