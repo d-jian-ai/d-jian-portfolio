@@ -10,6 +10,7 @@ import { PARTICLE_CHAPTER_DYNAMICS, PARTICLE_FIELD_PERFORMANCE } from "./particl
 const MOUNTAIN_WIDTH = 28;
 const MOUNTAIN_DEPTH = 22;
 const MOUNTAIN_NOISE = new ImprovedNoise();
+const MOUNTAIN_RIDGE_LANES = [-0.88, -0.7, -0.52, -0.32, 0.3, 0.48, 0.68, 0.86] as const;
 const OCEAN_WIDTH = 24;
 const OCEAN_DEPTH = 16.8;
 const GRASS_WIDTH = 21.2;
@@ -79,6 +80,7 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
   varying float vDepth;
   varying float vGlow;
   varying float vFeature;
+  varying float vMountain;
   varying float vSpark;
 
   float hash31(vec3 point) {
@@ -158,6 +160,7 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float time = uTime * uSpeed * (0.17 + aSeed * 0.035);
     if (chapter < 0.5) {
       float mountainSurface = 1.0 - step(0.7, aSeed);
+      float mountainRidge = 1.0 - step(0.18, aSeed);
       float mountainMass = step(0.7, aSeed) * (1.0 - step(0.86, aSeed));
       float mountainDebris = step(0.86, aSeed) * (1.0 - step(0.93, aSeed));
       float mountainMist = step(0.93, aSeed);
@@ -207,6 +210,7 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
         peakLight * (mountainSurface + mountainDebris),
         max(contour * mountainSurface * 0.48, mountainGust * (mountainDebris + mountainMist) * 0.72)
       );
+      feature = max(feature, mountainRidge * (0.78 + ridgeExposure * 0.22));
     } else if (chapter < 1.5) {
       float societyTime = uTime * uSpeed * 0.24;
       float socialEpochTime = societyTime * (0.34 + aSeed * 0.08) + aSeed * 3.0;
@@ -423,28 +427,32 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float nebulaPoint = step(3.5, chapter) * (1.0 - step(4.5, chapter));
     float spiralPoint = step(4.5, chapter);
     float mountainSurfacePoint = 1.0 - step(0.7, aSeed);
+    float mountainRidgePoint = 1.0 - step(0.18, aSeed);
     float mountainMassPoint = step(0.7, aSeed) * (1.0 - step(0.86, aSeed));
     float mountainDebrisPoint = step(0.86, aSeed) * (1.0 - step(0.93, aSeed));
     float mountainMistPoint = step(0.93, aSeed);
     float mountainLayerSize = mountainSurfacePoint * 0.78
       + mountainMassPoint * 0.24
       + mountainDebrisPoint * 1.12
-      + mountainMistPoint * 0.56;
+      + mountainMistPoint * 0.56
+      + mountainRidgePoint * 0.72;
     float scenePointBoost = mountainPoint * (mountainLayerSize + feature * 0.62) + societyPoint * (0.26 + feature * 0.32) + oceanPoint * (0.62 + feature * 0.74) + grassPoint * pow(aLocal, 2.4) * 1.32 + nebulaPoint * (0.34 + feature * 0.62) + spiralPoint * (0.24 + aDnaKind * 0.38);
     float activeSize = (0.92 + aScale * 2.8) + field * (1.3 + velocity * 0.84) + echoRing * 2.45 + spark * 1.08 + feature * (0.88 + societyPoint * 0.54) + scenePointBoost;
+    float atmosphericDepth = smoothstep(0.0, 1.0, clamp((-viewPosition.z - 4.0) / 17.0, 0.0, 1.0));
+    float mountainPerspectiveLift = 1.0 + mountainPoint * atmosphericDepth * 0.82;
     gl_PointSize = clamp(
-      activeSize * depthScale * uPixelRatio,
+      activeSize * mountainPerspectiveLift * depthScale * uPixelRatio,
       0.38 * uPixelRatio,
       mix(9.6, 7.2, mountainPoint) * uPixelRatio
     );
     float farDepthFade = 1.0 - smoothstep(6.0, 27.0, -viewPosition.z);
     float nearDepthFade = smoothstep(1.6, 4.2, -viewPosition.z);
     float depthFade = farDepthFade * nearDepthFade;
-    float atmosphericDepth = smoothstep(0.0, 1.0, clamp((-viewPosition.z - 4.0) / 17.0, 0.0, 1.0));
     float mountainLayerAlpha = mountainSurfacePoint * 1.22
       + mountainMassPoint * 0.38
       + mountainDebrisPoint * 1.12
-      + mountainMistPoint * 0.44;
+      + mountainMistPoint * 0.44
+      + mountainRidgePoint * 0.46;
     float sceneAlphaBoost = 1.0 + mountainPoint * (mountainLayerAlpha * (0.48 + atmosphericDepth * 0.22) + feature * 0.16) + societyPoint * (0.16 + feature * 0.16) + oceanPoint * (0.32 + feature * 0.26) + grassPoint * pow(aLocal, 2.2) * 0.48 + nebulaPoint * 0.36 + spiralPoint * 0.3;
     float spiralLegibility = mix(1.0, 0.18 + aDnaKind * 0.82, spiralPoint);
     float depthAttenuation = mix(1.18, mix(0.42, 0.9, mountainPoint), atmosphericDepth);
@@ -453,6 +461,7 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     vDepth = atmosphericDepth;
     vFeature = feature;
     vGlow = field * 0.65 + wake * 0.4 + echoRing + spark * 0.66 + uEnergy * 0.15 + feature * 0.18;
+    vMountain = mountainPoint;
     vSpark = spark;
   }
 `;
@@ -470,6 +479,7 @@ const PARTICLE_FRAGMENT_SHADER = /* glsl */ `
   varying float vDepth;
   varying float vGlow;
   varying float vFeature;
+  varying float vMountain;
   varying float vSpark;
 
   void main() {
@@ -488,7 +498,11 @@ const PARTICLE_FRAGMENT_SHADER = /* glsl */ `
     float focus = mix(0.82, 1.0, 1.0 - vDepth);
     color = mix(color * focus, uColorC, clamp(vGlow * 0.14 + vSpark * 0.24 + vFeature * 0.07, 0.0, 0.38));
     color = mix(color, uColorD, vDepth * 0.24);
-    float alpha = (core * 0.32 + body * 0.94 + halo * (0.035 + vGlow * 0.075)) * vAlpha * (0.94 + vGlow * 0.5 + vFeature * 0.12);
+    vec3 mountainMineral = vec3(0.79, 0.85, 0.94);
+    float mountainLift = vMountain * clamp(0.38 + vDepth * 0.2 + vFeature * 0.12, 0.0, 0.68);
+    color = mix(color, mountainMineral, mountainLift);
+    float mountainPresence = 1.0 + vMountain * (0.34 + vFeature * 0.28);
+    float alpha = (core * 0.32 + body * 0.94 + halo * (0.035 + vGlow * 0.075)) * vAlpha * (0.94 + vGlow * 0.5 + vFeature * 0.12) * mountainPresence;
     gl_FragColor = vec4(color, alpha);
     #include <colorspace_fragment>
   }
@@ -821,11 +835,11 @@ const SURFACE_LINE_VERTEX_SHADER = /* glsl */ `
     vec4 viewPosition = modelViewMatrix * vec4(transformed, 1.0);
     gl_Position = projectionMatrix * viewPosition;
     float depthFade = uMode < 0.5
-      ? smoothstep(34.0, 4.8, -viewPosition.z)
-      : smoothstep(24.0, 4.0, -viewPosition.z);
-    float baseAlpha = uMode < 0.5 ? 0.018 : 0.014;
-    float weightedAlpha = aLineWeight * (uMode < 0.5 ? 0.068 : 0.038);
-    float featureAlpha = feature * (uMode < 0.5 ? 0.088 : 0.1);
+      ? 1.0 - smoothstep(4.8, 34.0, -viewPosition.z)
+      : 1.0 - smoothstep(4.0, 24.0, -viewPosition.z);
+    float baseAlpha = uMode < 0.5 ? 0.012 : 0.014;
+    float weightedAlpha = aLineWeight * (uMode < 0.5 ? 0.105 : 0.038);
+    float featureAlpha = feature * (uMode < 0.5 ? 0.14 : 0.1);
     vAlpha = uVisibility * depthFade * (baseAlpha + weightedAlpha + featureAlpha + field * 0.08);
   }
 `;
@@ -1146,11 +1160,41 @@ function sampleMountainHeight(x: number, z: number) {
   return valleyFloor + primaryRelief + distantRange + erodedDetail;
 }
 
+function sampleMountainRidgeX(lane: number, z: number) {
+  const center = lane * MOUNTAIN_WIDTH * 0.43
+    + Math.sin(z * (0.13 + Math.abs(lane) * 0.045) + lane * 3.1) * (0.62 + (1 - Math.abs(lane)) * 0.76)
+    + MOUNTAIN_NOISE.noise(z * 0.072, lane * 1.9, 86.4) * 0.72;
+  let ridgeX = center;
+  let ridgeHeight = Number.NEGATIVE_INFINITY;
+
+  for (let probe = 0; probe < 9; probe += 1) {
+    const candidateX = center + (probe / 8 - 0.5) * 2.5;
+    const candidateHeight = sampleMountainHeight(candidateX, z);
+    if (candidateHeight > ridgeHeight) {
+      ridgeHeight = candidateHeight;
+      ridgeX = candidateX;
+    }
+  }
+
+  return ridgeX;
+}
+
 function sampleMountainParticle(index: number, roleSeed: number) {
   const random = seededRandom(0x5a17c3 ^ Math.imul(index + 1, 0x45d9f3b));
   let z = (random() - 0.5) * MOUNTAIN_DEPTH;
   let valleyCenter = sampleValleyCenter(z);
   let x = (random() - 0.5) * MOUNTAIN_WIDTH;
+
+  if (roleSeed < 0.18) {
+    const lane = MOUNTAIN_RIDGE_LANES[index % MOUNTAIN_RIDGE_LANES.length];
+    x = sampleMountainRidgeX(lane, z) + (random() + random() - 1) * 0.64;
+    const ridgeSurface = sampleMountainHeight(x, z);
+    return new THREE.Vector3(
+      x,
+      ridgeSurface + 0.06 + (random() - 0.5) * 0.055,
+      z + (random() - 0.5) * 0.035,
+    );
+  }
 
   if (roleSeed < 0.7) {
     const surface = sampleMountainHeight(x, z);
@@ -1526,8 +1570,10 @@ function createMountainTerrainGeometry() {
   const contourColumns = 224;
   const erosionPaths = 11;
   const erosionSteps = 164;
+  const ridgeSteps = 188;
   const segmentCount = contourRows * (contourColumns - 1)
-    + erosionPaths * (erosionSteps - 1);
+    + erosionPaths * (erosionSteps - 1)
+    + MOUNTAIN_RIDGE_LANES.length * (ridgeSteps - 1);
   const positions = new Float32Array(segmentCount * 6);
   const phases = new Float32Array(segmentCount * 2);
   const weights = new Float32Array(segmentCount * 2);
@@ -1570,6 +1616,22 @@ function createMountainTerrainGeometry() {
     for (let step = 0; step < erosionSteps - 1; step += 1) {
       const start = pointAt(step / (erosionSteps - 1));
       const end = pointAt((step + 1) / (erosionSteps - 1));
+      write(start.x, start.z, phase, weight);
+      write(end.x, end.z, phase, weight);
+    }
+  }
+
+  for (let path = 0; path < MOUNTAIN_RIDGE_LANES.length; path += 1) {
+    const lane = MOUNTAIN_RIDGE_LANES[path];
+    const phase = 22.4 + path * 0.61;
+    const weight = path === 2 || path === 5 ? 1.28 : 0.94;
+    const pointAt = (progress: number) => {
+      const z = (progress - 0.5) * MOUNTAIN_DEPTH;
+      return { x: sampleMountainRidgeX(lane, z), z };
+    };
+    for (let step = 0; step < ridgeSteps - 1; step += 1) {
+      const start = pointAt(step / (ridgeSteps - 1));
+      const end = pointAt((step + 1) / (ridgeSteps - 1));
       write(start.x, start.z, phase, weight);
       write(end.x, end.z, phase, weight);
     }
@@ -1928,7 +1990,7 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
   const mountainTerrainColor = useMemo(
     () => new THREE.Color(palette[1])
       .lerp(new THREE.Color(palette[2]), 0.48)
-      .lerp(new THREE.Color("#e7ebf2"), 0.14),
+      .lerp(new THREE.Color("#d9e2f0"), 0.34),
     [],
   );
   const grassUniforms = useMemo(
@@ -2129,7 +2191,7 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
     mountainMaterialRef.current?.uniforms.uColor.value
       .set(palette[1])
       .lerp(new THREE.Color(palette[2]), 0.48)
-      .lerp(new THREE.Color("#e7ebf2"), 0.14);
+      .lerp(new THREE.Color("#d9e2f0"), 0.34);
     oceanMaterialRef.current?.uniforms.uColor.value.set(palette[2]);
     societyParticleMaterialRef.current?.uniforms.uColor.value.set(palette[0]);
     societyParticleMaterialRef.current?.uniforms.uBrightColor.value.set(palette[2]);
@@ -2290,6 +2352,9 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
     targetCamera.z += Math.sin(orbitTime * 0.51 + 1.4) * orbit.z * orbitWeight
       + pointer.current.y * cameraPointerZ
       + energyValue.current * cameraEnergyDolly;
+    if (smallViewport && toChapter.current === 0) {
+      targetCamera.z += 4.6;
+    }
     camera.position.lerp(targetCamera, 1 - Math.exp(-delta * (reducedMotion ? 8 : cameraDamping)));
     if (camera instanceof THREE.PerspectiveCamera) {
       const targetFov = THREE.MathUtils.lerp(
@@ -2303,6 +2368,10 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
     const lookTarget = cameraLookTarget.current
       .copy(cameraLookPath[fromChapter.current])
       .lerp(cameraLookPath[toChapter.current], cameraBlend);
+    if (smallViewport && toChapter.current === 0) {
+      lookTarget.x -= 3.35;
+      lookTarget.y += 0.42;
+    }
     lookTarget.x += Math.sin(orbitTime * 0.64 + 0.4) * orbit.x * 0.12 * orbitWeight;
     lookTarget.y += Math.cos(orbitTime * 0.46) * orbit.y * 0.08 * orbitWeight;
     camera.lookAt(lookTarget);
