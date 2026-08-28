@@ -1,5 +1,5 @@
 export type GuideSpiritId = "core" | "ribbon" | "branch" | "echo" | "mist";
-export type GuideResponseMode = 0 | 1 | 2 | 3 | 4;
+type GuideResponseMode = 0 | 1 | 2 | 3 | 4;
 
 export type GuideSpiritConfig = {
   accent: string;

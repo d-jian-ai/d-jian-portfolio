@@ -1,21 +1,21 @@
 import type { Locale } from "@/i18n/types";
 import type { GuideSpiritId } from "./guide-spirit-config";
 
-export type ParticleFieldChapter = {
+type ParticleFieldChapter = {
   code: string;
   instruction: string;
   name: string;
   title: string;
 };
 
-export type GuideSpiritCopy = {
+type GuideSpiritCopy = {
   fieldAction: string;
   fieldEffect: string;
   name: string;
   trait: string;
 };
 
-export type ParticleStoryCopy = {
+type ParticleStoryCopy = {
   back: string;
   changeGuide: string;
   chapterAria: string;

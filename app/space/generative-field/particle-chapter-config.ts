@@ -1,4 +1,4 @@
-export type ParticleChapterDynamics = {
+type ParticleChapterDynamics = {
   amplitude: number;
   cameraDamping: number;
   cameraEnergyDolly: number;
@@ -25,23 +25,23 @@ export type ParticleChapterDynamics = {
 
 export const PARTICLE_CHAPTER_DYNAMICS: readonly ParticleChapterDynamics[] = [
   {
-    amplitude: 0.56,
-    cameraDamping: 1.35,
-    cameraEnergyDolly: -0.55,
-    cameraFov: 62,
-    cameraLook: [-0.2, -1.52, -6.8],
-    cameraOrbit: [2.35, 0.34, 1.42],
-    cameraPointer: [0.42, 0.16, 0.22],
-    cameraPosition: [2.7, -0.58, 18.4],
-    cameraSpeed: 0.046,
-    depthResponse: 1.42,
-    desktopOffset: [-0.28, -0.08],
-    desktopScale: 1.08,
+    amplitude: 0.48,
+    cameraDamping: 1.28,
+    cameraEnergyDolly: -0.38,
+    cameraFov: 56,
+    cameraLook: [-0.5, -0.66, -5.2],
+    cameraOrbit: [2.1, 0.42, 0.95],
+    cameraPointer: [0.42, 0.18, 0.28],
+    cameraPosition: [3.1, 0.82, 17.3],
+    cameraSpeed: 0.042,
+    depthResponse: 1.36,
+    desktopOffset: [-0.16, 0.08],
+    desktopScale: 1.05,
     energyDecay: 1.35,
-    interaction: 1.12,
-    mobileOffset: [0, 0.34],
-    mobileScale: 0.84,
-    motion: 0.68,
+    interaction: 1.04,
+    mobileOffset: [0, 0.08],
+    mobileScale: 0.78,
+    motion: 0.72,
     particleRatio: 1,
     pointerRadius: 0.68,
     pressAttack: 5.8,
