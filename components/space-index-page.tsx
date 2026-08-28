@@ -772,11 +772,11 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-preview-frame.is-poly {
-          background: #9876d0;
+          background: #171717;
         }
 
         .space-labs-preview-frame.is-district {
-          background: #f4f1e8;
+          background: #292929;
         }
 
         .space-labs-preview-frame img {
@@ -1453,17 +1453,17 @@ function ProjectCard({
 function ProjectPreview({ kind }: { kind: SpaceIndexPreviewKind }) {
   const cover = {
     "district-image": {
-      alt: "太古里数字街区的彩色体素建筑编辑场景",
+      alt: "由透明与彩色模块持续拆解重组的数字街区",
       className: "is-district",
       src: "/images/space-cards/digital-district.webp",
     },
     "particle-field": {
-      alt: "由发光粒子与网格构成的深邃山谷",
+      alt: "银白粒子在深色流场中汇聚成发光事件核心",
       className: "is-particle",
       src: "/images/space-cards/particle-chronicle.webp",
     },
     "poly-species": {
-      alt: "紫色空间中由多边形碎片构成的蝴蝶",
+      alt: "几何碎片与叶脉共同重组出的开放生命形态",
       className: "is-poly",
       src: "/images/space-cards/poly-species.webp",
     },
