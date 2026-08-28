@@ -702,7 +702,7 @@ export function SpaceIndexPage() {
 
         .space-labs-projects {
           display: grid;
-          gap: clamp(130px, 16vh, 210px) clamp(34px, 5vw, 90px);
+          gap: clamp(54px, 7vw, 112px) clamp(26px, 3.4vw, 58px);
           grid-template-columns: repeat(12, minmax(0, 1fr));
           margin: 0 auto;
           max-width: 1510px;
@@ -713,31 +713,46 @@ export function SpaceIndexPage() {
         .space-labs-card {
           --card-shift-x: 0px;
           --card-shift-y: 0px;
-          background: #111;
-          border: 0;
-          border-radius: 16px;
-          box-shadow: 0 24px 70px color-mix(in srgb, var(--labs-ink) 10%, transparent);
+          background: #0b0d0c;
+          border: 1px solid rgba(255, 255, 255, 0.22);
+          border-radius: 3px;
+          box-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.14) inset,
+            0 32px 90px color-mix(in srgb, var(--labs-ink) 13%, transparent);
           color: #f8f8f5;
           display: block;
-          min-height: 420px;
+          isolation: isolate;
+          min-height: 0;
           overflow: hidden;
           position: relative;
           transform: translateZ(0);
         }
 
-        .space-labs-card.layout-wide {
-          aspect-ratio: 1.88 / 1;
-          grid-column: 1 / span 9;
+        .space-labs-card::after {
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          content: "";
+          inset: 7px;
+          pointer-events: none;
+          position: absolute;
+          z-index: 4;
         }
 
-        .space-labs-card.layout-poly {
-          aspect-ratio: 1.52 / 1;
-          grid-column: 1 / span 9;
+        .space-labs-projects[data-view="grid"] .space-labs-card.layout-field {
+          aspect-ratio: 2.08 / 1;
+          grid-column: 1 / span 12;
         }
 
-        .space-labs-card.layout-district {
-          aspect-ratio: 1.5 / 1;
-          grid-column: 4 / span 9;
+        .space-labs-projects[data-view="grid"] .space-labs-card.layout-species {
+          aspect-ratio: 0.78 / 1;
+          grid-column: 1 / span 5;
+        }
+
+        .space-labs-projects[data-view="grid"] .space-labs-card.layout-district {
+          align-self: end;
+          aspect-ratio: 1.13 / 1;
+          grid-column: 6 / span 7;
+          margin-bottom: clamp(28px, 4vw, 68px);
+          margin-top: clamp(90px, 11vw, 176px);
         }
 
         .space-labs-card__visual,
@@ -748,10 +763,18 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-card__visual {
-          filter: grayscale(1) saturate(0.25) brightness(0.72) contrast(1.06);
-          transform: translate3d(var(--card-shift-x), var(--card-shift-y), 0) scale(1.075);
+          filter: grayscale(0.52) saturate(0.76) brightness(0.88) contrast(1.05);
+          transform: translate3d(var(--card-shift-x), var(--card-shift-y), 0) scale(1.06);
           transition: filter 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
           will-change: filter, transform;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__visual {
+          bottom: 34%;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__visual {
+          right: 31%;
         }
 
         .space-labs-card__visual > div,
@@ -818,14 +841,22 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.22);
+          background:
+            linear-gradient(180deg, rgba(5, 7, 6, 0.08), rgba(5, 7, 6, 0.08) 46%, rgba(5, 7, 6, 0.68)),
+            rgba(8, 10, 9, 0.08);
           pointer-events: none;
           transition: background-color 520ms cubic-bezier(0.22, 1, 0.36, 1);
           z-index: 1;
         }
 
-        .space-labs-card.layout-district .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.42);
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__mask {
+          background: linear-gradient(180deg, rgba(19, 15, 4, 0.06), rgba(19, 15, 4, 0.32));
+          bottom: 34%;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__mask {
+          background: linear-gradient(90deg, rgba(5, 8, 12, 0.04), rgba(5, 8, 12, 0.56));
+          right: 31%;
         }
 
         .space-labs-card__tribute {
@@ -907,20 +938,40 @@ export function SpaceIndexPage() {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 26px 28px 24px;
+          padding: clamp(22px, 2.2vw, 34px);
           pointer-events: none;
           z-index: 2;
         }
 
         .space-labs-card__interface::before {
-          background: rgba(255, 255, 255, 0.74);
-          box-shadow: 0 0 8px rgba(255, 255, 255, 0.52);
+          background: var(--card-accent);
+          box-shadow: 0 0 18px color-mix(in srgb, var(--card-accent) 66%, transparent);
           content: "";
-          height: 3px;
-          left: 0;
+          height: 2px;
+          left: clamp(22px, 2.2vw, 34px);
           position: absolute;
-          top: 54px;
-          width: 56%;
+          top: clamp(66px, 6.2vw, 82px);
+          width: clamp(42px, 5.4vw, 86px);
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__interface {
+          background: linear-gradient(
+            180deg,
+            transparent 0,
+            transparent 66%,
+            rgba(247, 243, 231, 0.97) 66%,
+            rgba(247, 243, 231, 0.97) 100%
+          );
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__interface {
+          background: linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 69%,
+            rgba(7, 11, 18, 0.96) 69%,
+            rgba(7, 11, 18, 0.96) 100%
+          );
         }
 
         .space-labs-card__top {
@@ -971,6 +1022,42 @@ export function SpaceIndexPage() {
           display: grid;
           gap: 24px;
           grid-template-columns: minmax(0, 1fr) minmax(210px, 0.52fr);
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-field .space-labs-card__bottom {
+          grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.42fr);
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__bottom {
+          color: #18150d;
+          display: block;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__detail {
+          display: grid;
+          gap: 14px;
+          grid-template-columns: minmax(0, 1fr) auto;
+          margin-top: 16px;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__tags {
+          align-content: start;
+          justify-content: flex-end;
+          margin-top: 0;
+          max-width: 132px;
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__tags span {
+          border-color: rgba(24, 21, 13, 0.34);
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__bottom {
+          align-items: end;
+          grid-template-columns: minmax(0, 1fr) minmax(170px, 0.42fr);
+        }
+
+        .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__detail {
+          padding-left: clamp(18px, 2vw, 28px);
         }
 
         .space-labs-card__title-window {
@@ -1114,6 +1201,11 @@ export function SpaceIndexPage() {
           overflow: visible;
         }
 
+        .space-labs-projects[data-view="list"] .space-labs-card::after,
+        .space-labs-projects[data-view="list"] .space-labs-card__interface::before {
+          display: none;
+        }
+
         .space-labs-projects[data-view="list"] .space-labs-card__visual,
         .space-labs-projects[data-view="list"] .space-labs-card__mask,
         .space-labs-projects[data-view="list"] .space-labs-card__tribute {
@@ -1242,9 +1334,9 @@ export function SpaceIndexPage() {
           .space-labs-page[data-locale="fr"] .space-labs-heading h1 { font-size: clamp(2.45rem, 3.75vw, 3.35rem); }
           .space-labs-intro { max-width: 330px; }
           .space-labs-scroll { grid-column: 2; justify-self: start; margin-top: 26px; }
-          .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { grid-column: 1 / span 11; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-field { grid-column: 1 / span 12; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-species { grid-column: 1 / span 5; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-district { grid-column: 6 / span 7; }
         }
 
         @media (max-width: 820px) {
@@ -1264,9 +1356,12 @@ export function SpaceIndexPage() {
           .space-labs-intro { margin-top: 42px; max-width: 440px; }
           .space-labs-scroll { align-self: flex-end; margin-top: 30px; }
           .space-labs-projects { display: grid; gap: 58px; grid-template-columns: 1fr; padding: 0 24px 120px; }
-          .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 1 / 1.04; grid-column: 1; margin: 0; min-height: 0; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-field,
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-species,
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-district { grid-column: 1; margin: 0; min-height: 0; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-field { aspect-ratio: 1.18 / 1; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-species { aspect-ratio: 0.82 / 1; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-district { aspect-ratio: 0.94 / 1; }
           .space-labs-card__interface { padding: 20px; }
           .space-labs-card__tribute { height: 28px; top: 62px; }
           .space-labs-card__bottom { display: block; }
@@ -1274,6 +1369,14 @@ export function SpaceIndexPage() {
           .space-labs-card__summary,
           .space-labs-card__tags span { opacity: 1; transform: none; }
           .space-labs-card__summary { max-width: 360px; }
+          .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__detail { display: block; }
+          .space-labs-projects[data-view="grid"] .layout-species .space-labs-card__tags { justify-content: flex-start; margin-top: 12px; max-width: none; }
+          .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__visual,
+          .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__mask { bottom: 38%; right: 0; }
+          .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__interface {
+            background: linear-gradient(180deg, transparent 0, transparent 62%, rgba(7, 11, 18, 0.97) 62%, rgba(7, 11, 18, 0.97) 100%);
+          }
+          .space-labs-projects[data-view="grid"] .layout-district .space-labs-card__detail { margin-top: 14px; padding-left: 0; }
           .space-labs-projects[data-view="list"] { padding: 0 24px 120px; }
           .space-labs-projects[data-view="list"] .space-labs-card__interface { grid-template-columns: 82px minmax(0, 1fr) 36px; }
           .space-labs-projects[data-view="list"] .space-labs-card__detail { display: none; }
@@ -1293,9 +1396,9 @@ export function SpaceIndexPage() {
           .space-labs-scroll { margin-top: 26px; }
           .space-labs-projects,
           .space-labs-projects[data-view="list"] { padding-inline: 12px; }
-          .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 0.9 / 1; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-field { aspect-ratio: 1 / 1.08; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-species { aspect-ratio: 0.76 / 1; }
+          .space-labs-projects[data-view="grid"] .space-labs-card.layout-district { aspect-ratio: 0.84 / 1; }
           .space-labs-card__title-window { --title-row-height: 2.35rem; }
           .space-labs-card__title-track strong { font-size: 1.72rem; }
           .space-labs-card__summary { font-size: 0.7rem; }
@@ -1388,12 +1491,13 @@ function ProjectCard({
   projectRef: (element: HTMLElement | null) => void;
   tribute: (typeof POLY_SPECIES_TRIBUTE_COPY)[keyof typeof POLY_SPECIES_TRIBUTE_COPY];
 }) {
-  const layout = ["layout-wide", "layout-poly", "layout-district"][index % 3];
+  const layout = ["layout-field", "layout-species", "layout-district"][index % 3];
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLAnchorElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -12;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -12;
+    const travel = [14, 8, 10][index % 3];
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -travel;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -travel;
     event.currentTarget.style.setProperty("--card-shift-x", `${x.toFixed(2)}px`);
     event.currentTarget.style.setProperty("--card-shift-y", `${y.toFixed(2)}px`);
   };
