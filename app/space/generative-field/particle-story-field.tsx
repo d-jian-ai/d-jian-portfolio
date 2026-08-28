@@ -3,11 +3,13 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
+import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import { GUIDE_SPIRITS, type GuideSpiritConfig } from "./guide-spirit-config";
 import { PARTICLE_CHAPTER_DYNAMICS, PARTICLE_FIELD_PERFORMANCE } from "./particle-chapter-config";
 
-const MOUNTAIN_WIDTH = 25.6;
-const MOUNTAIN_DEPTH = 20;
+const MOUNTAIN_WIDTH = 28;
+const MOUNTAIN_DEPTH = 22;
+const MOUNTAIN_NOISE = new ImprovedNoise();
 const OCEAN_WIDTH = 24;
 const OCEAN_DEPTH = 16.8;
 const GRASS_WIDTH = 21.2;
@@ -155,11 +157,11 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
 
     float time = uTime * uSpeed * (0.17 + aSeed * 0.035);
     if (chapter < 0.5) {
-      float mountainSurface = 1.0 - step(0.52, aSeed);
-      float mountainMass = step(0.52, aSeed) * (1.0 - step(0.83, aSeed));
-      float mountainDebris = step(0.83, aSeed) * (1.0 - step(0.94, aSeed));
-      float mountainMist = step(0.94, aSeed);
-      float mountainDepth = clamp((transformed.z + 10.0) / 20.0, 0.0, 1.0);
+      float mountainSurface = 1.0 - step(0.64, aSeed);
+      float mountainMass = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
+      float mountainDebris = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
+      float mountainMist = step(0.95, aSeed);
+      float mountainDepth = clamp((transformed.z + 11.0) / 22.0, 0.0, 1.0);
       float mountainRate = mix(0.64, 0.24, mountainDepth) + aSeed * 0.07;
       float mountainBreath = sin(uTime * uSpeed * mountainRate + transformed.x * 0.24 + aPhase * 0.08);
       float ridgeDrift = cos(uTime * 0.17 + transformed.z * 0.42 + transformed.x * 0.09);
@@ -177,7 +179,7 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
       transformed.x += mountainMist * sin(uTime * 0.16 + aPhase + transformed.z * 0.21) * 0.24;
       transformed.y += mountainMist * sin(uTime * 0.22 + aPhase) * 0.18;
       transformed.z += mountainMist * sin(uTime * 0.11 + aPhase * 0.7) * 0.62;
-      float contour = smoothstep(0.82, 0.99, abs(sin((transformed.y + 2.6) * 7.2)));
+      float contour = smoothstep(0.86, 0.99, abs(sin((transformed.y + 2.8) * 6.4)));
       float peakLight = smoothstep(-1.2, 2.4, transformed.y);
       feature = max(peakLight * (mountainSurface + mountainDebris), contour * mountainSurface * 0.48);
     } else if (chapter < 1.5) {
@@ -305,10 +307,10 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float wake = field * pow(abs(dot(direction, velocityDirection)), 3.0) * velocity;
     float release = 1.0 - uPress;
     if (chapter < 0.5) {
-      float mountainSurface = 1.0 - step(0.52, aSeed);
-      float mountainMass = step(0.52, aSeed) * (1.0 - step(0.83, aSeed));
-      float mountainDebris = step(0.83, aSeed) * (1.0 - step(0.94, aSeed));
-      float mountainMist = step(0.94, aSeed);
+      float mountainSurface = 1.0 - step(0.64, aSeed);
+      float mountainMass = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
+      float mountainDebris = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
+      float mountainMist = step(0.95, aSeed);
       float layerResponse = mountainSurface + mountainMass * 0.32 + mountainDebris * 1.42 + mountainMist * 1.78;
       float terrainLift = field * (0.18 + uEnergy * 0.58 + uPress * 0.42) * uPointerForce * layerResponse;
       transformed.y += terrainLift;
@@ -395,26 +397,31 @@ const PARTICLE_VERTEX_SHADER = /* glsl */ `
     float societyPoint = step(0.5, chapter) * (1.0 - step(1.5, chapter));
     float nebulaPoint = step(3.5, chapter) * (1.0 - step(4.5, chapter));
     float spiralPoint = step(4.5, chapter);
-    float mountainSurfacePoint = 1.0 - step(0.52, aSeed);
-    float mountainMassPoint = step(0.52, aSeed) * (1.0 - step(0.83, aSeed));
-    float mountainDebrisPoint = step(0.83, aSeed) * (1.0 - step(0.94, aSeed));
-    float mountainMistPoint = step(0.94, aSeed);
-    float mountainLayerSize = mountainSurfacePoint * 0.72
-      + mountainMassPoint * 0.28
-      + mountainDebrisPoint * 1.28
-      + mountainMistPoint * 0.54;
+    float mountainSurfacePoint = 1.0 - step(0.64, aSeed);
+    float mountainMassPoint = step(0.64, aSeed) * (1.0 - step(0.85, aSeed));
+    float mountainDebrisPoint = step(0.85, aSeed) * (1.0 - step(0.95, aSeed));
+    float mountainMistPoint = step(0.95, aSeed);
+    float mountainLayerSize = mountainSurfacePoint * 0.54
+      + mountainMassPoint * 0.22
+      + mountainDebrisPoint * 1.04
+      + mountainMistPoint * 0.42;
     float scenePointBoost = mountainPoint * (mountainLayerSize + feature * 0.62) + societyPoint * (0.26 + feature * 0.32) + oceanPoint * (0.62 + feature * 0.74) + grassPoint * pow(aLocal, 2.4) * 1.32 + nebulaPoint * (0.34 + feature * 0.62) + spiralPoint * (0.24 + aDnaKind * 0.38);
     float activeSize = (0.92 + aScale * 2.8) + field * (1.3 + velocity * 0.84) + echoRing * 2.45 + spark * 1.08 + feature * (0.88 + societyPoint * 0.54) + scenePointBoost;
-    gl_PointSize = clamp(activeSize * depthScale * uPixelRatio, 0.38 * uPixelRatio, 9.6 * uPixelRatio);
+    gl_PointSize = clamp(
+      activeSize * depthScale * uPixelRatio,
+      0.38 * uPixelRatio,
+      mix(9.6, 6.4, mountainPoint) * uPixelRatio
+    );
     float depthFade = smoothstep(27.0, 6.0, -viewPosition.z) * smoothstep(1.6, 4.2, -viewPosition.z);
     float atmosphericDepth = smoothstep(0.0, 1.0, clamp((-viewPosition.z - 4.0) / 17.0, 0.0, 1.0));
-    float mountainLayerAlpha = mountainSurfacePoint * 1.0
-      + mountainMassPoint * 0.54
-      + mountainDebrisPoint * 1.16
-      + mountainMistPoint * 0.34;
+    float mountainLayerAlpha = mountainSurfacePoint * 0.84
+      + mountainMassPoint * 0.34
+      + mountainDebrisPoint * 0.96
+      + mountainMistPoint * 0.26;
     float sceneAlphaBoost = 1.0 + mountainPoint * (mountainLayerAlpha * (0.48 + atmosphericDepth * 0.22) + feature * 0.16) + societyPoint * (0.16 + feature * 0.16) + oceanPoint * (0.32 + feature * 0.26) + grassPoint * pow(aLocal, 2.2) * 0.48 + nebulaPoint * 0.36 + spiralPoint * 0.3;
     float spiralLegibility = mix(1.0, 0.18 + aDnaKind * 0.82, spiralPoint);
-    vAlpha = aAlpha * depthFade * (0.78 + pulse * 0.22) * mix(1.18, 0.42, atmosphericDepth) * sceneAlphaBoost * spiralLegibility;
+    float depthAttenuation = mix(1.18, mix(0.42, 0.68, mountainPoint), atmosphericDepth);
+    vAlpha = aAlpha * depthFade * (0.78 + pulse * 0.22) * depthAttenuation * sceneAlphaBoost * spiralLegibility;
     vBand = aBand;
     vDepth = atmosphericDepth;
     vFeature = feature;
@@ -742,7 +749,7 @@ const SURFACE_LINE_VERTEX_SHADER = /* glsl */ `
     float feature = 0.0;
 
     if (uMode < 0.5) {
-      float mountainDepth = clamp((transformed.z + 10.0) / 20.0, 0.0, 1.0);
+      float mountainDepth = clamp((transformed.z + 11.0) / 22.0, 0.0, 1.0);
       float lineRate = mix(0.72, 0.26, mountainDepth) + fract(sin(aLinePhase * 12.4) * 512.8) * 0.08;
       transformed.y += sin(uTime * lineRate + transformed.x * 0.24 + aLinePhase) * (0.026 + aLineWeight * 0.025);
       transformed.y += sin(uTime * 0.032 + transformed.x * 0.075 - transformed.z * 0.052) * (0.008 + mountainDepth * 0.012);
@@ -781,8 +788,8 @@ const SURFACE_LINE_VERTEX_SHADER = /* glsl */ `
       ? smoothstep(34.0, 4.8, -viewPosition.z)
       : smoothstep(24.0, 4.0, -viewPosition.z);
     float baseAlpha = uMode < 0.5 ? 0.018 : 0.014;
-    float weightedAlpha = aLineWeight * (uMode < 0.5 ? 0.058 : 0.038);
-    float featureAlpha = feature * (uMode < 0.5 ? 0.105 : 0.1);
+    float weightedAlpha = aLineWeight * (uMode < 0.5 ? 0.068 : 0.038);
+    float featureAlpha = feature * (uMode < 0.5 ? 0.088 : 0.1);
     vAlpha = uVisibility * depthFade * (baseAlpha + weightedAlpha + featureAlpha + field * 0.08);
   }
 `;
@@ -1046,61 +1053,61 @@ function hashNumber(value: number) {
   return wave - Math.floor(wave);
 }
 
-function sampleMountainHeight(x: number, z: number) {
-  const valleyCenter = Math.sin(z * 0.34) * 0.9 + Math.sin(z * 0.13 + 0.8) * 0.58;
-  const valleyDistance = x - valleyCenter;
-  const absoluteValleyDistance = Math.abs(valleyDistance);
-  const gorgeFloor = Math.exp(-(valleyDistance ** 2) * 0.74);
-  const broadBasin = Math.exp(-(valleyDistance ** 2) * 0.12);
-  const wallDistance = 3.45 + Math.sin(z * 0.29) * 0.42 + Math.max(0, -z) * 0.055;
-  const westWall = Math.exp(-((valleyDistance + wallDistance) ** 2) * 0.34)
-    * (3.72 + Math.sin(z * 0.58) * 0.68 + Math.cos(z * 0.21) * 0.38);
-  const eastWall = Math.exp(-((valleyDistance - wallDistance) ** 2) * 0.32)
-    * (3.52 + Math.cos(z * 0.53 + 0.6) * 0.64 + Math.sin(z * 0.18) * 0.34);
-  const outerMass = (1 - Math.exp(-(absoluteValleyDistance ** 2) * 0.055))
-    * (1.22 + Math.sin(z * 0.22 + absoluteValleyDistance * 0.17) * 0.28);
-  const westSummit = Math.exp(-((x + 7.2) ** 2) * 0.13 - ((z + 0.8) ** 2) * 0.08) * 5.18;
-  const westNeedle = Math.exp(-((x + 4.7) ** 2) * 0.27 - ((z + 3.8) ** 2) * 0.17) * 4.62;
-  const westSpire = Math.exp(-((x + 6.15) ** 2) * 0.5 - ((z + 1.9) ** 2) * 0.22) * 3.02;
-  const eastSummit = Math.exp(-((x - 7.5) ** 2) * 0.12 - ((z - 0.2) ** 2) * 0.078) * 5.42;
-  const eastNeedle = Math.exp(-((x - 4.4) ** 2) * 0.27 - ((z + 4.8) ** 2) * 0.18) * 4.86;
-  const eastSpire = Math.exp(-((x - 6.25) ** 2) * 0.48 - ((z + 2.7) ** 2) * 0.23) * 3.18;
-  const foregroundWest = Math.exp(-((x + 9.6) ** 2) * 0.075 - ((z - 6.2) ** 2) * 0.11) * 2.42;
-  const foregroundEast = Math.exp(-((x - 9.4) ** 2) * 0.075 - ((z - 5.7) ** 2) * 0.105) * 2.56;
-  const farBand = Math.exp(-((z + 8.25) ** 2) * 0.3);
-  const farNotch = 0.4 + (1 - Math.exp(-(valleyDistance ** 2) * 0.18)) * 0.78;
-  const farCrown = farBand * farNotch
-    * (4.2
-      + Math.sin(x * 0.68 + 0.25) * 0.82
-      + Math.sin(x * 1.43 - 0.4) * 0.52
-      + Math.cos(x * 2.56 + 0.8) * 0.28);
-  const distantWestPeak = Math.exp(-((x + 8.8) ** 2) * 0.16 - ((z + 7.2) ** 2) * 0.26) * 3.28;
-  const distantEastPeak = Math.exp(-((x - 8.2) ** 2) * 0.17 - ((z + 7.6) ** 2) * 0.27) * 3.46;
-  const distantSaddleWest = Math.exp(-((x + 2.85) ** 2) * 0.36 - ((z + 8.05) ** 2) * 0.4) * 3.86;
-  const distantSaddleEast = Math.exp(-((x - 3.15) ** 2) * 0.4 - ((z + 8.25) ** 2) * 0.42) * 4.14;
-  const tributaryWest = Math.exp(-((x + 5.2 + z * 0.16) ** 2) * 0.52) * Math.exp(-((z - 1.8) ** 2) * 0.025) * 0.72;
-  const tributaryEast = Math.exp(-((x - 5.6 + z * 0.14) ** 2) * 0.48) * Math.exp(-((z + 2.4) ** 2) * 0.028) * 0.64;
-  const ridgeMask = Math.min(1, absoluteValleyDistance * 0.2);
-  const alpineSerration = (
-    Math.abs(Math.sin(x * 0.72 + z * 0.23)) * 0.32
-    + Math.abs(Math.sin(x * 1.48 - z * 0.17)) * 0.17
-    + Math.abs(Math.cos(x * 2.72 + z * 0.34)) * 0.08
-  ) * ridgeMask * (0.48 + farBand * 0.74);
-  const strata = Math.sin(x * 1.22 + z * 0.31) * 0.19
-    + Math.cos(z * 1.08 - x * 0.24) * 0.15
-    + Math.sin(x * 0.48 - z * 0.72) * 0.13;
-  const floorRipple = Math.sin(z * 0.82 + valleyCenter) * gorgeFloor * 0.12;
-  const erosion = (hashNumber(Math.floor((x + 13) * 4.6) * 97 + Math.floor((z + 10) * 4.6) * 31) - 0.5) * 0.11;
-  return -3.2 + outerMass + westWall + eastWall
-    + westSummit + westNeedle + westSpire + eastSummit + eastNeedle + eastSpire
-    + foregroundWest + foregroundEast + farCrown + distantWestPeak + distantEastPeak
-    + distantSaddleWest + distantSaddleEast + alpineSerration
-    - gorgeFloor * 1.55 - broadBasin * 0.48 - tributaryWest - tributaryEast
-    + strata * (0.42 + Math.min(1, absoluteValleyDistance * 0.22)) + floorRipple + erosion;
+function sampleRidgedTerrain(x: number, z: number, scale: number, octaves: number) {
+  let amplitude = 0.58;
+  let frequency = scale;
+  let total = 0;
+  let normalization = 0;
+  let ridgeWeight = 1;
+
+  for (let octave = 0; octave < octaves; octave += 1) {
+    const noise = MOUNTAIN_NOISE.noise(x * frequency, z * frequency, 17.3 + octave * 11.7);
+    const ridge = 1 - Math.abs(noise);
+    const sharpened = ridge * ridge;
+    total += sharpened * amplitude * ridgeWeight;
+    normalization += amplitude;
+    ridgeWeight = THREE.MathUtils.clamp(sharpened * 1.72, 0.18, 1);
+    amplitude *= 0.51;
+    frequency *= 2.04;
+  }
+
+  return total / normalization;
 }
 
 function sampleValleyCenter(z: number) {
-  return Math.sin(z * 0.34) * 0.9 + Math.sin(z * 0.13 + 0.8) * 0.58;
+  return MOUNTAIN_NOISE.noise(z * 0.075, 0.42, 31.6) * 1.18
+    + MOUNTAIN_NOISE.noise(z * 0.16, 1.7, 9.4) * 0.28;
+}
+
+function sampleMountainHeight(x: number, z: number) {
+  const warpX = MOUNTAIN_NOISE.noise(x * 0.045, z * 0.045, 4.7) * 2.3;
+  const warpZ = MOUNTAIN_NOISE.noise(x * 0.047, z * 0.047, 12.1) * 2.1;
+  const terrainX = x + warpX;
+  const terrainZ = z + warpZ;
+  const mountainRidge = sampleRidgedTerrain(terrainX, terrainZ, 0.075, 5);
+  const erosionRidge = sampleRidgedTerrain(terrainX + 8.2, terrainZ - 5.7, 0.19, 3);
+  const valleyDistance = Math.abs(x - sampleValleyCenter(z));
+  const mountainEnvelope = THREE.MathUtils.smoothstep(valleyDistance, 0.72, 7.6);
+  const farDepth = THREE.MathUtils.smoothstep(-z, 0.5, MOUNTAIN_DEPTH * 0.5);
+  const asymmetricMass = THREE.MathUtils.clamp(
+    0.88 + MOUNTAIN_NOISE.noise(x * 0.035, z * 0.052, 43.2) * 0.34,
+    0.58,
+    1.22,
+  );
+  const valleyFloor = -3.08
+    + MOUNTAIN_NOISE.noise(x * 0.12, z * 0.1, 72.4) * 0.14
+    + farDepth * 0.34;
+  const primaryRelief = mountainEnvelope
+    * (0.66 + Math.pow(mountainRidge, 2.18) * 12.2)
+    * asymmetricMass;
+  const distantRange = farDepth
+    * (0.42 + Math.pow(mountainRidge, 1.82) * 3.12)
+    * (0.55 + mountainEnvelope * 0.45);
+  const erodedDetail = mountainEnvelope
+    * (erosionRidge - 0.48)
+    * (0.56 + mountainRidge * 0.94);
+
+  return valleyFloor + primaryRelief + distantRange + erodedDetail;
 }
 
 function sampleMountainParticle(index: number, roleSeed: number) {
@@ -1109,7 +1116,7 @@ function sampleMountainParticle(index: number, roleSeed: number) {
   let valleyCenter = sampleValleyCenter(z);
   let x = (random() - 0.5) * MOUNTAIN_WIDTH;
 
-  if (roleSeed < 0.52) {
+  if (roleSeed < 0.64) {
     const surface = sampleMountainHeight(x, z);
     return new THREE.Vector3(
       x + (random() - 0.5) * 0.045,
@@ -1118,10 +1125,7 @@ function sampleMountainParticle(index: number, roleSeed: number) {
     );
   }
 
-  if (roleSeed < 0.83) {
-    const side = random() < 0.5 ? -1 : 1;
-    const sideDistance = 2.35 + Math.pow(random(), 0.72) * (MOUNTAIN_WIDTH * 0.5 - 2.55);
-    x = valleyCenter + side * sideDistance;
+  if (roleSeed < 0.85) {
     const surface = sampleMountainHeight(x, z);
     const exposedHeight = Math.max(0.2, surface + 3.2);
     const rawLayerDepth = 0.28 + Math.pow(random(), 0.68) * (1.5 + exposedHeight * 0.52);
@@ -1134,13 +1138,19 @@ function sampleMountainParticle(index: number, roleSeed: number) {
     );
   }
 
-  if (roleSeed < 0.94) {
-    const side = random() < 0.5 ? -1 : 1;
-    const ridgeKind = random();
-    const ridgeDistance = ridgeKind < 0.68
-      ? 3.45 + Math.sin(z * 0.29) * 0.42 + Math.max(0, -z) * 0.055
-      : 6.8 + Math.sin(z * 0.18 + side) * 0.72;
-    x = valleyCenter + side * ridgeDistance + (random() - 0.5) * (0.36 + ridgeKind * 0.72);
+  if (roleSeed < 0.95) {
+    for (let attempt = 0; attempt < 7; attempt += 1) {
+      const candidateZ = (random() - 0.5) * MOUNTAIN_DEPTH;
+      const candidateX = (random() - 0.5) * MOUNTAIN_WIDTH;
+      const slopeX = Math.abs(sampleMountainHeight(candidateX + 0.18, candidateZ) - sampleMountainHeight(candidateX - 0.18, candidateZ));
+      const slopeZ = Math.abs(sampleMountainHeight(candidateX, candidateZ + 0.18) - sampleMountainHeight(candidateX, candidateZ - 0.18));
+      const slope = Math.hypot(slopeX, slopeZ);
+      if (random() < THREE.MathUtils.smoothstep(slope, 0.12, 1.1) || attempt === 6) {
+        x = candidateX;
+        z = candidateZ;
+        break;
+      }
+    }
     const surface = sampleMountainHeight(x, z);
     const plume = Math.pow(random(), 1.7) * (0.62 + Math.max(0, surface) * 0.09);
     return new THREE.Vector3(
@@ -1475,124 +1485,57 @@ function createGrassFluffGeometry(count: number) {
   return geometry;
 }
 
-function createMountainWireGeometry() {
-  const rows = 88;
-  const columns = 156;
-  const semanticPaths = 7;
-  const semanticSteps = 220;
-  const gridSegmentCount = rows * (columns - 1)
-    + (rows - 1) * columns
-    + (rows - 1) * (columns - 1);
-  const segmentCount = gridSegmentCount + semanticPaths * (semanticSteps - 1);
+function createMountainTerrainGeometry() {
+  const contourRows = 48;
+  const contourColumns = 224;
+  const erosionPaths = 11;
+  const erosionSteps = 164;
+  const segmentCount = contourRows * (contourColumns - 1)
+    + erosionPaths * (erosionSteps - 1);
   const positions = new Float32Array(segmentCount * 6);
   const phases = new Float32Array(segmentCount * 2);
   const weights = new Float32Array(segmentCount * 2);
-  const nodes = new Float32Array(rows * columns * 3);
   let vertex = 0;
 
-  for (let row = 0; row < rows; row += 1) {
-    const v = row / (rows - 1);
-    const baseZ = (v - 0.5) * MOUNTAIN_DEPTH;
-    for (let column = 0; column < columns; column += 1) {
-      const u = column / (columns - 1);
-      const nodeIndex = row * columns + column;
-      const edgeFade = Math.sin(u * Math.PI) * Math.sin(v * Math.PI);
-      const jitterX = (hashNumber(nodeIndex * 7.13 + 1.8) - 0.5) * 0.15 * edgeFade;
-      const jitterZ = (hashNumber(nodeIndex * 11.7 + 4.2) - 0.5) * 0.13 * edgeFade;
-      const x = (u - 0.5) * MOUNTAIN_WIDTH + jitterX;
-      const z = baseZ + jitterZ;
-      const offset = nodeIndex * 3;
-      nodes[offset] = x;
-      nodes[offset + 1] = sampleMountainHeight(x, z) + (hashNumber(nodeIndex * 3.7) - 0.5) * 0.025;
-      nodes[offset + 2] = z;
-    }
-  }
-
-  const writeNode = (nodeIndex: number, phase: number, weight: number) => {
-    const source = nodeIndex * 3;
-    const target = vertex * 3;
-    positions[target] = nodes[source];
-    positions[target + 1] = nodes[source + 1];
-    positions[target + 2] = nodes[source + 2];
-    phases[vertex] = phase;
-    weights[vertex] = weight;
-    vertex += 1;
-  };
-
-  const writeEdge = (from: number, to: number, phase: number) => {
-    const fromOffset = from * 3;
-    const toOffset = to * 3;
-    const averageHeight = (nodes[fromOffset + 1] + nodes[toOffset + 1]) * 0.5;
-    const rise = Math.abs(nodes[fromOffset + 1] - nodes[toOffset + 1]);
-    const ridge = THREE.MathUtils.smoothstep(averageHeight, -1.8, 4.8);
-    const slope = Math.min(1, rise * 1.6);
-    const brightNode = hashNumber(from * 2.17 + to * 0.73) > 0.972 ? 0.86 : 0;
-    const weight = 0.16 + ridge * 0.5 + slope * 0.32 + brightNode;
-    writeNode(from, phase, weight);
-    writeNode(to, phase, weight);
-  };
-
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns - 1; column += 1) {
-      const node = row * columns + column;
-      writeEdge(node, node + 1, row * 0.13 + column * 0.017);
-    }
-  }
-
-  for (let row = 0; row < rows - 1; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const node = row * columns + column;
-      writeEdge(node, node + columns, row * 0.11 + column * 0.021 + 2.4);
-    }
-  }
-
-  for (let row = 0; row < rows - 1; row += 1) {
-    for (let column = 0; column < columns - 1; column += 1) {
-      const node = row * columns + column;
-      const alternate = (row + column) % 2 === 0;
-      writeEdge(
-        alternate ? node : node + 1,
-        alternate ? node + columns + 1 : node + columns,
-        row * 0.09 + column * 0.019 + 5.7,
-      );
-    }
-  }
-
-  const writeSemanticPoint = (x: number, z: number, phase: number, weight: number) => {
+  const write = (x: number, z: number, phase: number, weight: number) => {
     const target = vertex * 3;
     positions[target] = x;
-    positions[target + 1] = sampleMountainHeight(x, z) + 0.035;
+    positions[target + 1] = sampleMountainHeight(x, z) + 0.025;
     positions[target + 2] = z;
     phases[vertex] = phase;
     weights[vertex] = weight;
     vertex += 1;
   };
 
-  for (let path = 0; path < semanticPaths; path += 1) {
-    const phase = 12.8 + path * 0.47;
-    // The valley floor is deliberately quieter than the two enclosing ridges.
-    // Otherwise the perspective compresses its centre line into a false waterfall.
-    const weight = path === 0 ? 0.46 : path < 3 ? 1.38 : 0.92;
+  for (let row = 0; row < contourRows; row += 1) {
+    const z = (row / (contourRows - 1) - 0.5) * MOUNTAIN_DEPTH;
+    const phase = row * 0.19;
+    const weight = row % 8 === 0 ? 0.82 : row % 3 === 0 ? 0.38 : 0.16;
+    for (let column = 0; column < contourColumns - 1; column += 1) {
+      const xStart = (column / (contourColumns - 1) - 0.5) * MOUNTAIN_WIDTH;
+      const xEnd = ((column + 1) / (contourColumns - 1) - 0.5) * MOUNTAIN_WIDTH;
+      write(xStart, z, phase, weight);
+      write(xEnd, z, phase, weight);
+    }
+  }
+
+  for (let path = 0; path < erosionPaths; path += 1) {
+    const lane = path / (erosionPaths - 1) - 0.5;
+    const phase = 14.2 + path * 0.53;
+    const weight = path === Math.floor(erosionPaths / 2) ? 0.72 : 0.2 + (path % 3) * 0.12;
     const pointAt = (progress: number) => {
       const z = (progress - 0.5) * MOUNTAIN_DEPTH;
-      const center = sampleValleyCenter(z);
-      const wallDistance = 3.45 + Math.sin(z * 0.29) * 0.42 + Math.max(0, -z) * 0.055;
-      const outerDistance = 6.8 + Math.sin(z * 0.18 + path) * 0.72;
-      const x = path === 0
-        ? center
-        : path === 1
-          ? center - wallDistance
-          : path === 2
-            ? center + wallDistance
-            : center + (path % 2 === 1 ? -outerDistance : outerDistance)
-              + Math.sin(z * (0.27 + path * 0.021)) * 0.52;
+      const valleyBias = (1 - Math.abs(lane) * 2) * sampleValleyCenter(z) * 0.36;
+      const x = lane * MOUNTAIN_WIDTH * 0.9
+        + valleyBias
+        + MOUNTAIN_NOISE.noise(z * 0.09, path * 0.27, 58.1) * (0.24 + Math.abs(lane) * 0.5);
       return { x, z };
     };
-    for (let step = 0; step < semanticSteps - 1; step += 1) {
-      const start = pointAt(step / (semanticSteps - 1));
-      const end = pointAt((step + 1) / (semanticSteps - 1));
-      writeSemanticPoint(start.x, start.z, phase, weight);
-      writeSemanticPoint(end.x, end.z, phase, weight);
+    for (let step = 0; step < erosionSteps - 1; step += 1) {
+      const start = pointAt(step / (erosionSteps - 1));
+      const end = pointAt((step + 1) / (erosionSteps - 1));
+      write(start.x, start.z, phase, weight);
+      write(end.x, end.z, phase, weight);
     }
   }
 
@@ -1929,7 +1872,7 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
   const grassLineGeometry = useMemo(() => createGrassLineGeometry(count), [count]);
   const grassFluffGeometry = useMemo(() => createGrassFluffGeometry(count), [count]);
   const grassWindGeometry = useMemo(() => createGrassWindGeometry(), []);
-  const mountainLineGeometry = useMemo(() => createMountainWireGeometry(), []);
+  const mountainLineGeometry = useMemo(() => createMountainTerrainGeometry(), []);
   const oceanLineGeometry = useMemo(() => createOceanLineGeometry(), []);
   const societyFlowGeometry = useMemo(() => createSocietyFlowGeometry(), []);
   const nebulaLineGeometry = useMemo(() => createNebulaStreamGeometry(), []);
@@ -1946,8 +1889,10 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
     return next;
   }, []);
   const palette = spirit.palette;
-  const mountainWireColor = useMemo(
-    () => new THREE.Color(palette[2]).lerp(new THREE.Color("#f4f6ff"), 0.56),
+  const mountainTerrainColor = useMemo(
+    () => new THREE.Color(palette[1])
+      .lerp(new THREE.Color(palette[2]), 0.48)
+      .lerp(new THREE.Color("#e7ebf2"), 0.14),
     [],
   );
   const grassUniforms = useMemo(
@@ -1993,7 +1938,7 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
   );
   const mountainUniforms = useMemo(
     () => ({
-      uColor: { value: mountainWireColor.clone() },
+      uColor: { value: mountainTerrainColor.clone() },
       uEnergy: { value: 0 },
       uLocalPointer: { value: new THREE.Vector2() },
       uMode: { value: 0 },
@@ -2146,8 +2091,9 @@ function ParticleWorld({ chapter, echo, entryOrigin, pointer, reducedMotion, spi
     grassWindMaterialRef.current?.uniforms.uColor.value.set(palette[0]);
     grassWindMaterialRef.current?.uniforms.uBrightColor.value.set(palette[2]);
     mountainMaterialRef.current?.uniforms.uColor.value
-      .set(palette[2])
-      .lerp(new THREE.Color("#f4f6ff"), 0.56);
+      .set(palette[1])
+      .lerp(new THREE.Color(palette[2]), 0.48)
+      .lerp(new THREE.Color("#e7ebf2"), 0.14);
     oceanMaterialRef.current?.uniforms.uColor.value.set(palette[2]);
     societyParticleMaterialRef.current?.uniforms.uColor.value.set(palette[0]);
     societyParticleMaterialRef.current?.uniforms.uBrightColor.value.set(palette[2]);
