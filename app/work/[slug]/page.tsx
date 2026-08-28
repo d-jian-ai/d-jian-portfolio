@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { WorkDetail } from "@/components/work-detail";
 import { getWorkBySlug, works } from "@/data/work";
-import { TaikooLiCaseStudy } from "./taikoo-li-case-study";
 
 type WorkPageProps = {
   params: Promise<{
@@ -43,7 +42,7 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
   }
 
   if (work.slug === "taikoo-li-digital-district") {
-    return <TaikooLiCaseStudy work={work} />;
+    redirect("/images/tkl-experience/index.html");
   }
 
   return <WorkDetail work={work} />;
