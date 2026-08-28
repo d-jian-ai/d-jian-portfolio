@@ -13,7 +13,6 @@ import {
   useState,
 } from "react";
 import * as THREE from "three";
-import { PolySpeciesPreview } from "@/components/poly-species/poly-species-preview";
 import {
   SPACE_INDEX_EXPERIMENTS,
   SPACE_INDEX_INTERFACE_COPY,
@@ -702,7 +701,7 @@ export function SpaceIndexPage() {
 
         .space-labs-projects {
           display: grid;
-          gap: clamp(130px, 16vh, 210px) clamp(34px, 5vw, 90px);
+          gap: clamp(110px, 14vh, 180px) clamp(34px, 5vw, 90px);
           grid-template-columns: repeat(12, minmax(0, 1fr));
           margin: 0 auto;
           max-width: 1510px;
@@ -726,18 +725,18 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-card.layout-wide {
-          aspect-ratio: 1.88 / 1;
-          grid-column: 1 / span 9;
+          aspect-ratio: 16 / 9;
+          grid-column: 1 / span 10;
         }
 
         .space-labs-card.layout-poly {
-          aspect-ratio: 1.52 / 1;
-          grid-column: 1 / span 9;
+          aspect-ratio: 16 / 9;
+          grid-column: 5 / span 8;
         }
 
         .space-labs-card.layout-district {
-          aspect-ratio: 1.5 / 1;
-          grid-column: 4 / span 9;
+          aspect-ratio: 16 / 9;
+          grid-column: 2 / span 10;
         }
 
         .space-labs-card__visual,
@@ -748,8 +747,8 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-card__visual {
-          filter: grayscale(1) saturate(0.25) brightness(0.72) contrast(1.06);
-          transform: translate3d(var(--card-shift-x), var(--card-shift-y), 0) scale(1.075);
+          filter: grayscale(0.08) saturate(0.96) brightness(0.94) contrast(1.02);
+          transform: translate3d(var(--card-shift-x), var(--card-shift-y), 0) scale(1.035);
           transition: filter 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
           will-change: filter, transform;
         }
@@ -761,6 +760,7 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-preview-frame {
+          background: #111;
           height: 100%;
           overflow: hidden;
           position: relative;
@@ -768,33 +768,18 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-preview-frame.is-particle {
-          background: #68726d;
+          background: #050914;
         }
 
         .space-labs-preview-frame.is-poly {
-          align-items: center;
-          background: #fec54f;
-          display: flex;
-          justify-content: center;
-        }
-
-        .space-labs-preview-frame.is-poly .poly-species-preview {
-          aspect-ratio: 16 / 9;
-          flex: 0 0 auto;
-          height: auto;
-          inset: auto;
-          position: relative;
-          width: 112%;
+          background: #9876d0;
         }
 
         .space-labs-preview-frame.is-district {
-          align-items: center;
-          background: #e8eceb;
-          display: flex;
-          justify-content: center;
+          background: #f4f1e8;
         }
 
-        .space-labs-preview-frame.is-district img {
+        .space-labs-preview-frame img {
           display: block;
           height: 100%;
           object-fit: cover;
@@ -802,30 +787,25 @@ export function SpaceIndexPage() {
           width: 100%;
         }
 
-        .space-labs-card__visual .space-labs-particle-preview {
-          background: #68726d;
-          inset: 0;
-          position: absolute;
-        }
-
-        .space-labs-card__visual .space-labs-particle-preview canvas {
-          height: 100% !important;
-          width: 100% !important;
-        }
-
-        .space-labs-card__visual .poly-species-preview {
-          inset: 0;
-        }
-
         .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.22);
+          background: linear-gradient(
+            180deg,
+            rgba(8, 10, 9, 0.04) 0%,
+            rgba(8, 10, 9, 0.02) 48%,
+            rgba(8, 10, 9, 0.36) 100%
+          );
           pointer-events: none;
-          transition: background-color 520ms cubic-bezier(0.22, 1, 0.36, 1);
+          transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
           z-index: 1;
         }
 
         .space-labs-card.layout-district .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.42);
+          background: linear-gradient(
+            180deg,
+            rgba(8, 10, 9, 0.08) 0%,
+            rgba(8, 10, 9, 0.08) 44%,
+            rgba(8, 10, 9, 0.56) 100%
+          );
         }
 
         .space-labs-card__tribute {
@@ -1054,12 +1034,12 @@ export function SpaceIndexPage() {
 
         .space-labs-card:hover .space-labs-card__mask,
         .space-labs-card:focus-visible .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.06);
+          opacity: 0.58;
         }
 
         .space-labs-card.layout-district:hover .space-labs-card__mask,
         .space-labs-card.layout-district:focus-visible .space-labs-card__mask {
-          background: rgba(8, 10, 9, 0.25);
+          opacity: 0.76;
         }
 
         .space-labs-card:hover .space-labs-card__category,
@@ -1244,7 +1224,7 @@ export function SpaceIndexPage() {
           .space-labs-scroll { grid-column: 2; justify-self: start; margin-top: 26px; }
           .space-labs-card.layout-wide,
           .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { grid-column: 1 / span 11; }
+          .space-labs-card.layout-district { grid-column: 1 / span 12; }
         }
 
         @media (max-width: 820px) {
@@ -1266,7 +1246,7 @@ export function SpaceIndexPage() {
           .space-labs-projects { display: grid; gap: 58px; grid-template-columns: 1fr; padding: 0 24px 120px; }
           .space-labs-card.layout-wide,
           .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 1 / 1.04; grid-column: 1; margin: 0; min-height: 0; }
+          .space-labs-card.layout-district { aspect-ratio: 4 / 3; grid-column: 1; margin: 0; min-height: 0; }
           .space-labs-card__interface { padding: 20px; }
           .space-labs-card__tribute { height: 28px; top: 62px; }
           .space-labs-card__bottom { display: block; }
@@ -1295,7 +1275,7 @@ export function SpaceIndexPage() {
           .space-labs-projects[data-view="list"] { padding-inline: 12px; }
           .space-labs-card.layout-wide,
           .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 0.9 / 1; }
+          .space-labs-card.layout-district { aspect-ratio: 4 / 3; }
           .space-labs-card__title-window { --title-row-height: 2.35rem; }
           .space-labs-card__title-track strong { font-size: 1.72rem; }
           .space-labs-card__summary { font-size: 0.7rem; }
@@ -1313,8 +1293,7 @@ export function SpaceIndexPage() {
         }
 
         @media (pointer: coarse) {
-          .space-labs-card__visual { filter: grayscale(0.2) saturate(0.82) brightness(0.9); }
-          .space-labs-card__mask { background: rgba(8, 10, 9, 0.2); }
+          .space-labs-card__visual { filter: grayscale(0.05) saturate(0.96) brightness(0.96); }
         }
 
         @media (pointer: fine) {
@@ -1472,180 +1451,34 @@ function ProjectCard({
 }
 
 function ProjectPreview({ kind }: { kind: SpaceIndexPreviewKind }) {
-  if (kind === "particle-field") {
-    return (
-      <div className="space-labs-preview-frame is-particle">
-        <div className="space-labs-particle-preview">
-          <CleanParticlePreview />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === "poly-species") {
-    return (
-      <div className="space-labs-preview-frame is-poly">
-        <PolySpeciesPreview />
-      </div>
-    );
-  }
-
+  const cover = {
+    "district-image": {
+      alt: "太古里数字街区的彩色体素建筑编辑场景",
+      className: "is-district",
+      src: "/images/space-cards/digital-district.webp",
+    },
+    "particle-field": {
+      alt: "由发光粒子与网格构成的深邃山谷",
+      className: "is-particle",
+      src: "/images/space-cards/particle-chronicle.webp",
+    },
+    "poly-species": {
+      alt: "紫色空间中由多边形碎片构成的蝴蝶",
+      className: "is-poly",
+      src: "/images/space-cards/poly-species.webp",
+    },
+  } satisfies Record<SpaceIndexPreviewKind, { alt: string; className: string; src: string }>;
+  const preview = cover[kind];
   return (
-    <div className="space-labs-preview-frame is-district">
+    <div className={`space-labs-preview-frame ${preview.className}`}>
       <img
-        alt=""
+        alt={preview.alt}
         decoding="async"
-        src="/images/taikoo-li/digital-district-hollow-render.png"
+        loading="lazy"
+        src={preview.src}
       />
     </div>
   );
-}
-
-const previewParticleVertexShader = /* glsl */ `
-  attribute float aRole;
-  attribute float aSeed;
-
-  uniform float uTime;
-  uniform vec2 uPointer;
-
-  varying float vAlpha;
-  varying float vRole;
-  varying float vHeading;
-
-  void main() {
-    vec3 transformed = position;
-    float slowTime = uTime * (0.12 + aRole * 0.08);
-    float scout = step(aRole, 0.25);
-    float carrier = step(0.25, aRole) * step(aRole, 0.5);
-    float weaver = step(0.5, aRole) * step(aRole, 0.75);
-    float dissolver = step(0.75, aRole);
-    float current = sin(transformed.x * (0.58 + aRole * 0.14) + slowTime * 2.0 + aSeed * 5.0);
-    transformed.y += current * (0.045 + scout * 0.08 + dissolver * 0.055);
-    transformed.x += slowTime * (0.12 + scout * 0.13 + carrier * 0.06);
-    transformed.x = mod(transformed.x + 5.5, 11.0) - 5.5;
-
-    vec2 pointerPosition = vec2(uPointer.x * 4.6, uPointer.y * 2.3);
-    vec2 pointerDelta = pointerPosition - transformed.xy;
-    float pointerInfluence = exp(-dot(pointerDelta, pointerDelta) * 0.55);
-    vec2 direction = normalize(pointerDelta + vec2(0.001));
-    transformed.xy += direction * pointerInfluence * (0.08 + carrier * 0.08 + weaver * 0.13);
-    transformed.xy += vec2(-direction.y, direction.x) * pointerInfluence * (scout * 0.12 + dissolver * 0.18);
-
-    vec4 viewPosition = modelViewMatrix * vec4(transformed, 1.0);
-    gl_Position = projectionMatrix * viewPosition;
-    float roleSize = 1.0 + weaver * 0.22 + dissolver * 0.34;
-    gl_PointSize = clamp((3.4 + aSeed * 1.2) * roleSize * (8.0 / max(2.0, -viewPosition.z)), 1.4, 5.4);
-    vAlpha = 0.48 + pointerInfluence * 0.46;
-    vRole = aRole;
-    vHeading = current * 0.45;
-  }
-`;
-
-const previewParticleFragmentShader = /* glsl */ `
-  precision highp float;
-
-  varying float vAlpha;
-  varying float vRole;
-  varying float vHeading;
-
-  void main() {
-    vec2 point = gl_PointCoord - 0.5;
-    float radius = length(point);
-    float core = 1.0 - smoothstep(0.12, 0.46, radius);
-    float halo = 1.0 - smoothstep(0.18, 0.5, radius);
-    float alpha = (core * 0.8 + halo * 0.2) * vAlpha;
-    if (alpha < 0.02) discard;
-    vec3 color = mix(vec3(0.42, 0.87, 0.91), vec3(0.56, 0.49, 1.0), smoothstep(0.24, 0.76, vRole));
-    color = mix(color, vec3(1.0, 0.44, 0.68), smoothstep(0.76, 1.0, vRole));
-    gl_FragColor = vec4(color, alpha);
-  }
-`;
-
-function CleanParticlePreview() {
-  return (
-    <Canvas
-      camera={{ far: 30, fov: 44, near: 0.1, position: [0, 0, 7.4] }}
-      dpr={[1, 1.25]}
-      gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
-    >
-      <CleanParticleMesh />
-    </Canvas>
-  );
-}
-
-function CleanParticleMesh() {
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const pointsRef = useRef<THREE.Points>(null);
-  const particles = useMemo(() => {
-    const count = 12400;
-    const positions = new Float32Array(count * 3);
-    const roles = new Float32Array(count);
-    const seeds = new Float32Array(count);
-
-    for (let index = 0; index < count; index += 1) {
-      const offset = index * 3;
-      const randomX = hashPreview(index * 1.17 + 4.3);
-      const randomY = hashPreview(index * 2.41 + 8.9);
-      const randomLift = hashPreview(index * 4.13 + 2.7);
-      const band = index % 6;
-      const x = (randomX - 0.5) * 10.8;
-      const habitatPull =
-        Math.exp(-Math.pow(x + 1.65, 2) * 0.42) * 0.34
-        - Math.exp(-Math.pow(x - 1.6, 2) * 0.38) * 0.26;
-      const y =
-        Math.sin(x * (0.56 + band * 0.025) + band * 1.18) * (0.34 + randomLift * 0.16)
-        + (band - 2.5) * 0.25
-        + habitatPull
-        + (randomY - 0.5) * 0.18;
-
-      positions[offset] = x;
-      positions[offset + 1] = y;
-      positions[offset + 2] = (randomLift - 0.5) * 0.3;
-      roles[index] = ((index % 100) + randomLift * 0.9) / 100;
-      seeds[index] = randomLift;
-    }
-
-    return { positions, roles, seeds };
-  }, []);
-  const uniforms = useMemo(
-    () => ({
-      uPointer: { value: new THREE.Vector2() },
-      uTime: { value: 0 },
-    }),
-    [],
-  );
-
-  useFrame((state, delta) => {
-    if (!materialRef.current || !pointsRef.current) return;
-    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-    materialRef.current.uniforms.uPointer.value.lerp(state.pointer, 1 - Math.exp(-delta * 7.5));
-  });
-
-  return (
-    <group>
-      <points frustumCulled={false} ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[particles.positions, 3]} />
-          <bufferAttribute attach="attributes-aRole" args={[particles.roles, 1]} />
-          <bufferAttribute attach="attributes-aSeed" args={[particles.seeds, 1]} />
-        </bufferGeometry>
-        <shaderMaterial
-          blending={THREE.NormalBlending}
-          depthTest
-          depthWrite={false}
-          fragmentShader={previewParticleFragmentShader}
-          ref={materialRef}
-          transparent
-          uniforms={uniforms}
-          vertexShader={previewParticleVertexShader}
-        />
-      </points>
-    </group>
-  );
-}
-
-function hashPreview(value: number) {
-  return Math.abs(Math.sin(value * 127.1) * 43758.5453) % 1;
 }
 
 function Atmosphere({
