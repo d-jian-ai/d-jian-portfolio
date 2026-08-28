@@ -1313,7 +1313,6 @@ function createParticleGeometry(count: number) {
 
   for (let index = 0; index < count; index += 1) {
     const seed = random();
-    const band = index % 4;
     const gridX = index % fieldColumns;
     const gridY = Math.floor(index / fieldColumns);
     const gridU = gridX / Math.max(1, fieldColumns - 1);

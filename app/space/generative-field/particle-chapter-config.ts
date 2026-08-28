@@ -1,4 +1,4 @@
-export type ParticleChapterDynamics = {
+type ParticleChapterDynamics = {
   amplitude: number;
   cameraDamping: number;
   cameraEnergyDolly: number;
