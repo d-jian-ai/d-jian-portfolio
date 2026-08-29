@@ -42,7 +42,7 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
   }
 
   if (work.slug === "taikoo-li-digital-district") {
-    redirect("/images/tkl-experience/index.html");
+    redirect("/images/tkl-experience/index.html?v=20260829-2");
   }
 
   return <WorkDetail work={work} />;
