@@ -701,7 +701,7 @@ export function SpaceIndexPage() {
 
         .space-labs-projects {
           display: grid;
-          gap: clamp(110px, 14vh, 180px) clamp(34px, 5vw, 90px);
+          gap: clamp(100px, 12vh, 160px) clamp(34px, 5vw, 90px);
           grid-template-columns: repeat(12, minmax(0, 1fr));
           margin: 0 auto;
           max-width: 1510px;
@@ -731,12 +731,15 @@ export function SpaceIndexPage() {
 
         .space-labs-card.layout-poly {
           aspect-ratio: 16 / 9;
-          grid-column: 5 / span 8;
+          grid-column: 4 / span 8;
         }
 
         .space-labs-card.layout-district {
-          aspect-ratio: 16 / 9;
-          grid-column: 2 / span 10;
+          aspect-ratio: 520 / 1126;
+          grid-column: 8 / span 4;
+          justify-self: end;
+          max-width: 520px;
+          width: 100%;
         }
 
         .space-labs-card__visual,
@@ -772,11 +775,11 @@ export function SpaceIndexPage() {
         }
 
         .space-labs-preview-frame.is-poly {
-          background: #171717;
+          background: #9b7ad5;
         }
 
         .space-labs-preview-frame.is-district {
-          background: #292929;
+          background: #f6f6f4;
         }
 
         .space-labs-preview-frame img {
@@ -1222,9 +1225,9 @@ export function SpaceIndexPage() {
           .space-labs-page[data-locale="fr"] .space-labs-heading h1 { font-size: clamp(2.45rem, 3.75vw, 3.35rem); }
           .space-labs-intro { max-width: 330px; }
           .space-labs-scroll { grid-column: 2; justify-self: start; margin-top: 26px; }
-          .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { grid-column: 1 / span 12; }
+          .space-labs-card.layout-wide { grid-column: 1 / span 12; }
+          .space-labs-card.layout-poly { grid-column: 2 / span 11; }
+          .space-labs-card.layout-district { grid-column: 7 / span 6; }
         }
 
         @media (max-width: 820px) {
@@ -1245,8 +1248,8 @@ export function SpaceIndexPage() {
           .space-labs-scroll { align-self: flex-end; margin-top: 30px; }
           .space-labs-projects { display: grid; gap: 58px; grid-template-columns: 1fr; padding: 0 24px 120px; }
           .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 4 / 3; grid-column: 1; margin: 0; min-height: 0; }
+          .space-labs-card.layout-poly { aspect-ratio: 4 / 3; grid-column: 1; margin: 0; min-height: 0; }
+          .space-labs-card.layout-district { aspect-ratio: 4 / 5; grid-column: 1; margin: 0; max-width: none; min-height: 0; }
           .space-labs-card__interface { padding: 20px; }
           .space-labs-card__tribute { height: 28px; top: 62px; }
           .space-labs-card__bottom { display: block; }
@@ -1274,8 +1277,8 @@ export function SpaceIndexPage() {
           .space-labs-projects,
           .space-labs-projects[data-view="list"] { padding-inline: 12px; }
           .space-labs-card.layout-wide,
-          .space-labs-card.layout-poly,
-          .space-labs-card.layout-district { aspect-ratio: 4 / 3; }
+          .space-labs-card.layout-poly { aspect-ratio: 4 / 3; }
+          .space-labs-card.layout-district { aspect-ratio: 4 / 5; }
           .space-labs-card__title-window { --title-row-height: 2.35rem; }
           .space-labs-card__title-track strong { font-size: 1.72rem; }
           .space-labs-card__summary { font-size: 0.7rem; }
@@ -1453,7 +1456,7 @@ function ProjectCard({
 function ProjectPreview({ kind }: { kind: SpaceIndexPreviewKind }) {
   const cover = {
     "district-image": {
-      alt: "由透明与彩色模块持续拆解重组的数字街区",
+      alt: "透明彩色体素街区中循环运动的未来装置",
       className: "is-district",
       src: "/images/space-cards/digital-district.webp",
     },
@@ -1463,7 +1466,7 @@ function ProjectPreview({ kind }: { kind: SpaceIndexPreviewKind }) {
       src: "/images/space-cards/particle-chronicle.webp",
     },
     "poly-species": {
-      alt: "几何碎片与叶脉共同重组出的开放生命形态",
+      alt: "紫色空间中缩小展示的低多边形蝴蝶",
       className: "is-poly",
       src: "/images/space-cards/poly-species.webp",
     },
