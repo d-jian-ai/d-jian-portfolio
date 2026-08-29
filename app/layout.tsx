@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "CREER — Digital Design & Creative Development",
   description:
     "An immersive portfolio across digital design, creative development, real-time 3D, and moving image.",
+  other: {
+    google: "notranslate",
+  },
   openGraph: {
     title: "CREER — Digital Design & Creative Development",
     description:
@@ -48,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html className="notranslate" lang="zh-CN" translate="no">
       <body>
         <AppChrome>{children}</AppChrome>
       </body>
