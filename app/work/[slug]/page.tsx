@@ -46,7 +46,7 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
   }
 
   if (work.slug === "digital-personality") {
-    redirect("/images/digital-personality/index.html?v=20260904-1");
+    redirect("/images/digital-personality/index.html?v=20260904-2");
   }
 
   return <WorkDetail work={work} />;

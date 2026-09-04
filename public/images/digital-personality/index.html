@@ -5,17 +5,26 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#E3EDF7">
 <meta name="google" content="notranslate">
-<title>数字人格插件 — Plugin de personnalité numérique</title>
+<title>数字人格插件 - Plugin de personnalité numérique</title>
 <meta name="description" content="Un plugin greffé dans les réseaux sociaux, qui filtre le bruit pour rééquilibrer personnalité numérique et identité réelle.">
-<script>window.__ERRLOG=[];addEventListener("error",function(e){__ERRLOG.push((e.message||String(e))+" @ "+String(e.filename||"").split("/").pop()+":"+e.lineno+":"+e.colno)});addEventListener("unhandledrejection",function(e){__ERRLOG.push("promise: "+e.reason)});</script>
-  <script type="module" crossorigin src="/images/digital-personality/assets/index-CYk5lqCv.js"></script>
-  <link rel="modulepreload" crossorigin href="/images/digital-personality/assets/main-D2JlZZb2.js">
-  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-D1vJVXOB.css">
-  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/index-CmeSIAUA.css">
+<script>
+try {
+  const locale = localStorage.getItem('creer-locale');
+  const active = locale === 'en' || locale === 'fr' || locale === 'zh' ? locale : 'zh';
+  document.documentElement.lang = active === 'zh' ? 'zh-CN' : active;
+  document.documentElement.dataset.lang = active;
+} catch (_) {
+  document.documentElement.dataset.lang = 'zh';
+}
+</script>
+  <script type="module" crossorigin src="/images/digital-personality/assets/index-CQeZOCPR.js"></script>
+  <link rel="modulepreload" crossorigin href="/images/digital-personality/assets/main-m0eMUedj.js">
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-vpyR4mN1.css">
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/index-Dbum-Gk-.css">
 </head>
 <body>
 
-<a class="portfolio-back" href="/work" aria-label="返回作品页">← <span>WORK</span></a>
+<a id="return-work" class="portfolio-back" href="/work" aria-label="返回作品列表"><span class="return-arrow" aria-hidden="true"></span></a>
 
 <!-- ══ 预载 ══ -->
 <!-- ══ 开场 ══
@@ -59,7 +68,7 @@
       </button>
       <button class="snd" id="snd" aria-pressed="false" aria-label="Activer le son">
         <span class="snd-ic" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span class="snd-lbl" id="sndLbl">声音 — 关</span>
+        <span class="snd-lbl" id="sndLbl">声音 - 关</span>
       </button>
     </div>
   </header>

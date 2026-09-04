@@ -5,14 +5,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <meta name="google" content="notranslate">
-<title>Écart identitaire — carte des relations · 项目 01</title>
+<title>Écart identitaire - carte des relations · 项目 01</title>
 <meta name="description" content="Une seule carte, en trois dimensions : la distance entre le soi vécu, le soi présenté et ce que les plateformes récompensent.">
-  <script type="module" crossorigin src="/images/digital-personality/assets/main-D2JlZZb2.js"></script>
-  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-D1vJVXOB.css">
+<script>
+try {
+  const locale = localStorage.getItem('creer-locale');
+  const active = locale === 'en' || locale === 'fr' || locale === 'zh' ? locale : 'zh';
+  document.documentElement.lang = active === 'zh' ? 'zh-CN' : active;
+  document.documentElement.dataset.lang = active;
+} catch (_) {
+  document.documentElement.dataset.lang = 'zh';
+}
+</script>
+  <script type="module" crossorigin src="/images/digital-personality/assets/main-m0eMUedj.js"></script>
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-vpyR4mN1.css">
 </head>
 <body class="ec-body">
 
-<a class="portfolio-back" href="./index.html" aria-label="返回数字人格项目主页">← <span>PROJECT 01</span></a>
+<a id="return-work" class="portfolio-back" href="./index.html" aria-label="返回数字人格项目主页"><span class="return-arrow" aria-hidden="true"></span></a>
 
 <a class="ec-skip" href="#ecA11y">Aller au contenu de la carte</a>
 
