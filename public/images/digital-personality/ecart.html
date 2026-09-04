@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="zh" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="google" content="notranslate">
+<title>Écart identitaire — carte des relations · 项目 01</title>
+<meta name="description" content="Une seule carte, en trois dimensions : la distance entre le soi vécu, le soi présenté et ce que les plateformes récompensent.">
+  <script type="module" crossorigin src="/images/digital-personality/assets/main-D2JlZZb2.js"></script>
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-D1vJVXOB.css">
+</head>
+<body class="ec-body">
+
+<a class="portfolio-back" href="./index.html" aria-label="返回数字人格项目主页">← <span>PROJECT 01</span></a>
+
+<a class="ec-skip" href="#ecA11y">Aller au contenu de la carte</a>
+
+<header class="ec-head">
+      <p class="ec-mark">数字身份如何被塑造，又如何彼此影响</p>
+    </header>
+
+<!-- ══ 一整张图。滚动只负责把它装配出来，不切换任何「路线」 ══ -->
+<div class="ec-stage" id="ecStage" data-entered="0">
+  <section class="ec-view" id="ecView" aria-label="身份关系图">
+    <canvas id="ecCanvas"></canvas>
+
+    <div class="ec-layer" id="ecLayer"></div>
+
+    <!-- HUD 只占四个角。参考站整屏就一句 SCROLL OR DRAG TO EXPLORE，
+         没有任何一栏文字压在画面里 —— 星场必须是主体。 -->
+    <div class="ec-hud" id="ecHud">
+    </div>
+    <div class="ec-persona" id="ecPersonaBar" hidden>
+      <p id="ecPersonaLine"></p>
+      <button id="ecPersonaStop" class="ec-btn ec-btn--ghost" type="button" data-ui="personaStop">ARRÊTER</button>
+    </div>
+  </section>
+</div>
+
+<!-- ══ INDEX ══ -->
+
+<!-- ══ 可访问性镜像：屏幕阅读器与键盘走这里 ══ -->
+<div class="ec-a11y" id="ecA11y" role="group" aria-label="Nœuds de la carte"></div>
+<p class="ec-sr" id="ecStatus" role="status" aria-live="polite"></p>
+
+<div class="ec-cursor" id="ecCursor" aria-hidden="true"><i></i></div>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN" data-boot="1" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E3EDF7">
+<meta name="google" content="notranslate">
+<title>数字人格插件 — Plugin de personnalité numérique</title>
+<meta name="description" content="Un plugin greffé dans les réseaux sociaux, qui filtre le bruit pour rééquilibrer personnalité numérique et identité réelle.">
+<script>window.__ERRLOG=[];addEventListener("error",function(e){__ERRLOG.push((e.message||String(e))+" @ "+String(e.filename||"").split("/").pop()+":"+e.lineno+":"+e.colno)});addEventListener("unhandledrejection",function(e){__ERRLOG.push("promise: "+e.reason)});</script>
+  <script type="module" crossorigin src="/images/digital-personality/assets/index-CYk5lqCv.js"></script>
+  <link rel="modulepreload" crossorigin href="/images/digital-personality/assets/main-D2JlZZb2.js">
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/main-D1vJVXOB.css">
+  <link rel="stylesheet" crossorigin href="/images/digital-personality/assets/index-CmeSIAUA.css">
+</head>
+<body>
+
+<a class="portfolio-back" href="/work" aria-label="返回作品页">← <span>WORK</span></a>
+
+<!-- ══ 预载 ══ -->
+<!-- ══ 开场 ══
+     不是进度条，是「信息正在被灌进来」：碎片一条条涌入、往上走、
+     被新的顶掉。语料和分类色就是首屏噪点用的那一套 —— 加载停下，
+     这些词就散成首屏满屏飘着的那片噪音。 -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot-col">
+    <div class="boot-mark">
+      <span class="fr">Plugin de personnalité numérique</span>
+      <span class="zh">数字人格插件</span>
+    </div>
+    <!-- 整个项目在问的就是这一句，所以它出现在最早的一屏 -->
+    <p class="boot-q">数字身份如何被塑造，又如何彼此影响</p>
+    <ul class="boot-feed" id="bootFeed"></ul>
+    <div class="boot-num"><span id="bootNum">0</span><em>%</em></div>
+  </div>
+</div>
+
+<!-- ══ 自定义光标 ══ -->
+<div class="cur" id="cur" aria-hidden="true"><i></i></div>
+
+<!-- ══ 章节轨 ══ -->
+
+<!-- ══ 首屏 ══ -->
+<main>
+<section class="hero" id="s0">
+  <div class="hero-scene">
+  <canvas id="noise" aria-hidden="true"></canvas>
+  <div class="hero-veil" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="mark rv" data-rv="1">
+      <span class="fr" data-i18n="markFr">Plugin de personnalité numérique</span>
+      <span class="zh" data-i18n="markZh">数字人格插件</span>
+    </div>
+    <div class="top-r rv" data-rv="1">
+      <button class="doc-btn" id="docBtn" aria-haspopup="dialog" aria-label="查看项目文档">
+        <span class="doc-ic" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="doc-lbl">查看文档</span>
+      </button>
+      <button class="snd" id="snd" aria-pressed="false" aria-label="Activer le son">
+        <span class="snd-ic" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="snd-lbl" id="sndLbl">声音 — 关</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="core">
+    <div class="core-in">
+      <div class="lede">
+        <p class="kicker rv" data-rv="2" >设计案例 · 数字身份</p>
+        <h1 id="h1"><span class="ln"><i>过滤噪音。</i></span><span class="ln"><i>找回<em>平衡<u></u></em>。</i></span></h1>
+        <p class="sub rv" data-rv="5" >四个过滤器，直接嵌进你的社交平台。逐个打开，看着噪音被拦截，这正是这个插件做的事。</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtres du plugin">
+        <button class="f rv" data-rv="6" data-f="divergent" aria-pressed="false" style="--fc:#F0954E">
+          <span class="f-top"><span class="f-no">01</span><span class="sw" aria-hidden="true"><i></i></span></span>
+          <span class="f-fr" >过滤分歧信息</span>
+          <span class="f-zh" >Filtrer les informations divergentes</span>
+          <span class="f-cnt"><span class="f-bar"><span></span></span><b data-cnt="divergent">0</b></span>
+        </button>
+        <button class="f rv" data-rv="7" data-f="emotion" aria-pressed="false" style="--fc:#E0607A">
+          <span class="f-top"><span class="f-no">02</span><span class="sw" aria-hidden="true"><i></i></span></span>
+          <span class="f-fr" >过滤情绪化内容</span>
+          <span class="f-zh" >Filtrer le contenu émotionnel</span>
+          <span class="f-cnt"><span class="f-bar"><span></span></span><b data-cnt="emotion">0</b></span>
+        </button>
+        <button class="f rv" data-rv="8" data-f="plan" aria-pressed="false" style="--fc:#5B93FF">
+          <span class="f-top"><span class="f-no">03</span><span class="sw" aria-hidden="true"><i></i></span></span>
+          <span class="f-fr" >按计划过滤内容</span>
+          <span class="f-zh" >Filtrer le contenu selon le plan</span>
+          <span class="f-cnt"><span class="f-bar"><span></span></span><b data-cnt="plan">0</b></span>
+        </button>
+        <button class="f rv" data-rv="9" data-f="amical" aria-pressed="false" style="--fc:#3FBF92">
+          <span class="f-top"><span class="f-no">04</span><span class="sw" aria-hidden="true"><i></i></span></span>
+          <span class="f-fr" >友善言论</span>
+          <span class="f-zh" >Discours amical</span>
+          <span class="f-cnt"><span class="f-bar"><span></span></span><b data-cnt="amical">0</b></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bot">
+    <div class="calm rv" data-rv="10">
+      <span class="lb" data-i18n="calmLb">平静时刻</span>
+      <span class="v"><b id="calmV">0</b><small>/ 238</small></span>
+    </div>
+    <div class="inter rv" data-rv="10">
+      <span class="lb" data-i18n="interLb">已拦截</span>
+      <span class="v"><b id="interV">0</b></span>
+    </div>
+    <div class="scroll rv" data-rv="11" aria-hidden="true">
+      <span class="rail-s"><i></i></span>
+      <span >向下</span>
+    </div>
+  </footer>
+  </div>
+</section>
+
+<!-- ══ 首屏 → 第二屏的交接 ══
+     不是黑幕盖场：首屏内容先压缩，浅色画面再闭合为一条横缝，
+     缝后的环境星与结构线按同一滚动进度释放。 -->
+<div class="ec-seal" id="ecSeal" aria-hidden="true">
+  <i class="ec-seal-a"></i>
+  <i class="ec-seal-b"></i>
+  <b class="ec-seal-line"></b>
+</div>
+
+<!-- ══ 第二屏 · 身份关系图 ══
+     整屏的 3D 关系图。.ec-stage 高 320svh，里面的 .ec-view 是 sticky，
+     所以滚过这一段时星图贴满视口，滚出去就自然释放给下一节。
+     同一套代码也支撑独立页 /ecart.html（那边 body 带 .ec-body）。
+     旧的两版（constellation / starmap）在 _archive/v1-constellation/。 -->
+
+<div class="ec-stage" id="ecStage" data-entered="0">
+  <section class="ec-view" id="ecView" aria-label="身份关系图">
+    <canvas id="ecCanvas"></canvas>
+    <div class="ec-layer" id="ecLayer"></div>
+
+    <header class="ec-head">
+      <p class="ec-mark">数字身份如何被塑造，又如何彼此影响</p>
+    </header>
+
+    <!-- HUD 只占四个角，中间全部留给星场 -->
+    <div class="ec-hud" id="ecHud">
+      <button id="ecContinue" class="ec-continue" type="button">
+        <span>继续探索</span>
+        <i aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="ec-persona" id="ecPersonaBar" hidden>
+      <p id="ecPersonaLine"></p>
+      <button id="ecPersonaStop" class="ec-btn ec-btn--ghost" type="button" data-ui="personaStop">ARRÊTER</button>
+    </div>
+  </section>
+</div>
+
+<section class="ch" id="ch-data" data-tone="light">
+  <header class="ch-h">
+    <p class="ch-k">Données</p>
+    <h2 class="ch-t">研究数据</h2>
+  </header>
+  <div class="ch-body">
+    <div class="blk" id="blk-scale">
+    <p class="lead">谁被影响</p>
+    <div class="strip" id="strip">
+      <svg class="st-nest" id="stNest" viewBox="0 0 232 232" role="img"
+           aria-label="全球人口、社交网络用户、重度用户的嵌套比例"></svg>
+      <ul class="st-key">
+        <li><i class="k0"></i><b>全球人口</b><em>80.3 亿</em></li>
+        <li><i class="k1"></i><b>社交网络用户</b><em>50 亿 · 占全球 62.3%</em></li>
+        <li><i class="k2"></i><b>重度用户 · 每天 6 小时以上</b><em>12.5 亿 · 占用户 25%</em></li>
+      </ul>
+    </div>
+    </div>
+
+    <div class="blk" id="blk-ratio">
+    <p class="lead">而在这些重度用户身上</p>
+    <div class="waffles" id="waffles"></div>
+    </div>
+
+    <div class="blk" id="blk-plat">
+    <p class="lead">不同软件下的差异</p>
+    <div class="plat" id="plat"></div>
+    </div>
+    <div class="blk geo" id="blk-geo">
+    <div class="geo-top">
+      <p class="lead">分布地区</p>
+      <div class="dims" role="group">
+        <button data-d="users" aria-pressed="true">用户数</button>
+        <button data-d="time"  aria-pressed="false">日均在线</button>
+        <button data-d="conf"  aria-pressed="false">人格冲突率</button>
+        <button data-d="acc"   aria-pressed="false">人均账号数</button>
+      </div>
+    </div>
+    <figure class="geo-fig"><svg id="geoSvg" viewBox="0 0 900 300" role="img" aria-label="六国分维度对比"></svg></figure>
+    <p class="geo-note" id="geoNote"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="ch-psn" data-tone="light">
+  <header class="ch-h">
+    <h2 class="ch-t">用户画像</h2>
+  </header>
+  <div class="ch-body">
+    <div class="blk" id="blk-psn">
+    <div class="psn">
+      <article class="ps" data-p="yang">
+        <header><h3>Yang Chen</h3><span class="meta">21 岁 · 模特 · 北京</span></header>
+        <p class="say">我的工作要求我无论在 T 台还是镜头前，都始终保持完美的形象和态度。但私下里我相当内敛、有点害羞，这和我在社交网络上的人格形成强烈反差。</p>
+        <dl class="pn">
+          <dt>痛点</dt><dd><span>线上形象的落差</span><span>隐藏真实个性</span><span>负面评论的影响</span><span>生活节奏的冲突</span></dd>
+          <dt>期待</dt><dd><span>展现真实的自己</span><span>管理负面情绪</span><span>减少社交网络的影响</span></dd>
+        </dl>
+        <button class="ps-open" data-open="yang">查看访谈记录 · 2 段</button>
+      </article>
+      <article class="ps" data-p="chao">
+        <header><h3>Chao Wang</h3><span class="meta">25 岁 · 网络维护工程师 · 青岛</span></header>
+        <p class="say">工作需要我频繁出差、独自处理网络设备，留给我和人交流的时间很少。在数字世界里我变得更情绪化，评论可能很极端，这和我工作中沉稳的样子正好相反。</p>
+        <dl class="pn">
+          <dt>痛点</dt><dd><span>缺少现实社交</span><span>线上情绪失控</span><span>两种状态难以协调</span></dd>
+          <dt>期待</dt><dd><span>把线上的表达带回现实</span><span>稳定情绪</span><span>建立真实的连接</span></dd>
+        </dl>
+        <button class="ps-open" data-open="chao">查看访谈记录 · 1 段</button>
+      </article>
+    </div>
+    </div>
+
+    <div class="blk" id="blk-sld">
+    <p class="lead">现实人格 ↔ 数字人格</p>
+    <div class="sld">
+      <div class="sld-bar">
+        <span class="sld-end left">现实人格</span>
+        <input type="range" id="morph" min="0" max="100" value="0" aria-label="在现实人格与数字人格之间切换">
+        <span class="sld-end right">数字人格</span>
+      </div>
+      <div class="sld-grid" id="sldGrid"></div>
+      <p class="sld-note" id="sldNote"></p>
+    </div>
+    </div>
+
+
+  </div>
+</section>
+
+<section class="ch" id="ch-quiz" data-tone="light">
+  <header class="ch-h">
+    <h2 class="ch-t">你呢</h2>
+  </header>
+  <div class="ch-body">
+    <div class="blk quiz-wrap" id="blk-quiz">
+    <p class="lead">先答，再看数据</p>
+    <div class="quiz" id="quiz">
+      <p class="qq" id="quizQ"></p>
+      <p class="qz-hint" id="qzHint"></p>
+      <div class="qz-opts" id="qzOpts" role="group"></div>
+      <p class="qz-picked" id="qzPicked" hidden></p>
+      <div class="qz-stage" id="qzStage" hidden><div class="dv" id="dv"></div></div>
+      <div class="qz-follow" id="qzFollow" hidden>
+        <p class="qq" id="qzQ2"></p>
+        <div class="qz-opts" id="qzOpts2" role="group"></div>
+        <p class="qz-picked" id="qzPicked2" hidden></p>
+      </div>
+      <p class="qz-verdict" id="qzVerdict" hidden></p>
+      <button class="qz-reset" id="qzReset" hidden></button>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="ch-jn" data-tone="light">
+  <header class="ch-h">
+    <h2 class="ch-t">用户旅程图</h2>
+  </header>
+  <div class="ch-body">
+    <div class="blk jn" id="blk-jn">
+    <figure class="jn-fig"><svg id="jnSvg" viewBox="0 0 900 300" role="img" aria-label="六阶段情绪曲线"></svg></figure>
+    <nav class="jn-nav" aria-label="阶段">
+      <button class="jn-prev" id="jnPrev" aria-label="上一阶段">←</button>
+      <ol class="jn-dots" id="jnDots"></ol>
+      <button class="jn-next" id="jnNext" aria-label="下一阶段">→</button>
+    </nav>
+    <div class="jn-panel" id="jnPanel"></div>
+    <p class="jn-loop" id="jnLoop" hidden></p>
+    </div>
+  </div>
+</section>
+
+<section class="dz" id="design">
+  <div class="dz-h">
+    <p class="dz-k">De la recherche au design</p>
+    <h2 class="dz-t">从研究到设计</h2>
+  </div>
+  <!-- 六步全部平铺，每步带自己的实物。以前是一条导轨、一次只露一步，
+       露在外面的只有文字 —— 那读起来是报告，不是过程。 -->
+  <div class="dz-body" id="dzSteps"></div>
+</section>
+
+<section class="ch" id="ch-end" data-tone="light">
+  <div class="ch-body">
+    <div class="blk end" id="blk-end">
+    <!-- 整个项目的核心隐喻就是这张：手里举着的是画出来的脸，
+         平板里播的是笑着的那张 —— 人的情绪是有限的，上传的那份不是。 -->
+    <figure class="fig fig--end">
+      <img src="/images/digital-personality/img/fig-mask.webp" alt="一个人举着手绘的面孔遮住自己，平板里播放着笑着的那张" width="600" height="785" loading="lazy" decoding="async">
+    </figure>
+    <p class="end-q">« As-tu aussi téléchargé tes émotions sur le cloud ? »</p>
+    <p class="end-a">你是不是也把情绪上传到云端了？</p>
+    <p class="end-n"><b>影响被控制在限度内时，它能促进自我认知。</b>插件要做的不是切断，是让你看见那条线在哪。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<dialog class="itw-dlg" id="itwDlg" aria-labelledby="dlgName">
+    <header class="dlg-h">
+      <div>
+        <h3 id="dlgName"></h3>
+        <span class="dlg-meta" id="dlgMeta"></span>
+      </div>
+      <button class="dlg-x" id="dlgX" aria-label="关闭">×</button>
+    </header>
+    <div class="dlg-body" id="dlgBody"></div>
+    <footer class="dlg-f">访谈记录 · 逐字整理自项目原始访谈</footer>
+  </dialog>
+
+  <!-- 文档查看器：只放预渲染的页面图，原 PDF 不进服务器，也没有下载入口 -->
+  <dialog class="doc-dlg" id="docDlg" aria-label="项目文档">
+    <header class="doc-h">
+      <div class="doc-ttl">
+        <h3>项目文档</h3>
+        <span class="doc-meta" id="docMeta"></span>
+      </div>
+      <button class="dlg-x" id="docX" aria-label="关闭">×</button>
+    </header>
+    <div class="doc-stage" id="docStage">
+      <button class="doc-nav doc-prev" id="docPrev" aria-label="上一页">‹</button>
+      <div class="doc-frame" id="docFrame"><div class="doc-pan" id="docPan"></div></div>
+      <button class="doc-nav doc-next" id="docNext" aria-label="下一页">›</button>
+    </div>
+    <footer class="doc-f">
+      <div class="doc-dots" id="docDots"></div>
+      <span class="doc-hint">按住左右拖动 · ← → 翻页 · Esc 关闭</span>
+    </footer>
+  </dialog>
+
+<!-- 第三屏六步的素材。design.js 会把它们分发到「从研究到设计」的各步骤里。
+     这里是真的隐藏（display:none），不是可见却标 aria-hidden。 -->
+<div class="store" id="store" hidden>
+  <div class="blk" id="blk-opts">
+  <p class="lead">四方案比选</p>
+  <div class="opts" id="opts"></div>
+  <p class="opt-why" id="optWhy"></p>
+  </div>
+
+  <div class="blk" id="blk-arch">
+  <p class="lead">信息架构</p>
+  <div class="arch" id="arch"></div>
+  </div>
+
+  <div class="blk" id="blk-flow">
+  <p class="lead">用户流</p>
+  <p class="flow-in">插件只有一条主路径，两个判断点。第一次用会先问一轮问题，之后每次进来都直接落在插件列表上。</p>
+  <div class="flow" id="flow"></div>
+  </div>
+
+  <div class="blk" id="blk-proto">
+  <p class="lead">界面</p>
+  <div class="proto">
+    <div class="proto-ph"><img id="protoImg" src="/images/digital-personality/img/Service_2_3.png" alt="应用界面" width="750" height="1624" loading="lazy"></div>
+    <div class="proto-side">
+      <h4 id="protoName"></h4>
+      <p id="protoDesc"></p>
+      <ul class="proto-list" id="protoList"></ul>
+    </div>
+  </div>
+  </div>
+
+  <div class="blk" id="blk-demo">
+  <p class="lead">插件开关</p>
+  <div class="demo">
+    <div class="demo-ph">
+      <img src="/images/digital-personality/img/Service_4_12.png" alt="社交平台信息流" width="750" height="1624" loading="lazy" decoding="async">
+      <div class="demo-ov" id="demoOv" aria-hidden="true"></div>
+    </div>
+    <div class="demo-side">
+      <button class="demo-sw" id="demoSw" aria-pressed="false">
+        <span class="sw" aria-hidden="true"><i></i></span>
+        <span class="demo-lb">启用内容过滤</span>
+      </button>
+      <ul class="demo-fx" id="demoFx"></ul>
+      <p class="demo-note" id="demoNote"></p>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ══ 内容仓库 ══
+     这些块不在页面上显示，它们等着星图来取：点开一个节点，
+     对应的块整个搬进面板，关掉再搬回来 —— 不重新渲染，
+     图表状态、展开状态、事件监听全部保留。 -->
+
+<div class="grain" aria-hidden="true"></div>
+</body>
+</html>

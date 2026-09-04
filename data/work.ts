@@ -67,6 +67,35 @@ export const works: Work[] = [
     featured: true,
     accent: "violet",
   },
+  {
+    slug: "digital-personality",
+    type: "web",
+    year: "2026",
+    index: "02",
+    role: {
+      zh: "产品设计 / 数据叙事 / 交互开发",
+      en: "Product design / Data storytelling / Interaction development",
+      fr: "Design produit / Récit de données / Développement interactif",
+    },
+    title: {
+      zh: "数字人格插件",
+      en: "Digital Personality Plugin",
+      fr: "Plugin de personnalité numérique",
+    },
+    summary: {
+      zh: "四个过滤器直接嵌进社交平台，让数字身份中的噪音被看见、被理解、被拦截。",
+      en: "Four filters plug into social platforms, making the noise around digital identity visible, legible, and controllable.",
+      fr: "Quatre filtres s'intègrent aux plateformes sociales pour rendre le bruit de l'identité numérique visible, lisible et maîtrisable.",
+    },
+    body: {
+      zh: "项目从数字身份与现实人格之间的张力出发，把问卷、访谈与二手研究组织成可探索的数据叙事。用户先在噪音场中操作四类内容过滤器，再进入三维身份关系图，并沿着用户画像、旅程图和设计过程理解插件如何落成。",
+      en: "The project begins with the tension between digital identity and lived personality, organizing surveys, interviews, and secondary research into an explorable data narrative. Visitors operate four content filters inside a field of social noise, enter a three-dimensional identity map, then follow the personas, journey, and design process behind the plugin.",
+      fr: "Le projet part de la tension entre identité numérique et personnalité vécue, puis transforme questionnaires, entretiens et recherches secondaires en récit de données à explorer. Le visiteur manipule quatre filtres dans un champ de bruit social, entre dans une carte identitaire en trois dimensions et suit les personas, le parcours et le processus de conception du plugin.",
+    },
+    tags: ["D3.js", "GSAP", "Interactive Data"],
+    featured: true,
+    accent: "mist",
+  },
 ];
 
 export function getWorkBySlug(slug: string) {

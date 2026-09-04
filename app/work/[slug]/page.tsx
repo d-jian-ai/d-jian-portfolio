@@ -45,5 +45,9 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
     redirect("/images/tkl-experience/index.html?v=20260829-2");
   }
 
+  if (work.slug === "digital-personality") {
+    redirect("/images/digital-personality/index.html?v=20260904-1");
+  }
+
   return <WorkDetail work={work} />;
 }

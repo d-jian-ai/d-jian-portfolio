@@ -50,7 +50,16 @@ export function ProjectVisual({
           style={{ objectFit: "cover", objectPosition: "center center" }}
         />
       )}
-      {slug !== "taikoo-li-digital-district" && (
+      {slug === "digital-personality" && (
+        <Image
+          alt="Digital personality plugin interface with four content filters"
+          fill
+          sizes="(max-width: 820px) 100vw, 55vw"
+          src="/images/digital-personality/cover.webp"
+          style={{ objectFit: "cover", objectPosition: "center center" }}
+        />
+      )}
+      {slug !== "taikoo-li-digital-district" && slug !== "digital-personality" && (
         <>
       <div className="visual-grid" />
       <div className="visual-scan" />
