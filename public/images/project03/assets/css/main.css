@@ -48,10 +48,10 @@ body.is-ready #boot{opacity:0;visibility:hidden}
 .boot__t span{color:#39414f}
 
 /* ═══ rail + progress ══════════════════════════════════════════ */
-.rail{position:fixed;right:max(18px,2vw);top:50%;transform:translateY(-50%);z-index:40;
+.rail{position:fixed;right:max(6px,env(safe-area-inset-right));top:50%;transform:translateY(-50%);z-index:40;
   display:flex;flex-direction:column;gap:14px;opacity:0;animation:fadeIn .8s .9s var(--e) forwards}
 @keyframes fadeIn{to{opacity:1}}
-.rail__i{display:flex;align-items:center;gap:10px;justify-content:flex-end;text-decoration:none}
+.rail__i{display:flex;flex-direction:row-reverse;align-items:center;gap:10px;justify-content:flex-start;text-decoration:none}
 .rail__d{width:7px;height:7px;border-radius:50%;background:var(--line2);
   transition:all .4s var(--e);flex:none}
 .rail__i em{font-size:11px;letter-spacing:.1em;color:var(--dim);opacity:0;transform:translateX(6px);

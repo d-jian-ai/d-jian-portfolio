@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { WorkDetail } from "@/components/work-detail";
 import { getWorkBySlug, works } from "@/data/work";
+import { LocalizedProjectEntry } from "./localized-project-entry";
 
 type WorkPageProps = {
   params: Promise<{
@@ -50,7 +51,7 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
   }
 
   if (work.liveUrl?.startsWith("/images/")) {
-    redirect(work.liveUrl);
+    return <LocalizedProjectEntry href={work.liveUrl} />;
   }
 
   return <WorkDetail work={work} />;
