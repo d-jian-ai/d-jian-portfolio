@@ -107,9 +107,9 @@ export const works: Work[] = [
       fr: "Design de service / Recherche utilisateur / Design d'interface",
     },
     title: {
-      zh: "Plan comprend · 孕育陪伴系统",
-      en: "Plan comprend · Maternity Care System",
-      fr: "Plan comprend · Accompagnement de la maternité",
+      zh: "孕育陪伴系统",
+      en: "Maternity Care System",
+      fr: "Accompagnement de la maternité",
     },
     summary: {
       zh: "为在华外籍孕产妇连接信息、就医与日常陪伴的服务系统。",
@@ -137,9 +137,9 @@ export const works: Work[] = [
       fr: "Design produit / Design d'information / Prototype interactif",
     },
     title: {
-      zh: "天气信息获取开关",
-      en: "Weather Information Switch",
-      fr: "Interrupteur d'information météorologique",
+      zh: "天气开关",
+      en: "Weather Switch",
+      fr: "Interrupteur météo",
     },
     summary: {
       zh: "把温度与出行建议放进熟悉的墙面开关，让老年人在出门前感知室内外温差。",
