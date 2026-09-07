@@ -96,6 +96,66 @@ export const works: Work[] = [
     featured: true,
     accent: "mist",
   },
+  {
+    slug: "project02",
+    type: "web",
+    year: "2024",
+    index: "03",
+    role: {
+      zh: "服务设计 / 用户研究 / 界面设计",
+      en: "Service design / User research / Interface design",
+      fr: "Design de service / Recherche utilisateur / Design d'interface",
+    },
+    title: {
+      zh: "Plan comprend · 孕育陪伴系统",
+      en: "Plan comprend · Maternity Care System",
+      fr: "Plan comprend · Accompagnement de la maternité",
+    },
+    summary: {
+      zh: "为在华外籍孕产妇连接信息、就医与日常陪伴的服务系统。",
+      en: "A service connecting information, healthcare, and everyday support for international mothers in China.",
+      fr: "Un service reliant information, soins et accompagnement quotidien pour les futures mères étrangères en Chine.",
+    },
+    body: {
+      zh: "从跨语言就医与孕期信息的障碍出发，项目通过访谈、用户画像、旅程图与服务蓝图，探索孕产妇、家人和医疗机构之间的协作。交互案例呈现从研究到移动端与医院端界面的完整设计过程。",
+      en: "Starting with language barriers in healthcare and access to pregnancy information, the project uses interviews, personas, journey maps, and a service blueprint to explore collaboration between mothers, families, and healthcare providers. The interactive case study follows the design from research to mobile and hospital interfaces.",
+      fr: "À partir des barrières linguistiques dans les soins et l'accès à l'information, le projet explore la collaboration entre mères, familles et établissements médicaux à travers entretiens, personas, parcours et blueprint de service. L'étude interactive retrace la conception, de la recherche aux interfaces mobiles et hospitalières.",
+    },
+    tags: ["Service Design", "UX Research", "Interactive Prototype"],
+    featured: false,
+    accent: "moss",
+    liveUrl: "/images/project02/index.html",
+  },
+  {
+    slug: "project03",
+    type: "visual",
+    year: "",
+    index: "04",
+    role: {
+      zh: "产品设计 / 信息设计 / 交互原型",
+      en: "Product design / Information design / Interactive prototype",
+      fr: "Design produit / Design d'information / Prototype interactif",
+    },
+    title: {
+      zh: "天气信息获取开关",
+      en: "Weather Information Switch",
+      fr: "Interrupteur d'information météorologique",
+    },
+    summary: {
+      zh: "把温度与出行建议放进熟悉的墙面开关，让老年人在出门前感知室内外温差。",
+      en: "A familiar wall switch brings temperature and travel advice into everyday use, helping older adults prepare for the cold outside.",
+      fr: "Un interrupteur familier affiche la température et des conseils de sortie pour aider les personnes âgées à anticiper le froid extérieur.",
+    },
+    body: {
+      zh: "项目围绕天气信息的获取方式展开，从情境观察、信息分析和用户画像走向实体产品。通过地图、三维模型、使用故事和测试记录，呈现一个天气信息开关的设计过程。",
+      en: "The project studies how people access weather information, moving from context, information analysis, and personas to a physical product. Maps, a three-dimensional model, usage stories, and testing records document the design of a weather information switch.",
+      fr: "Le projet étudie l'accès à l'information météorologique, du contexte et des personas jusqu'au produit physique. Cartes, modèle tridimensionnel, scénarios d'usage et essais racontent la conception d'un interrupteur météo.",
+    },
+    tags: ["Product Design", "Weather", "Three.js"],
+    featured: false,
+    accent: "amber",
+    liveUrl: "/images/project03/index.html",
+  },
 ];
 
 export function getWorkBySlug(slug: string) {

@@ -64,7 +64,7 @@ export function WorkIndex() {
             <div className="archive-entry-meta" data-reveal>
               <span>{work.index}</span>
               <span>
-                {typeLabels[work.type][locale]} / {work.year}
+                {typeLabels[work.type][locale]}{work.year && ` / ${work.year}`}
               </span>
             </div>
             <ProjectVisual
