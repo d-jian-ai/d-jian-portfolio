@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>天气信息获取开关 · Interrupteur d'obtention des informations météorologiques</title>
+<meta name="description" content="呼和浩特冬天，推开一扇门温度掉 41 度。一块保留按压手感、能显示温度与出行建议的墙面开关——交互式温差演示、气象数据可视化与三维爆炸图。">
+<meta name="theme-color" content="#06080c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111820'/><rect x='9' y='7' width='14' height='18' rx='3' fill='%232f7fd8'/></svg>">
+<link rel="stylesheet" href="assets/css/main.css?v=a8bc51c6">
+<style>
+.portfolio-back{position:fixed;top:max(10px,env(safe-area-inset-top));left:max(14px,env(safe-area-inset-left));z-index:210;display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(233,237,243,.18);border-radius:50%;background:rgba(14,19,26,.78);color:#e9edf3;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);text-decoration:none;transition:background .18s ease,border-color .18s ease}
+.portfolio-back:hover{background:#222936;border-color:rgba(233,237,243,.45)}
+.portfolio-back:focus-visible{outline:2px solid #ff9a4d;outline-offset:3px}
+.portfolio-back svg{width:20px;height:20px}
+@media(prefers-reduced-motion:reduce){.portfolio-back{transition:none}}
+</style>
+</head>
+<body>
+<a id="return-work" class="portfolio-back" href="/work" aria-label="返回作品列表 / Retour aux projets" title="返回作品 / Retour aux projets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg></a>
+<div id="boot" aria-hidden="true">
+  <div class="boot__mark"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <p class="boot__t">正在装配 <span>assemblage…</span></p>
+</div>
+
+<a class="skip" href="#thermal">跳到正文</a>
+<main id="app"></main>
+
+<script src="assets/js/app.js?v=a11b7b51"></script>
+<noscript><p style="padding:6rem 2rem;color:#e9edf3;font:16px/1.7 system-ui">本页面以动画交互为主，需要开启 JavaScript。</p></noscript>
+</body>
+</html>

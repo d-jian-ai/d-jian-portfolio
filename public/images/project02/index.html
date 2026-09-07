@@ -1,0 +1,1224 @@
+<!doctype html>
+<html lang="zh-CN" data-boot="1" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EAF6F6">
+<meta name="google" content="notranslate">
+<title>Plan comprend 孕育陪伴系统</title>
+<meta name="description" content="La vie commence ici, dans un cercle de soins parfaits. 一个面向在华外籍孕产妇的服务设计案例：从医院信息孤岛出发，做一套贯穿备孕到养育的孕育陪伴系统。">
+<script>document.documentElement.className+=" js";window.__ERR=[];addEventListener("error",function(e){__ERR.push((e.message||String(e))+" @ "+String(e.filename||"").split("/").pop()+":"+e.lineno)});addEventListener("unhandledrejection",function(e){__ERR.push("promise: "+e.reason)});</script>
+<link rel="stylesheet" href="/images/project02/fonts/fonts.css">
+  <script type="module" crossorigin src="/images/project02/assets/index-Brgu8Svd.js"></script>
+  <link rel="stylesheet" crossorigin href="/images/project02/assets/index-jZs9UDhe.css">
+</head>
+<body>
+
+<!-- ══════════ 开场 ══════════
+     不是进度条。孕期是按周数过的 —— 0 到 40，数字往上走，
+     六边形的边一条条画出来，走到 40 才进站。 -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot-in">
+    <svg class="boot-hex" viewBox="0 0 120 132" aria-hidden="true">
+      <path id="bootHex" d="M60 4 L112 34 L112 98 L60 128 L8 98 L8 34 Z"/>
+    </svg>
+    <div class="boot-wk"><b id="bootWk">0</b><em>semaine</em></div>
+    <p class="boot-line">La vie commence ici</p>
+    <div class="boot-bar"><i id="bootBar"></i></div>
+    <p class="boot-st" id="bootSt">载入字体</p>
+  </div>
+</div>
+
+<!-- ══════════ 章节轨 ══════════ -->
+<nav class="rail" id="rail" aria-label="章节导航"></nav>
+
+<!-- ══════════ 顶栏 ══════════ -->
+<header class="top" id="top">
+  <a class="mark" href="#s0">
+    <span class="mark-hex" aria-hidden="true">
+      <svg viewBox="0 0 40 44"><path d="M20 1.5 L37.5 11.5 L37.5 32.5 L20 42.5 L2.5 32.5 L2.5 11.5 Z"/><circle cx="23" cy="26" r="8" fill="#fff"/><circle cx="17" cy="17" r="6.4" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+    </span>
+    <span class="mark-t"><b>Plan comprend</b><i>孕育陪伴系统</i></span>
+  </a>
+  <div class="top-r">
+    <a class="btn-board" href="/work" aria-label="返回作品页">← 作品</a>
+    <span class="top-meta">Service design · 2024</span>
+    <button class="btn-board" id="docBtn" aria-haspopup="dialog">查看文档</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════ 首屏 ══════════
+     启动页那句法语是题眼：cercle de soins —— 一个圆环。
+     所以首屏就是那个圆环：六段弧 = 六个阶段，中间是 logo。 -->
+<section class="hero" id="s0" data-ch="00" data-nav="首屏">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  </div>
+
+  <div class="hero-in">
+    <p class="kicker rv">Service design · 服务设计案例</p>
+
+    <h1 class="rv" style="--d:.06s">
+      <span class="ln"><i>生命从这里开始，</i></span>
+      <span class="ln"><i>在一个<em>完整的照护圆环<u></u></em>里。</i></span>
+    </h1>
+    <p class="hero-fr rv" style="--d:.14s">« La vie commence ici, dans un cercle de soins parfaits. »</p>
+
+    <div class="hero-fig rv" style="--d:.2s">
+      <div class="hero-ring">
+        <svg viewBox="0 0 420 420" id="ring" aria-label="备孕、怀孕、产检、分娩、产后、养育六个阶段构成的照护圆环">
+          <g id="ringArcs"></g>
+          <g id="ringLabels"></g>
+          <g class="ring-core">
+            <path d="M210 148 L263 178 L263 240 L210 270 L157 240 L157 178 Z"/>
+            <circle cx="219" cy="222" r="24"/>
+            <circle class="o" cx="200" cy="196" r="19"/>
+          </g>
+        </svg>
+      </div>
+
+      <p class="ring-hint" id="ringHint">六个阶段</p>
+    </div>
+
+    <p class="sub rv" style="--d:.28s">在中国生活的外籍孕产妇，卡住她们的不是医疗水平，是<b>信息</b>：病历不通、费用不明、语言不通、产后无人接手。这个项目把这四件事做成一套系统。</p>
+
+    <div class="hero-foot rv" style="--d:.36s">
+      <span class="scroll-hint"><i></i>向下</span>
+      <span class="hero-tag">研究、洞察、服务蓝图、界面产出</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 01 缘起 ══════════ -->
+<section class="sec origine" id="s1" data-ch="01" data-nav="灵感">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">01</span>
+      <h2>灵感</h2>
+    </div>
+
+    <div class="ori-grid">
+      <figure class="ori-ph rv">
+        <img src="/images/project02/img/ph-itw-2.webp" alt="访谈现场，三人围坐交谈" loading="lazy" decoding="async">
+        <figcaption>他们在中国生活了二十多年，中文很好</figcaption>
+      </figure>
+
+      <div class="ori-tx">
+        <p class="lead rv">两个在中国生活了二十多年的朋友，今年迎来了孩子。他们熟悉这里的文化、习惯、街道，可怀孕这一年，还是撞上了一连串的麻烦。</p>
+        <p class="rv">问题不只出在医疗系统，也出在社会支持，更出在<b>针对在华外国人的政策与服务，几乎没人讲得清楚</b>。我从他们的经历出发，找到更多在中国怀孕、生产、育儿的外籍女性和年轻父母，想弄明白：跨文化处境下，她们真正缺的是什么。</p>
+        <p class="rv">这份研究想给到的，是政策制定者、社会服务机构和医疗系统，让更多国际家庭在中国过得从容一些。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ 02 孤岛 ══════════
+     项目的起点是一个结构性事实：数据不流动。
+     先让数据「断」给人看，再上数字。 -->
+<section class="sec silo" id="s2" data-ch="02" data-nav="孤岛">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">02</span>
+      <h2>信息孤岛</h2>
+    </div>
+
+    <p class="sec-lead rv">医院之间的信息系统各建各的。病历不出院墙，检查结果换一家就不认，于是同一张 B 超，孕妇要做第二遍、第三遍。</p>
+
+    <figure class="silo-viz rv wide-out">
+      <svg viewBox="0 0 900 250" id="siloSvg" aria-label="三家医院的病历系统各自封闭，之间的连线是断的；唯一还流动的是孕妇本人带着纸质单据"><g id="siloLinks"></g><g id="siloNodes"></g></svg>
+      <figcaption>三家医院，三套系统。中间两条线是断的，唯一还在流动的，是她本人。</figcaption>
+    </figure>
+
+    <!-- 五个数字共用同一群人。换一条读，同一片小人重新上色 ——
+         这样才看得出「60% 重复检查」和「30% 医院互通」说的是一件事的两头。 -->
+    <div class="cohort rv">
+      <div class="ch-stage">
+        <svg id="cohortSvg" viewBox="0 0 540 176" aria-hidden="true"></svg>
+        <p class="ch-cap"><b id="chNum">0</b><span>/ 100</span><i id="chTxt"></i></p>
+      </div>
+      <ol class="ch-list" id="chList"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 03 旅程 ══════════ -->
+<section class="sec parcours" id="s3" data-ch="03" data-nav="旅程">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">03</span>
+      <h2>六个阶段</h2>
+    </div>
+    <p class="sec-lead rv">从备孕到养育，一条走不回头的线。第三段「产检」是中国体系里最标准化、也最容易出现重复与过度的一段：项目的切口就在这里。</p>
+
+    <div class="stg rv wide-out">
+      <div class="stg-chart"><svg id="stgSvg" aria-label="六个阶段在孕周轴上的起止与重叠"></svg></div>
+      <aside class="stg-detail" id="stgDetail"></aside>
+    </div>
+
+    <h3 class="sub-h rv">六个维度</h3>
+    <p class="sec-lead rv">六层叠在同一条时间线上，一层压一层。</p>
+
+    <div class="strata">
+      <article class="st rv" style="--im:url(/images/project02/img/il-politique.webp)">
+        <span class="st-n">政策</span><span class="st-fr">Politique</span>
+        <p>信息不对称，服务不平等。政策标准逐地区不同，外籍孕妇获取医疗服务因此更复杂。</p>
+      </article>
+      <article class="st rv" style="--im:url(/images/project02/img/ph-argent.webp)">
+        <span class="st-n">经济</span><span class="st-fr">Économie</span>
+        <p>缺乏统一的价格标准与透明度。保险覆盖与支付能力的差异，直接决定她们能选哪家医院。</p>
+      </article>
+      <article class="st rv" style="--im:url(/images/project02/img/il-societe.webp)">
+        <span class="st-n">社会</span><span class="st-fr">Société</span>
+        <p>文化差异与语言壁垒。即便大城市有双语服务，与医护的沟通仍然吃力。</p>
+      </article>
+      <article class="st rv" style="--im:url(/images/project02/img/ph-stetho.webp)">
+        <span class="st-n">医疗</span><span class="st-fr">Soins de santé</span>
+        <p>缺少个性化。习惯了西方模式的孕妇，在问诊、产检、分娩上都要重新适应。</p>
+      </article>
+      <article class="st rv" style="--im:url(/images/project02/img/il-tech.webp)">
+        <span class="st-n">技术</span><span class="st-fr">Technologie</span>
+        <p>远程医疗已经普及，但数字基础设施与技术采纳程度参差，仍然接不上需求。</p>
+      </article>
+      <article class="st rv" style="--im:url(/images/project02/img/ph-educ.webp)">
+        <span class="st-n">教育</span><span class="st-fr">Éducation</span>
+        <p>大部分孕育科普是为中国女性写的，产前课程也多按中文母语者设计。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 04 田野 ══════════ -->
+<section class="sec terrain" id="s4" data-ch="04" data-nav="调研">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">04</span>
+      <h2>用户调研</h2>
+    </div>
+
+    <div class="itw">
+      <div class="itw-ph">
+        <figure class="rv"><img src="/images/project02/img/ph-itw-1.webp" alt="访谈现场，两人对着一份文件交谈" loading="lazy" decoding="async"></figure>
+      </div>
+      <ol class="itw-q">
+        <li class="q rv">因为外国人身份，你遇到过哪些麻烦？</li>
+        <li class="a rv">确实有一些，比如有些处方药在网上买不到。</li>
+        <li class="q rv">出行上呢，有没有实际的限制？</li>
+        <li class="a rv">有，但不是因为限制。是我们不熟悉那些手续的规则和步骤。</li>
+        <li class="a big rv">怀孕 32 周时，我和丈夫要去印尼参加婚礼。在中国，32 周后坐飞机需要三甲医院开具的证明：我们不知道这条规定。等去开证明，赶上假期和流程，根本来不及。最后整条行程改掉，还因为转机太晚，在机场过了一夜。</li>
+      </ol>
+    </div>
+
+    <h3 class="sub-h rv">一路都是纸</h3>
+    <p class="sec-lead rv"><b>病历是纸的，检查单是纸的。</b>系统里不流动的东西，只能她自己拿在手上。</p>
+
+    <div class="paper rv">
+      <div class="pp-stack" id="ppStack" aria-hidden="true"></div>
+      <div class="pp-tx">
+        <p class="pp-n"><b id="ppNum">0</b><span>个检查项目</span></p>
+        <p class="pp-d">A 院常规型：<b>8 次产检</b>，孕 11 周到 34 周，化验加辅助检查一共这么多项。每一项都要出一张结果，每一张都在她的包里。</p>
+        <ul class="pp-cases">
+          <li><b>去产检</b>上一次的单子要自己按顺序理好带上，医生才看得到经过。</li>
+          <li><b>去取药</b>处方之外还要带着文件，窗口只认纸。</li>
+          <li><b>换医院</b>新医院调不到旧医院的记录，整摞重来一遍。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h rv">费用：事前估不出来</h3>
+    <p class="sec-lead rv">同样叫「产检套餐」，<b>每家医院各定各的</b>：管的孕周不同，计价方式也不同。三份价目摆在一起，也没法直接比价。</p>
+
+    <div class="cost rv">
+      <ul class="cost-why">
+        <li>套餐分类没说清各档的差别</li>
+        <li>套餐里塞了非必要的检查项</li>
+        <li>不同套餐之间价差过大</li>
+      </ul>
+      <div class="cost-docs">
+        <figure><img src="/images/project02/img/ph-doc-2.webp" width="1500" height="1500" alt="产前检查套式计划，常规型与安心型" loading="lazy" decoding="async" data-d="0"><figcaption>产前检查套式计划 · 常规型 / 安心型</figcaption></figure>
+        <figure><img src="/images/project02/img/ph-doc-1.webp" width="1500" height="1500" alt="另一家医院的产检单，含打包价" loading="lazy" decoding="async" data-d="1"><figcaption>另一家医院的单子 · 含打包价</figcaption></figure>
+        <figure><img src="/images/project02/img/ph-doc-3.webp" width="1200" height="1115" alt="分娩套式计划表，三档价格" loading="lazy" decoding="async" data-d="2"><figcaption>分娩套式计划 · 三档价格</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="tarif rv">
+      <div id="tfBox"></div>
+    </div>
+
+    <h3 class="sub-h rv">共情图</h3>
+
+    <div class="emp rv" id="empBox" aria-label="共情图：说、想、做、感受四类原话"></div>
+
+  </div>
+</section>
+
+<!-- ══════════ 05 画像 ══════════ -->
+<section class="sec personas" id="s5" data-ch="05" data-nav="画像">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">05</span>
+      <h2>用户画像</h2>
+    </div>
+
+    <p class="sec-lead rv">一个在孕中期，一个还在备孕。<b>卡住她们的是同一批东西</b>：费用说不清、信息接不上、产后没人接。</p>
+
+    <p class="ps-cmp rv"><button type="button" id="psCmp" aria-pressed="false">叠加对比两人的轮廓</button></p>
+    <div class="ps rv" id="psWrap">
+      <article class="ps-c" style="--c:var(--teal)">
+        <header class="ps-hd">
+          <img class="ps-av" src="/images/project02/img/ps-eula.webp" alt="Eula Harris" loading="lazy" decoding="async">
+          <div class="ps-id">
+            <span class="ps-wk">孕 19 周</span>
+            <h3>Eula Harris</h3>
+            <p class="ps-meta"><span>31 岁</span><span>意大利</span><span>自由职业</span></p>
+            <p class="ps-lang">意大利语、英语、中文</p>
+          </div>
+        </header>
+        <blockquote class="ps-say">我不确定这些费用是不是都必要。我希望困惑的时候，有个人能给我可靠的信息。</blockquote>
+        <div class="ps-b">
+          <h4>卡住她的四件事</h4>
+          <ol class="ps-flags">
+            <li>孕产病历调不出来</li>
+            <li>买药的渠道有限</li>
+            <li>医疗费用不透明</li>
+            <li>产后照护没有适配文化差异的选项</li>
+          </ol>
+        </div>
+        <div class="ps-b ps-need">
+          <h4>她要的</h4>
+          <ul class="ps-want"><li>个性化的医疗服务</li><li>统一的电子健康档案</li><li>文化适配的产后照护</li></ul>
+        </div>
+        <figure class="ps-hex">
+          <svg viewBox="0 0 380 240" aria-label="Eula 的六维轮廓">
+            <g class="hx-grid">
+              <polygon points="190,50 250.6,85 250.6,155 190,190 129.4,155 129.4,85"/>
+              <polygon points="190,73.3 230.4,96.7 230.4,143.3 190,166.7 149.6,143.3 149.6,96.7"/>
+              <polygon points="190,96.7 210.2,108.4 210.2,131.6 190,143.3 169.8,131.6 169.8,108.4"/>
+              <line x1="190" y1="120" x2="190" y2="50"/><line x1="190" y1="120" x2="250.6" y2="85"/>
+              <line x1="190" y1="120" x2="250.6" y2="155"/><line x1="190" y1="120" x2="190" y2="190"/>
+              <line x1="190" y1="120" x2="129.4" y2="155"/><line x1="190" y1="120" x2="129.4" y2="85"/>
+            </g>
+            <polygon class="tr" points="231.1,74.6 253.8,119 225.6,155.5 197.1,153.4 184.6,152.6 149.5,119 172,62.7"/>
+            <g class="hx-lb">
+              <text x="190" y="36" text-anchor="middle">信息获取</text>
+              <text x="276" y="82">家庭支持</text><text x="276" y="160">预算</text>
+              <text x="190" y="212" text-anchor="middle">文化理解</text>
+              <text x="104" y="160" text-anchor="end">开放度</text><text x="104" y="82" text-anchor="end">人脉</text>
+            </g>
+          </svg>
+        <figcaption class="ps-lgd"><span class="k self">本人</span><span class="k other">对照</span></figcaption></figure></article>
+
+      <article class="ps-c" style="--c:var(--peach)">
+        <header class="ps-hd">
+          <img class="ps-av" src="/images/project02/img/ps-alice.webp" alt="Alice" loading="lazy" decoding="async">
+          <div class="ps-id">
+            <span class="ps-wk pre">备孕中</span>
+            <h3>Alice</h3>
+            <p class="ps-meta"><span>29 岁</span><span>英国</span><span>教师，在中国 2 年</span></p>
+            <p class="ps-lang">英语、中文</p>
+          </div>
+        </header>
+        <blockquote class="ps-say">作为外国人，我必须为迎接孩子做足准备，包括看懂现行政策、能用到哪些医疗资源，以及我从自己国家能拿到什么帮助。</blockquote>
+        <div class="ps-b">
+          <h4>卡住她的四件事</h4>
+          <ol class="ps-flags">
+            <li>各科室之间约诊难以协调</li>
+            <li>孕期心理健康的教育资源缺失</li>
+            <li>专科治疗费用不可预期</li>
+            <li>高危妊娠缺少专门陪伴</li>
+          </ol>
+        </div>
+        <div class="ps-b ps-need">
+          <h4>她要的</h4>
+          <ul class="ps-want"><li>各方之间更顺畅的沟通</li><li>更完整的产前教育</li></ul>
+        </div>
+        <figure class="ps-hex">
+          <svg viewBox="0 0 380 240" aria-label="Alice 的六维轮廓">
+            <g class="hx-grid">
+              <polygon points="190,50 250.6,85 250.6,155 190,190 129.4,155 129.4,85"/>
+              <polygon points="190,73.3 230.4,96.7 230.4,143.3 190,166.7 149.6,143.3 149.6,96.7"/>
+              <polygon points="190,96.7 210.2,108.4 210.2,131.6 190,143.3 169.8,131.6 169.8,108.4"/>
+              <line x1="190" y1="120" x2="190" y2="50"/><line x1="190" y1="120" x2="250.6" y2="85"/>
+              <line x1="190" y1="120" x2="250.6" y2="155"/><line x1="190" y1="120" x2="190" y2="190"/>
+              <line x1="190" y1="120" x2="129.4" y2="155"/><line x1="190" y1="120" x2="129.4" y2="85"/>
+            </g>
+            <polygon class="tr" points="218.9,93.2 264.1,119 225.6,155.5 177.1,169.4 148.5,119 186.6,84"/>
+            <g class="hx-lb">
+              <text x="190" y="36" text-anchor="middle">信息获取</text>
+              <text x="276" y="82">家庭支持</text><text x="276" y="160">预算</text>
+              <text x="190" y="212" text-anchor="middle">文化理解</text>
+              <text x="104" y="160" text-anchor="end">开放度</text><text x="104" y="82" text-anchor="end">人脉</text>
+            </g>
+          </svg>
+        <figcaption class="ps-lgd"><span class="k self">本人</span><span class="k other">对照</span></figcaption></figure></article>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ 06 关系 ══════════ -->
+<section class="sec eco" id="s6" data-ch="06" data-nav="相关者">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">06</span>
+      <h2>利益相关者</h2>
+    </div>
+    <p class="sec-lead rv">二十三个角色，三层。<b>越往外，她越使不上力</b>：家里的人她叫得动，政策那一层她连问都不知道问谁。</p>
+
+    <div class="sh rv wide-out">
+      <div class="sh-stage"><div class="sh-map" id="shMap" aria-label="二十三个角色，三层区域"></div></div>
+      <div class="sh-col">
+        <aside class="sh-side" id="shSide"></aside>
+        <div class="sh-needs" id="shNeeds"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 07 洞察 ══════════ -->
+<section class="sec insight" id="s7" data-ch="07" data-nav="洞察">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">07</span>
+      <h2>洞察与机会</h2>
+    </div>
+
+    <p class="sec-lead rv">八个痛点归到三条洞察下面，每条洞察对着自己的一组机会点。</p>
+
+    <div class="insf rv" id="insBox" aria-label="八个痛点归入三条洞察，各自打开机会点"></div>
+    <div class="ins-foot" id="insFoot"></div>
+  </div>
+</section>
+
+<!-- ══════════ 08 主轴 ══════════ -->
+<section class="sec hmw" id="s8" data-ch="08" data-nav="策略">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">08</span>
+      <h2>设计策略</h2>
+    </div>
+    <p class="sec-lead rv">所有机会点收成三条主轴。</p>
+
+    <div class="hmw-wrap">
+      <div class="hmw-wheel rv">
+        <button class="hw a1 on" data-axis="1"><b>医疗系统的透明</b><i>Transparence du système médical</i></button>
+        <button class="hw a2" data-axis="2"><b>文化适应与信任重建</b><i>Adaptation culturelle et confiance</i></button>
+        <button class="hw a3" data-axis="3"><b>产后管理与社区支持</b><i>Gestion postnatale et communauté</i></button>
+        <span class="hw-hub" aria-hidden="true"></span>
+      </div>
+
+      <div class="hmw-panes">
+        <div class="hp on" data-axis="1">
+          <article><h4>怎样让医疗费用透明，减少外籍孕妇的经济不确定？</h4><ul><li>费用透明模块：医院与月子中心价目对比</li><li>保险测算工具</li></ul></article>
+          <article><h4>怎样让病历在机构之间流转，避免重复检查？</h4><ul><li>统一的电子健康档案，跨机构同步</li><li>数据保护机制，换取信任</li></ul></article>
+          <article><h4>怎样按用户需求个性化推荐医疗服务？</h4><ul><li>基于病历的智能推荐</li><li>医疗服务提供方的评价体系</li></ul></article>
+        </div>
+        <div class="hp" data-axis="2">
+          <article><h4>怎样跨过语言与文化的壁垒，让她进得了中国医疗系统？</h4><ul><li>实时翻译（语音与文字）</li><li>多语言医疗指南与科普课程</li></ul></article>
+          <article><h4>怎样用更直觉的工具，简化医疗信息的获取？</h4><ul><li>基于位置的导航与推荐</li><li>孕期阶段的图形时间轴</li></ul></article>
+          <article><h4>怎样做一个互动平台，帮外籍孕妇融入社群？</h4><ul><li>线上社群，交换经验</li><li>母婴照护与本地传统的讲座</li></ul></article>
+        </div>
+        <div class="hp" data-axis="3">
+          <article><h4>怎样让产后照护同时接得住本地与外籍的需求？</h4><ul><li>个性化产后照护方案</li><li>接入月子中心等线下服务</li></ul></article>
+          <article><h4>怎样靠长期健康随访留住用户？</h4><ul><li>健康提醒（疫苗、哺乳）</li><li>家庭档案管理模块</li></ul></article>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-h rv">设计原则</h3>
+    <p class="sec-lead rv">五条尺子，用来量后面每一屏。</p>
+
+    <ol class="pri rv" id="priList">
+      <li>
+        <button type="button">
+          <span class="pri-n">01</span>
+          <span class="pri-fig">
+            <svg viewBox="0 0 140 72" aria-hidden="true">
+              <path class="ln" d="M14 36H130"/>
+              <rect class="bx" x="46" y="19" width="26" height="34" rx="5"/>
+              <rect class="bx" x="82" y="19" width="26" height="34" rx="5"/>
+              <rect class="bx" x="118" y="19" width="18" height="34" rx="5"/>
+              <circle class="dot" cx="16" cy="36" r="8"/>
+            </svg>
+          </span>
+          <h4>档案跟着人走</h4>
+          <p class="pri-do"><em>过线</em>一次录入，处处可用。</p>
+          <p class="pri-no"><em>否决</em>要她重填的地方，都算没做完。</p>
+        </button>
+      </li>
+
+      <li>
+        <button type="button">
+          <span class="pri-n">02</span>
+          <span class="pri-fig">
+            <svg viewBox="0 0 140 72" aria-hidden="true">
+              <rect class="bx hi" x="40" y="8" width="60" height="22" rx="6"/>
+              <path class="hook" d="M70 30v10"/>
+              <g class="why">
+                <rect class="bar" x="40" y="42" width="60" height="5" rx="2.5"/>
+                <rect class="bar" x="40" y="53" width="46" height="5" rx="2.5"/>
+                <rect class="bar" x="40" y="64" width="53" height="5" rx="2.5"/>
+              </g>
+            </svg>
+          </span>
+          <h4>先摊开，再推荐</h4>
+          <p class="pri-do"><em>过线</em>推荐必须附依据。</p>
+          <p class="pri-no"><em>否决</em>不解释的推荐，不给。</p>
+        </button>
+      </li>
+
+      <li>
+        <button type="button">
+          <span class="pri-n">03</span>
+          <span class="pri-fig">
+            <svg viewBox="0 0 140 72" aria-hidden="true">
+              <g class="pair">
+                <rect class="bar" x="26" y="10" width="88" height="5" rx="2.5"/>
+                <rect class="bar a" x="26" y="19" width="88" height="5" rx="2.5"/>
+              </g>
+              <g class="pair">
+                <rect class="bar" x="26" y="34" width="64" height="5" rx="2.5"/>
+                <rect class="bar a" x="26" y="43" width="64" height="5" rx="2.5"/>
+              </g>
+              <g class="pair">
+                <rect class="bar" x="26" y="58" width="78" height="5" rx="2.5"/>
+                <rect class="bar a" x="26" y="67" width="78" height="5" rx="2.5"/>
+              </g>
+            </svg>
+          </span>
+          <h4>多语言是默认态</h4>
+          <p class="pri-do"><em>过线</em>有中文的地方，就有她那一版。</p>
+          <p class="pri-no"><em>否决</em>把语言做成设置项。</p>
+        </button>
+      </li>
+
+      <li>
+        <button type="button">
+          <span class="pri-n">04</span>
+          <span class="pri-fig">
+            <svg viewBox="0 0 140 72" aria-hidden="true">
+              <rect class="bx" x="34" y="4" width="72" height="64" rx="8"/>
+              <g class="scr">
+                <rect class="bar" x="44" y="14" width="52" height="5" rx="2.5"/>
+                <rect class="bar" x="44" y="25" width="38" height="5" rx="2.5"/>
+                <rect class="bar" x="44" y="36" width="48" height="5" rx="2.5"/>
+                <rect class="bar" x="44" y="47" width="34" height="5" rx="2.5"/>
+              </g>
+              <rect class="pill" x="42" y="52" width="56" height="12" rx="6"/>
+            </svg>
+          </span>
+          <h4>别让她一个人待着</h4>
+          <p class="pri-do"><em>过线</em>社区与求助常驻入口。</p>
+          <p class="pri-no"><em>否决</em>把求助藏进二级页。孤立本身是健康风险。</p>
+        </button>
+      </li>
+
+      <li>
+        <button type="button">
+          <span class="pri-n">05</span>
+          <span class="pri-fig">
+            <svg viewBox="0 0 140 72" aria-hidden="true">
+              <rect class="bx" x="36" y="4" width="68" height="64" rx="6"/>
+              <rect class="bar dash" x="46" y="16" width="48" height="4" rx="2"/>
+              <rect class="bar dash" x="46" y="26" width="38" height="4" rx="2"/>
+              <rect class="bar dash" x="46" y="36" width="44" height="4" rx="2"/>
+              <path class="sig" d="M47 56c5-9 9 6 15-2 5-6 10 5 16-3"/>
+            </svg>
+          </span>
+          <h4>机器起草，人签字</h4>
+          <p class="pri-do"><em>过线</em>AI 内容可改、可否决、留痕。</p>
+          <p class="pri-no"><em>否决</em>机器直接落库。判断权在医生。</p>
+        </button>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ 09 蓝图 ══════════ -->
+<section class="sec blueprint" id="s9" data-ch="09" data-nav="旅程图">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">09</span>
+      <h2>用户旅程图</h2>
+    </div>
+    <p class="sec-lead rv">前、中、后，七个触点。每一步展开六行：前四行她看得见，后两行她看不见。</p>
+
+    <div class="jm rv wide-out">
+      <div class="jm-stage" id="jmStage" tabindex="0" role="group" aria-label="用户旅程：七个触点，可拖动或用方向键切换">
+        <svg id="jmSvg" aria-label="情绪曲线与七个触点"></svg>
+        <div class="jm-ctl">
+          <button type="button" id="jmPrev" aria-label="上一步">←</button>
+          <button type="button" id="jmPlay">播放</button>
+          <button type="button" id="jmNext" aria-label="下一步">→</button>
+          <div class="jm-dots" id="jmDots" role="group" aria-label="七个触点"></div>
+          <button type="button" id="jmAll" class="jm-all">全部展开</button>
+        </div>
+      </div>
+      <div class="jm-card" id="jmCard"></div>
+      <div class="jm-scroll" id="jmMatrix" hidden><div class="bg-grid" id="jmGrid" aria-label="服务蓝图：七个触点 × 六行"></div></div>
+    </div>
+
+    <h3 class="sub-h rv">系统架构</h3>
+    <p class="sec-lead rv">五层，三种流：走服务的、走数据的、走钱的各一条。</p>
+
+    <div class="sysd rv">
+      <div class="sy-3d" id="sysBox" aria-label="系统架构：五层堆叠，可拖动旋转"></div>
+      <div class="sysd-side">
+        <div class="sys-bar">
+          <button type="button" id="sysPlay" class="sys-play">播放</button>
+          <div class="sys-steps" id="sysSteps" role="group" aria-label="六个步骤"></div>
+        </div>
+        <div class="sys-legend" id="sysLegend" aria-label="三种流"></div>
+        <div class="sys-cap" id="sysCap"></div>
+      </div>
+    </div>
+
+    <div class="biz">
+      <div class="bz rv"><h4>关键伙伴</h4><ul><li>本地诊所与医院</li><li>社区组织与互助小组</li><li>集中式医疗数据库</li><li>本地与国际合作方</li></ul></div>
+      <div class="bz rv"><h4>关键活动</h4><ul><li>病历集中化</li><li>文化适配的健康教育</li><li>主动的个性化随访</li></ul></div>
+      <div class="bz rv hi"><h4>价值主张</h4><ul><li>完整的陪伴平台</li><li>降低文化与语言壁垒</li></ul></div>
+      <div class="bz rv"><h4>触达渠道</h4><ul><li>7×24 多语言协助</li><li>互动社区</li><li>专属移动应用</li><li>线上社群平台</li></ul></div>
+      <div class="bz rv"><h4>用户</h4><ul><li>外籍孕产妇</li><li>本地医疗服务提供方</li></ul></div>
+      <div class="bz rv wide"><h4>成本结构</h4><ul><li>平台开发与运维</li><li>人员培训与招募</li><li>市场与获客</li><li>合作成本</li></ul></div>
+      <div class="bz rv wide"><h4>收入来源</h4><ul><li>高级服务订阅：面向个性化医疗与随访</li><li>公共/私营补贴与资助：支撑项目，并提供免费或低价服务</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 10 产出 ══════════ -->
+<section class="sec design" id="s10" data-ch="10" data-nav="产出">
+  <div class="wrap">
+    <div class="sec-h rv">
+      <span class="no">10</span>
+      <h2>设计产出</h2>
+    </div>
+
+    <h3 class="sub-h rv">标志规范</h3>
+    <p class="sec-lead rv">来源是襁褓里的婴儿和一只奶嘴：一个实心的圆，一个空心的环。</p>
+
+    <div class="lg rv">
+
+      <figure class="lg-cell">
+        <figcaption class="lg-k">来源</figcaption>
+        <div class="lg-fig lg-from">
+          <div class="lg-step">
+            <span class="lg-slot"><img src="/images/project02/img/il-bebe.webp" alt="襁褓中的婴儿" loading="lazy" decoding="async"></span>
+            <i>襁褓的婴儿</i>
+          </div>
+          <span class="lg-arw" aria-hidden="true"></span>
+          <div class="lg-step">
+            <span class="lg-slot"><img src="/images/project02/img/il-tetine.webp" alt="奶嘴" loading="lazy" decoding="async"></span>
+            <i>奶嘴</i>
+          </div>
+          <span class="lg-arw" aria-hidden="true"></span>
+          <div class="lg-step">
+            <span class="lg-slot">
+              <svg viewBox="0 0 100 100" class="lg-abs" aria-label="抽象后的圆与环">
+                <circle class="a" cx="60.4" cy="60.6" r="34"/>
+                <circle class="b" cx="27" cy="27" r="20.8"/>
+              </svg>
+            </span>
+            <i>圆与环</i>
+          </div>
+        </div>
+        <p class="lg-cap">婴儿蜷成一个<b>实心的圆</b>，奶嘴留下一个<b>空心的环</b>。两个形叠起来，再用六边形收口。</p>
+      </figure>
+
+      <figure class="lg-cell">
+        <figcaption class="lg-k">构成</figcaption>
+        <div class="lg-fig">
+          <svg viewBox="0 0 220 200" class="lg-geo" aria-label="标志的几何构成：六边形宽 6x，圆直径 2.7x">
+            <g class="lg-grid" id="lgGrid"></g>
+            <path class="hx" d="M110 26 L172 62 L172 134 L110 170 L48 134 L48 62 Z"/>
+            <circle class="cir" cx="120" cy="112" r="28"/>
+            <circle class="ring" cx="98" cy="88" r="21"/>
+            <g class="lg-dim">
+              <line x1="48" y1="184" x2="172" y2="184"/>
+              <line class="tick" x1="48" y1="178" x2="48" y2="190"/>
+              <line class="tick" x1="172" y1="178" x2="172" y2="190"/>
+              <text x="110" y="196" text-anchor="middle">6x</text>
+              <line x1="30" y1="62" x2="30" y2="134"/>
+              <line class="tick" x1="24" y1="62" x2="36" y2="62"/>
+              <line class="tick" x1="24" y1="134" x2="36" y2="134"/>
+              <text x="18" y="98" text-anchor="middle" transform="rotate(-90 18 98)">4x</text>
+              <line class="lead" x1="120" y1="112" x2="196" y2="112"/>
+              <text x="200" y="115">2.7x</text>
+            </g>
+          </svg>
+        </div>
+        <p class="lg-cap">六边形宽 <b>6x</b>、高 <b>4x</b>；实心圆直径 <b>2.7x</b>；空心环的圆心距实心圆心 <b>1.4x</b>，两个形永远咬住一角。</p>
+      </figure>
+
+      <figure class="lg-cell">
+        <figcaption class="lg-k">安全区与最小尺寸</figcaption>
+        <div class="lg-fig">
+          <div class="lg-stage">
+            <span class="lg-clear" id="lgClear" aria-hidden="true"></span>
+            <svg class="lg-mark" id="lgMark" viewBox="0 0 200 210" aria-label="标志">
+              <path class="hx" d="M100 12 L176 56 L176 144 L100 188 L24 144 L24 56 Z"/>
+              <circle class="cir" cx="112" cy="120" r="34"/>
+              <circle class="ring" cx="86" cy="84" r="26"/>
+            </svg>
+          </div>
+          <label class="lg-slider">
+            <span>尺寸</span>
+            <input type="range" id="lgRange" min="20" max="180" value="120" aria-label="标志尺寸">
+            <b><i id="lgSize">120</i> px</b>
+          </label>
+        </div>
+        <p class="lg-cap" id="lgNote">安全区 = <b>0.5x</b>（六边形宽的 1/12），四周留白不小于它。最小可用 <b>24 px</b>，再小环就糊了。</p>
+      </figure>
+
+    </div>
+
+    <h3 class="sub-h rv">用户端 · 十四屏</h3>
+    <p class="sec-lead rv">从启动页到社区，十四屏连成一条走得通的流程：产检记录、多语言医生、体征监测、兴趣圈。</p>
+
+    <div class="ui rv">
+      <svg class="ui-arrow" id="uiArrow" aria-hidden="true"><path id="uiArrowPath"/></svg>
+      <div class="ui-anno" id="uiAnno"></div>
+      <div class="ui-frame">
+        <div class="ui-phone">
+          <div class="ui-scr" id="uiScr">
+
+            <div class="u-sb"><span>5:21</span><span class="u-sig"><i></i><i></i><i></i><i></i><b class="u-wifi"></b><b class="u-bat"></b></span></div>
+
+            <!-- ══ 启动页 ══ -->
+            <section class="u-pg" data-pg="splash">
+              <div class="u-splash">
+                <span class="u-sp-b b1"></span><span class="u-sp-b b2"></span>
+                <span class="u-sp-b b3"></span><span class="u-sp-b b4"></span>
+                <span class="u-sp-d d1"></span><span class="u-sp-d d2"></span><span class="u-sp-d d3"></span><span class="u-sp-d d4"></span>
+                <p class="u-sp-t">La vie commence ici, dans un cercle de soins parfaits.</p>
+                <span class="u-sp-hex" aria-hidden="true">
+                  <svg viewBox="0 0 140 154"><path d="M70 4 L131 39 L131 115 L70 150 L9 115 L9 39 Z"/><circle cx="79" cy="93" r="27" fill="#fff"/><circle cx="63" cy="63" r="20" fill="none" stroke="#fff" stroke-width="5"/></svg>
+                </span>
+                <p class="u-sp-n">Plan comprend</p>
+                <ul class="u-sp-l">
+                  <li>Gestion unifiée des dossiers</li>
+                  <li>Analyse personnalisée</li>
+                  <li>Support multilingue</li>
+                  <li>Transparence des coûts</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- ══ 首页 ══ -->
+            <section class="u-pg" data-pg="home" data-tabbar="1">
+              <header class="u-top">
+                <button class="u-ic" aria-label="菜单"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+                <button class="u-ic" aria-label="搜索"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+                <h6>La 20e semaine</h6>
+              </header>
+              <div class="u-body">
+                <div class="u-hd"><h5>panneau de bord</h5>
+                  <button class="u-bell" aria-label="通知"><svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2.5h15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i></i></button>
+                </div>
+
+                <article class="u-card">
+                  <div class="u-ch"><span class="u-tab pu"></span><h6>Overview</h6>
+                    <button class="u-more" data-go="hr23">Infos Monit Intell <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+                  </div>
+                  <div class="u-vitals">
+                    <div class="u-vital g">
+                      <span class="u-vic"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 3 10 2.5-6 1.5 3h5"/></svg></span>
+                      <span class="u-vt">11.45 AM</span>
+                      <span class="u-vlb">Tension <b>i</b></span>
+                      <span class="u-vhi">135</span>
+                      <svg class="u-spark" viewBox="0 0 120 46" aria-hidden="true"><path d="M2 36 C18 36 20 22 34 24 C48 26 50 36 62 30 C76 23 84 9 118 7"/></svg>
+                      <span class="u-vlo">85</span>
+                      <span class="u-chip">Plus stable</span>
+                    </div>
+                    <!-- 导出件里第二张只露一条边，读不到内容，就只画露出来的那部分 -->
+                    <div class="u-vital b" aria-hidden="true"><span class="u-vic"></span></div>
+                  </div>
+                </article>
+
+                <article class="u-card tint">
+                  <div class="u-ch"><span class="u-tab bl"></span><h6>quantité d'exercice</h6></div>
+                  <div class="u-bars" id="uiBars"></div>
+                </article>
+
+                <div class="u-tabs"><button class="on">Rendez-vous prénataux</button><button>Vaccination</button></div>
+
+                <article class="u-plan">
+                  <div class="u-plan-h"><h6>Suivi de grossesse régulier à la 20e semaine</h6>
+                    <span class="u-bolt"><svg viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg></span>
+                  </div>
+                  <ol class="u-steps">
+                    <li><span>1</span><b>Routine et entretiens</b>
+                      <p>Température corporelle, pouls, respiration, tension artérielle, poids, examen physique (hauteur utérine, périmètre abdominal, œdèmes, etc.)</p></li>
+                    <li><span>2</span><b>analyse</b></li>
+                  </ol>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 跟踪 ══ -->
+            <section class="u-pg" data-pg="suivi" data-tabbar="1">
+              <div class="u-body pad">
+                <article class="u-card tint">
+                  <div class="u-ch"><span class="u-tab bl"></span><h6>vérification des restes</h6><span class="u-chev">»</span></div>
+                  <div class="u-exams">
+                    <div class="u-ex"><i>Écoute du cœur fœtal avec un Doppler</i><i>Prélèvement sanguin veineux</i><span class="u-exi" aria-hidden="true"></span><em>semaine 28</em></div>
+                    <div class="u-ex"><i>échographie obstétricale</i><span class="u-exi" aria-hidden="true"></span><em>semaine 30</em></div>
+                    <div class="u-ex"><i>analyse d'urine</i><span class="u-exi" aria-hidden="true"></span><em>semaine 34</em></div>
+                  </div>
+                  <p class="u-soft">Encore 10 semaines avant de rencontrer ton bébé, repose-toi bien et mange équilibré.</p>
+                </article>
+
+                <article class="u-card">
+                  <div class="u-ch"><span class="u-tab gr"></span><h6>Vérifier les registres</h6></div>
+                  <div class="u-reg on">
+                    <div class="u-reg-h"><b>Semaine 24</b><span>2024/11/16</span></div>
+                    <p class="u-prop">Proposer: S'intéresser à la supplémentation en vitamines</p>
+                    <ul class="u-checks">
+                      <li>Surveillance Cardiaque Fœtale<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></li>
+                      <li>Analyse Sanguine Complète<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></li>
+                      <li>Consultations Prénatales<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><button class="u-det" data-go="suiviDet">Voir Les Détails</button></li>
+                    </ul>
+                  </div>
+                  <button class="u-reg" data-go="suiviEcho"><b>Semaine 20</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suiviEcho"><b>Semaine 15–16</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suiviEcho"><b>Semaine 11–12</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suiviEcho"><b>Semaine 8</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 检查详情 ══ -->
+            <section class="u-pg" data-pg="suiviDet" data-tabbar="1">
+              <header class="u-bk"><button class="u-back" data-go="suivi" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span>Semaine 24</span></header>
+              <div class="u-body pad">
+                <article class="u-card tint">
+                  <div class="u-ch"><span class="u-tab gr"></span><h6>Vérifier les registres</h6></div>
+                  <div class="u-reg-h big"><b>Semaine 24</b><span>2024/11/16</span></div>
+                  <ol class="u-exs">
+                    <li>
+                      <span class="u-wm" aria-hidden="true">01<i>Normalité</i></span>
+                      <dl>
+                        <dt>Nom De L'examen:</dt><dd>Suivi De La Tension Artérielle Et Évaluation De La Santé <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></dd>
+                        <dt>Date De L'examen:</dt><dd>20 Mai 2024</dd>
+                        <dt>Médecin Examinateur:</dt><dd><u>Dr. Li Hua</u><em>(Confirmé)</em></dd>
+                        <dt>Contenu De L'examen:</dt><dd>Surveillance De La Pression Artérielle, Évaluation Du Rythme Cardiaque Et Des Variations Du Poids.</dd>
+                        <dt>Description Courte:</dt><dd>Cet Examen Évalue La Santé Cardiovasculaire De La Femme Enceinte Pour Assurer Une Grossesse Saine.</dd>
+                      </dl>
+                      <button class="u-cons"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg>Consulter</button>
+                    </li>
+                    <li>
+                      <span class="u-wm" aria-hidden="true">02<i>Normalité</i></span>
+                      <dl>
+                        <dt>Nom De L'examen:</dt><dd>Suivi Du Développement Fœtal <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></dd>
+                        <dt>Date De L'examen:</dt><dd>20 Mai 2024</dd>
+                        <dt>Médecin Examinateur:</dt><dd><u>Dr. Wang Mei</u><em>(Confirmé)</em></dd>
+                        <dt>Contenu De L'examen:</dt><dd>Suivi De La Croissance Du Fœtus Avec Une Échographie.</dd>
+                        <dt>Description Courte:</dt><dd>L'échographie Permet D'examiner La Croissance Du Fœtus Et De Confirmer Sa Santé.</dd>
+                      </dl>
+                      <button class="u-cons"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg>Consulter</button>
+                    </li>
+                  </ol>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 产检记录 · 影像 ══ -->
+            <section class="u-pg" data-pg="suiviEcho" data-tabbar="1">
+              <header class="u-bk"><button class="u-back" data-go="suivi" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span>Semaine 24</span></header>
+              <div class="u-body pad">
+                <article class="u-card">
+                  <div class="u-ch"><span class="u-tab gr"></span><h6>Vérifier les registres</h6></div>
+                  <div class="u-reg on">
+                    <div class="u-reg-h"><b>Semaine 24</b><span>2024/11/16</span></div>
+                    <p class="u-prop">Proposer: S'intéresser à la supplémentation en vitamines</p>
+                    <ul class="u-checks">
+                      <li>Surveillance Cardiaque Fœtale<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></li>
+                      <li>Analyse Sanguine Complète<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></li>
+                      <li>Consultations Prénatales<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><button class="u-det" data-go="suiviDet">Voir Les Détails</button></li>
+                    </ul>
+                    <img class="u-echo" src="/images/project02/img/u-echo.webp" alt="产检记录里的 B 超单" loading="lazy" decoding="async">
+                  </div>
+                  <button class="u-reg" data-go="suivi"><b>Semaine 20</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suivi"><b>Semaine 15–16</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suivi"><b>Semaine 11–12</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                  <button class="u-reg" data-go="suivi"><b>Semaine 8</b><span class="u-see"><svg viewBox="0 0 24 24"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6z"/></svg>See All</span></button>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 服务 ══ -->
+            <section class="u-pg" data-pg="serv" data-tabbar="1">
+              <header class="u-top2"><span class="u-tab gr"></span><h6>Products</h6>
+                <button class="u-bell" aria-label="通知"><svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2.5h15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i></i></button>
+              </header>
+              <div class="u-body">
+                <div class="u-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Rechercher</span></div>
+                <div class="u-sel">Genre <svg viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div>
+                <ul class="u-docs">
+                  <li>
+                    <img class="u-doc-ph" src="/images/project02/img/u-doc1.webp" alt="Docteur en nutrition" loading="lazy" decoding="async">
+                    <div class="u-doc-t">
+                      <h6>Docteur en nutrition</h6>
+                      <p><b class="u-nm">李楒</b><span>Médecin 5 étoiles</span></p>
+                    </div>
+                    <button class="u-dots" data-go="servMenu" aria-label="更多">···</button>
+                    <dl class="u-doc-d">
+                      <dt>Langue :</dt><dd><span class="u-cg">Prise en charge multilingue</span></dd>
+                      <dt>Vu</dt><dd><span class="u-ct">48k</span></dd>
+                      <dt>Avantage</dt><dd><span class="u-co">Multilingue</span><i class="u-free">Temps libre</i></dd>
+                    </dl>
+                    <button class="u-plus" data-go="servBook" aria-label="预约">+</button>
+                  </li>
+                  <li>
+                    <img class="u-doc-ph" src="/images/project02/img/u-doc2.webp" alt="Bento Matte 3D Illustration" loading="lazy" decoding="async">
+                    <div class="u-doc-t">
+                      <h6>Bento Matte 3D Illustration</h6>
+                      <p><b class="u-nm">易中天</b><span>Médecin 5 étoiles</span></p>
+                    </div>
+                    <button class="u-dots" data-go="servMenu" aria-label="更多">···</button>
+                    <dl class="u-doc-d">
+                      <dt>Langue</dt><dd><span class="u-cg pale">C/E/F</span></dd>
+                      <dt>Vu</dt><dd><span class="u-ct">108k</span></dd>
+                      <dt>Avantage</dt><dd><span class="u-co">célèbre</span><i class="u-free">Temps libre</i></dd>
+                    </dl>
+                    <button class="u-plus" data-go="servBook" aria-label="预约">+</button>
+                  </li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- ══ 手机测心率 ══ -->
+            <section class="u-pg" data-pg="hr18">
+              <header class="u-bk"><button class="u-back" data-go="hr23" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span>Mesure</span></header>
+              <div class="u-body pad mid">
+                <h5 class="u-mt">Démarrer la mesure<br>Placez votre téléphone<br>sur votre poitrine</h5>
+                <img class="u-bodyfig" src="/images/project02/img/u-body.webp" alt="把手机贴在左胸测心率" loading="lazy" decoding="async">
+                <ul class="u-mnotes">
+                  <li>Placez fermement l'avant ou l'arrière de votre téléphone contre la partie gauche de votre poitrine (là où votre battement de cœur est le plus perceptible).</li>
+                  <li>Veuillez rester immobile et ne pas parler pendant la mesure, qui dure environ 25 secondes.</li>
+                </ul>
+                <button class="u-cta" data-go="hr23">Démarrer</button>
+              </div>
+            </section>
+
+            <!-- ══ 实时体征 ══ -->
+            <section class="u-pg" data-pg="hr23" data-tabbar="1">
+              <header class="u-top2"><button class="u-back" data-go="home" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="u-tab gr"></span><h6>Surveillance en temps réel</h6></header>
+              <div class="u-body">
+                <ul class="u-ms">
+                  <li><p class="u-mh"><span class="u-mi r"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.7-7-9.5A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.5C19 15.3 12 20 12 20z"/></svg></span>Fréquence cardiaque</p>
+                    <b>66<em>bpm</em></b><u>12:06</u><span class="u-wave"></span></li>
+                  <li><p class="u-mh"><span class="u-mi r">O₂</span>SpO2</p>
+                    <b class="na">Aucune donnée</b><span class="u-meter"><s></s></span><u class="u-mm">70%<em>100%</em></u></li>
+                  <li><p class="u-mh"><span class="u-mi r"><svg viewBox="0 0 24 24"><path d="M12 3v6M8 9h8l-1 11H9z"/></svg></span>Glucose sanguin</p>
+                    <b class="na">Aucune donnée</b><span class="u-wave f"></span></li>
+                  <li><p class="u-mh"><span class="u-mi r"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.7-7-9.5A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.5C19 15.3 12 20 12 20z"/></svg></span>Pression artérielle</p>
+                    <b class="na">Aucune donnée</b><span class="u-meter"><s style="width:62%"></s></span></li>
+                  <li><p class="u-mh"><span class="u-mi r"><svg viewBox="0 0 24 24"><path d="M2 12h5l2-5 3 10 2-5h8"/></svg></span>ECG</p>
+                    <b class="na">Aucune donnée</b><button class="u-more2" data-go="hr19">More <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></li>
+                  <li><p class="u-mh"><span class="u-mi t"><svg viewBox="0 0 24 24"><path d="M7 8c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-5 2.2-5 5 2.2 5 5 5"/></svg></span>Santé du cou</p>
+                    <b class="na">Aucune donnée</b><span class="u-wave"></span></li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- ══ 心率曲线 ══ -->
+            <section class="u-pg" data-pg="hr19">
+              <div class="u-body pad">
+                <div class="u-seg"><button class="on">Jour</button><button>Semaine</button><button>Mois</button><button>Année</button></div>
+                <p class="u-day"><button class="u-rnd" data-go="hr23" aria-label="返回">‹</button><span>05 déc., <b>Thu</b></span></p>
+                <p class="u-ovl">Overview</p>
+                <p class="u-bpm"><b>66-66</b> bpm</p>
+                <figure class="u-hr">
+                  <svg viewBox="0 0 300 150" preserveAspectRatio="none" aria-label="一天里的心率曲线">
+                    <g class="grid"><path d="M0 .5H300M0 37.5H300M0 74.5H300M0 111.5H300M0 149.5H300"/></g>
+                    <path class="ln" d="M6 118 L52 76 L98 92 L144 84 L190 74 L236 96 L282 68"/>
+                  </svg>
+                  <span class="u-hy"><i>100</i><i>65</i><i>30</i></span>
+                  <span class="u-hx"><i>0</i><i>6</i><i>12</i><i>18</i><i>24</i></span>
+                  <button class="u-exp" aria-label="放大"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></button>
+                </figure>
+                <article class="u-card">
+                  <p class="u-mline"><b>Mesurer la FC avec le téléphone</b><button class="u-pill" data-go="hr18">Mesurer</button></p>
+                  <p class="u-sub">Check your heart rate anytime, anywhere · Vérifier FC partout</p>
+                  <p class="u-row"><span>12:06</span><em>66 bpm</em></p>
+                </article>
+                <article class="u-card">
+                  <p class="u-mline"><b>Details</b></p>
+                  <p class="u-row"><span>Recent</span><em>12:06 | 66 bpm ›</em></p>
+                  <p class="u-row"><span>Resting</span><em>-- bpm ›</em></p>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 社区 ══ -->
+            <section class="u-pg" data-pg="forum" data-tabbar="1">
+              <div class="u-body flat">
+                <header class="u-fhd">
+                  <h5>Enregistrer ce moment</h5>
+                  <a class="u-flk">avec son 200<sup>ème</sup> jour</a>
+                  <span class="u-chev2">»</span>
+                </header>
+                <div class="u-posts">
+                  <article class="u-post">
+                    <img src="/images/project02/img/u-a1.webp" alt="" loading="lazy" decoding="async">
+                    <h6>良子蓑(Amie)</h6>
+                    <p class="u-tags"><i>en anglais</i><i>célébrité</i></p>
+                    <p class="u-ptx">Pendant ma grossesse, j'ai appris par moi-même à associer les nutriments et à enseigner l'éducation artistique aux jeunes enfants. Viens apprendre avec moi !</p>
+                  </article>
+                  <article class="u-post">
+                    <img src="/images/project02/img/u-a2.webp" alt="" loading="lazy" decoding="async">
+                    <h6>彤彤</h6>
+                    <p class="u-tags"><i>célébrité</i></p>
+                    <p class="u-ptx">L'éducation artistique aux jeunes enfants. Viens apprendre avec moi !</p>
+                  </article>
+                </div>
+
+                <article class="u-card tint u-circ">
+                  <div class="u-ch"><span class="u-tab bl"></span><h6>cercle social</h6></div>
+                  <ul class="u-cir">
+                    <li><img src="/images/project02/img/u-c1.webp" alt="" loading="lazy" decoding="async"><button class="u-join">+ Rejoindre</button>
+                      <h6>éducation préscolaire</h6><p class="u-tags"><i>anglais</i><i>français</i></p>
+                      <p class="u-mem"><b><img src="/images/project02/img/u-m1.webp" alt=""><img src="/images/project02/img/u-m2.webp" alt=""><img src="/images/project02/img/u-m3.webp" alt=""></b>17 personnes</p></li>
+                    <li><img src="/images/project02/img/u-c2.webp" alt="" loading="lazy" decoding="async"><button class="u-join">+ Rejoindre</button>
+                      <h6>rééducation périnéale</h6><p class="u-tags"><i>célébrité</i></p>
+                      <p class="u-mem"><b><img src="/images/project02/img/u-m4.webp" alt=""><img src="/images/project02/img/u-m5.webp" alt=""><img src="/images/project02/img/u-m6.webp" alt=""></b>17 personnes</p></li>
+                    <li><img src="/images/project02/img/u-c3.webp" alt="" loading="lazy" decoding="async"><button class="u-join">+ Rejoindre</button>
+                      <h6>rééducation périnéale</h6><p class="u-tags"><i>célébrité</i></p></li>
+                    <li><img src="/images/project02/img/u-c4.webp" alt="" loading="lazy" decoding="async"><button class="u-join">+ Rejoindre</button>
+                      <h6>association nutritionnelle</h6><p class="u-tags"><i>célébrité</i></p></li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+
+            <!-- ══ 服务上的三层：更多操作 / 预约 / 选日期 / 选时间 ══ -->
+            <div class="u-ov" data-ov="servMenu" data-back="serv" hidden>
+              <ul class="u-menu">
+                <li class="on"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Réduire les recommandations</li>
+                <li><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="12" rx="2"/><path d="M7 9h10M7 13h6"/></svg>View comment</li>
+                <li><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg>Partager</li>
+                <li><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-5.7-5.7L11 8"/><path d="M14 10a4 4 0 0 0-6-.5l-2 2A4 4 0 0 0 11.7 17L13 16"/></svg>Get shareable link</li>
+                <li><svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V5h6v2M7 7l1 13h8l1-13"/></svg>Réduire les recommandations</li>
+              </ul>
+            </div>
+
+            <div class="u-ov" data-ov="servBook" data-back="serv" hidden>
+              <div class="u-sheet">
+                <h6>SOUSCRIRE</h6>
+                <button class="u-fld" data-go="servDate"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+                  <span>Date</span><b>November 7, 2021</b></button>
+                <button class="u-fld" data-go="servTime"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+                  <span>Time</span><b>12:00 AM</b></button>
+                <p class="u-conf"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-5.7-5.7L11 8"/><path d="M14 10a4 4 0 0 0-6-.5l-2 2A4 4 0 0 0 11.7 17L13 16"/></svg>Confirmer le rendez-vous</p>
+                <button class="u-x" data-go="serv" aria-label="关闭">×</button>
+              </div>
+            </div>
+
+            <div class="u-ov" data-ov="servDate" data-back="servBook" hidden>
+              <div class="u-sheet up">
+                <h6>SOUSCRIRE</h6>
+                <span class="u-fld hi"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+                  <span>Date</span><b>November 7, 2021</b></span>
+              </div>
+              <div class="u-pick2">
+                <span class="u-grab"></span>
+                <p class="u-mo"><button class="u-rnd sm">‹</button>November 2021<button class="u-rnd sm on">›</button></p>
+                <div class="u-cal" id="uiCal"></div>
+              </div>
+            </div>
+
+            <div class="u-ov" data-ov="servTime" data-back="servBook" hidden>
+              <div class="u-sheet">
+                <h6>SOUSCRIRE</h6>
+                <button class="u-fld" data-go="servDate"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+                  <span>Date</span><b>November 7, 2021</b></button>
+                <span class="u-fld hi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+                  <span>Time</span><b>12:00 AM</b></span>
+              </div>
+              <div class="u-time">
+                <p class="u-th">12:00 PM<button class="u-rnd sm" data-go="servBook">×</button></p>
+                <ul class="u-tl">
+                  <li><span>12:00</span>PM</li>
+                  <li class="on"><span>12:30</span>PM</li>
+                  <li><span>01:00</span>PM</li>
+                  <li><span>01:30</span>PM</li>
+                  <li><span>02:00</span>PM</li>
+                </ul>
+              </div>
+            </div>
+
+            <nav class="u-nav" id="uiNav" role="tablist"></nav>
+            <span class="u-home" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-side">
+        <div class="ui-note">
+          <h4 id="uiTitle"></h4>
+          <p class="ui-desc" id="uiDesc"></p>
+        </div>
+        <nav class="ui-pick" id="uiPick" aria-label="十四屏"></nav>
+      </div>
+    </div>
+
+
+    <h3 class="sub-h rv">医院端 · 可交互样机</h3>
+    <p class="sec-lead rv">医生每天要处理几十份产检资料。这一屏的目标只有一个：<b>让上传和核对快到不打断门诊节奏。</b></p>
+
+    <div class="hosp rv">
+      <div class="hp-mac">
+        <div class="hp-win">
+          <!-- 左侧图标栏 -->
+          <nav class="hp-rail" aria-label="侧边导航">
+            <span class="hp-logo" aria-hidden="true"><svg viewBox="0 0 40 44"><path d="M20 1.5 L37.5 11.5 L37.5 32.5 L20 42.5 L2.5 32.5 L2.5 11.5 Z"/><circle cx="23" cy="26" r="8" fill="#fff"/><circle cx="17" cy="17" r="6.4" fill="none" stroke="#fff" stroke-width="1.6"/></svg></span>
+            <button class="on" title="首页"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg></button>
+            <button title="患者"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></svg></button>
+            <button title="排班"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg></button>
+            <button title="统计"><svg viewBox="0 0 24 24"><path d="M5 19V11M12 19V5M19 19v-6"/></svg></button>
+            <button class="hp-sp" title="更多"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <button title="帮助"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3 2.3v1.3M12 16.4v.1"/></svg></button>
+            <button title="外观"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/></svg></button>
+          </nav>
+
+          <div class="hp-main">
+            <!-- 顶栏 -->
+            <header class="hp-top">
+              <label class="hp-search" data-hl="search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+                <input type="text" placeholder="Rechercher un patient ou un dossier médical" aria-label="搜索患者或病历">
+                <kbd>⌘ R</kbd>
+              </label>
+              <button class="hp-create" data-hl="create">+ Créer</button>
+              <button class="hp-ic" data-hl="chat" title="Consultation en ligne"><svg viewBox="0 0 24 24"><path transform="translate(12 12) scale(.88) translate(-12.25 -12.6)" d="M20.5 12.2a8 8 0 0 1-8.6 7.97 8.6 8.6 0 0 1-2.4-.42L4.5 21l1.3-4.2A7.7 7.7 0 0 1 4 12.2 8 8 0 0 1 12.25 4.2a8 8 0 0 1 8.25 8z"/></svg><i></i></button>
+              <button class="hp-ic" data-hl="bell" title="Notifications"><svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2.5h15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i></i></button>
+              <span class="hp-av" aria-hidden="true"></span>
+            </header>
+
+            <!-- 正文 -->
+            <div class="hp-body">
+              <div class="hp-doc">
+                <h5 class="hp-h1">Nouvel ajout</h5>
+
+                <section class="hp-card" data-hl="basic">
+                  <div class="hp-ch"><span class="hp-tab g"></span><h6>Informations du patient</h6><button class="hp-back">← Back</button></div>
+                  <div class="hp-fields">
+                    <label>Nom et prénom <b>i</b><input type="text" value="Marie Dupont"></label>
+                    <label>Âge <b>i</b><input type="text" value="30"></label>
+                    <label>Numéro de dossier médical <b>i</b><input type="text" value="002-DD0000001A"></label>
+                  </div>
+                  <p class="hp-lb">Description <b>i</b></p>
+                  <div class="hp-rt">
+                    <div class="hp-tools">
+                      <button><b>B</b></button><button><i>I</i></button><button><u>U</u></button><button><s>S</s></button>
+                      <button title="链接"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7L11.3 7"/><path d="M14 10a4 4 0 0 0-5.7 0L5.7 12.6a4 4 0 0 0 5.7 5.7L12.7 17"/></svg></button>
+                      <button title="项目符号"><svg viewBox="0 0 24 24"><path d="M9 7h11M9 12h11M9 17h11M5 7h.01M5 12h.01M5 17h.01"/></svg></button>
+                      <button title="编号"><svg viewBox="0 0 24 24"><path d="M10 7h10M10 12h10M10 17h10M4 6.5h1.5V10M4 17h2.5"/></svg></button>
+                      <span class="hp-undo"><button title="撤销">←</button><button title="重做">→</button></span>
+                    </div>
+                    <div class="hp-ta" contenteditable="true" role="textbox" aria-label="Description">Troisième examen prénatal. Tension et poids stables, hauteur utérine conforme au terme.</div>
+                  </div>
+                </section>
+
+                <section class="hp-card" data-hl="upload">
+                  <div class="hp-ch"><span class="hp-tab b"></span><h6>Examen &amp; images</h6></div>
+                  <div class="hp-drop"><svg viewBox="0 0 24 24"><path d="M12 16V5M8 9l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>Cliquer ou déposer les images des résultats d’examen</div>
+                  <div class="hp-thumbs"><span></span><span></span><span class="add">+</span></div>
+                </section>
+
+                <section class="hp-card hp-ai-card" data-hl="ai">
+                  <div class="hp-ch"><span class="hp-tab t"></span><h6>Analyse du rapport de diagnostic</h6><span class="hp-api">via API</span></div>
+                  <p class="hp-ai-out"><span class="hp-badge">IA</span>Croissance fœtale dans la norme ; aucun signe d’anomalie sur cette série.</p>
+                  <div class="hp-ai-act"><button class="on">采纳</button><button>人工修改</button><button>退回重算</button></div>
+                  <p class="hp-fine">AI 生成的内容保留人工介入，医生可直接改写后再提交。</p>
+                </section>
+
+                <section class="hp-card" data-hl="sec">
+                  <div class="hp-ch"><span class="hp-tab o"></span><h6>Signature &amp; suivi</h6></div>
+                  <div class="hp-sec">
+                    <label class="hp-sw"><input type="checkbox" checked><span></span>确认医生身份后上传</label>
+                    <label class="hp-sw"><input type="checkbox"><span></span>标记为需要随访</label>
+                  </div>
+                </section>
+
+                <div class="hp-foot" data-hl="sync">
+                  <button class="hp-check">校验信息</button>
+                  <button class="hp-sync">同步到用户移动端 →</button>
+                </div>
+              </div>
+
+              <!-- 右侧档案 -->
+              <aside class="hp-side">
+                <div class="hp-file" data-hl="dossier">
+                  <h6>Dossier actuel</h6>
+                  <p class="hp-nm">Marie Dupont</p>
+                  <ul class="hp-meta"><li>30 ans</li><li>Française</li><li>ID: 002-DD0000001A</li><li>12 Semaines</li><li>Grossesse Simple</li></ul>
+                  <ul class="hp-hist">
+                    <li>Bon État De Santé, Antécédents De Rhinite Allergique Légère</li>
+                    <li>Nausées Légères Au Début De La Grossesse</li>
+                  </ul>
+                  <p class="hp-now">Troisième Examen Prénatal</p>
+                </div>
+                <button class="hp-blk" data-hl="base">Informations sur les examens de base</button>
+                <button class="hp-blk ghost" data-hl="todo">Informations à saisir</button>
+                <button class="hp-blk plus" data-hl="more">+</button>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <span class="hp-base" aria-hidden="true"></span>
+      </div>
+
+      <ol class="hp-notes" id="hpNotes"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 尾 ══════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 44"><path d="M20 1.5 L37.5 11.5 L37.5 32.5 L20 42.5 L2.5 32.5 L2.5 11.5 Z"/><circle cx="23" cy="26" r="8" fill="#fff"/><circle cx="17" cy="17" r="6.4" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+    </div>
+    <p class="foot-fr">« La vie commence ici, dans un cercle de soins parfaits. »</p>
+    <p class="foot-zh">生命从这里开始，在一个完整的照护圆环里。</p>
+    <p class="foot-meta">Plan comprend，服务设计案例，2024<span class="foot-sep" aria-hidden="true"></span>研究、洞察、服务蓝图与界面产出</p>
+    <button class="btn-board ghost" id="docBtn2">查看项目文档</button>
+  </div>
+</footer>
+
+</main>
+
+
+<!-- ══════════ 项目文档 ══════════
+     五张 3840×1080 满版展板，压过分辨率、打过满版水印。原图不进 public。 -->
+<dialog class="doc-dlg" id="docDlg" aria-label="项目文档">
+  <header class="doc-h">
+    <div class="doc-ttl">
+      <h3>项目文档</h3>
+      <span class="doc-meta" id="docMeta"></span>
+    </div>
+    <button class="dlg-x" id="docX" aria-label="关闭">×</button>
+  </header>
+  <div class="doc-stage" id="docStage">
+    <button class="doc-nav doc-prev" id="docPrev" aria-label="上一页">‹</button>
+    <div class="doc-frame" id="docFrame"><div class="doc-pan" id="docPan"></div></div>
+    <button class="doc-nav doc-next" id="docNext" aria-label="下一页">›</button>
+  </div>
+  <footer class="doc-f">
+    <div class="doc-dots" id="docDots"></div>
+    <span class="doc-hint">← → 翻页 · Esc 关闭</span>
+  </footer>
+</dialog>
+
+<!-- ══════════ 放大 ══════════ -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="放大查看" hidden>
+  <button class="lb-x" id="lbX" aria-label="关闭">&times;</button>
+  <div class="lb-stage" id="lbStage"></div>
+  <div class="lb-bar" id="lbBar"></div>
+</div>
+
+</body>
+</html>

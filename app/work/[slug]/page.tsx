@@ -49,5 +49,9 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
     redirect("/images/digital-personality/index.html?v=20260904-2");
   }
 
+  if (work.liveUrl?.startsWith("/images/")) {
+    redirect(work.liveUrl);
+  }
+
   return <WorkDetail work={work} />;
 }
