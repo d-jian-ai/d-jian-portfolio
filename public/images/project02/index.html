@@ -9,10 +9,25 @@
 <meta name="description" content="La vie commence ici, dans un cercle de soins parfaits. 一个面向在华外籍孕产妇的服务设计案例：从医院信息孤岛出发，做一套贯穿备孕到养育的孕育陪伴系统。">
 <script>document.documentElement.className+=" js";window.__ERR=[];addEventListener("error",function(e){__ERR.push((e.message||String(e))+" @ "+String(e.filename||"").split("/").pop()+":"+e.lineno)});addEventListener("unhandledrejection",function(e){__ERR.push("promise: "+e.reason)});</script>
 <link rel="stylesheet" href="/images/project02/fonts/fonts.css">
-  <script type="module" crossorigin src="/images/project02/assets/index-BmvYdpu6.js"></script>
-  <link rel="stylesheet" crossorigin href="/images/project02/assets/index-BHVEVhhJ.css">
+<style id="portfolio-navigation">
+.portfolio-back{align-items:center;backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15);background:#f7f7f3b8;border:0;border-radius:999px;box-shadow:inset 0 1px #ffffffc2,0 5px 14px #09100c1f;color:#152019;cursor:pointer;display:inline-flex;flex:0 0 auto;height:40px;justify-content:center;left:max(14px,env(safe-area-inset-left));line-height:1;overflow:hidden;pointer-events:auto;position:fixed;text-decoration:none;top:max(10px,env(safe-area-inset-top));transition:background .18s ease,box-shadow .22s ease,color .18s ease;width:40px;will-change:transform;z-index:10000}
+.portfolio-back>span{display:block;transform:translateZ(0);will-change:transform}
+.return-arrow{height:14px;position:relative;width:19px}
+.return-arrow:before,.return-arrow:after{content:"";left:1px;position:absolute;top:50%}
+.return-arrow:before{background:currentColor;border-radius:999px;height:2px;transform:translateY(-50%);transform-origin:left center;transition:width .26s cubic-bezier(.22,1,.36,1);width:18px}
+.return-arrow:after{border-bottom:2px solid currentColor;border-left:2px solid currentColor;height:8px;transform:translateY(-50%) rotate(45deg);width:8px}
+.portfolio-back:hover{background:#ffffffe6;box-shadow:inset 0 1px #ffffffeb,0 8px 20px #09100c2b}
+.portfolio-back:hover .return-arrow:before{width:19px}
+.portfolio-back:focus-visible{background:#ffffffe6;box-shadow:inset 0 1px #ffffffeb,0 0 0 3px #f5c4003d,0 8px 20px #09100c2b;color:#8a7100;outline:0}
+@media (prefers-reduced-motion:reduce){.portfolio-back,.return-arrow:before{animation:none;transition:none}}
+#top{padding-left:max(68px,var(--pad))}
+</style>
+  <script type="module" crossorigin src="/images/project02/assets/index-CtZlj6Fh.js"></script>
+  <link rel="stylesheet" crossorigin href="/images/project02/assets/index-DfyCmeiB.css">
 </head>
 <body>
+
+<a id="return-work" class="portfolio-back" href="/work" aria-label="返回作品页"><span class="return-arrow" aria-hidden="true"></span></a>
 
 <!-- ══════════ 开场 ══════════
      不是进度条。孕期是按周数过的 —— 0 到 40，数字往上走，
@@ -41,7 +56,6 @@
     <span class="mark-t"><b>Plan comprend</b><i>孕育陪伴系统</i></span>
   </a>
   <div class="top-r">
-    <a class="btn-board" href="/work" aria-label="返回作品页">← 作品</a>
     <span class="top-meta">Service design · 2024</span>
     <button class="btn-board" id="docBtn" aria-haspopup="dialog">查看文档</button>
   </div>
